@@ -1,16 +1,5 @@
-<template>
-  <div class="w-screen h-screen flex flex-col">
-    <Navbar />
-    <div class="flex flex-col place-items-center items-center">
-      <div class="flex" ref="youtube" />
-      <button class="bg-red-500" @click="$router.push('/')"> Home </button>
-    </div>
-  </div>
-</template>
+<script setup lang="ts">
 
-<script setup>
-import Navbar from "/src/components/Navbar.vue";
-import router from '/src/router/index';
 import { usePlayer , PlayerState } from '@vue-youtube/core';
 import { ref } from 'vue';
 
@@ -20,9 +9,7 @@ const youtube = ref();
 const { onReady } = usePlayer(videoId, youtube, {
   cookie: false,
   playerVars: {
-    mute: 0,
-    width: screen.width,
-    height: screen.height
+    mute: 1,
   },
 });
 
@@ -34,7 +21,7 @@ const { onStateChange } = usePlayer(videoId, youtube, {
 });
 
 onStateChange((event) => {
-  if (event.data == PlayerState.ENDED) {
+  if (event.data == PlayerState.PLAYING) {
     console.log("I'm playing", videoId.value)
     router.push('/')
   }
@@ -45,3 +32,6 @@ onReady((event) => {
 });
 
 </script>
+<template>
+  <div ref="youtube" />
+</template>

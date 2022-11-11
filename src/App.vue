@@ -1,37 +1,14 @@
 <template>
-    <div class="flex flex-col items-center justify-center bg-red-500 h-12">
-        <div class="items-center justify-center">
-        <a href="/">Home</a> |
-        <a href="#/youtube">Youtube</a> |
-    </div>
-    </div>
-  <component :is="currentView" />
+  <router-view class="bg-mainblue" />
 </template>
 
-<script>
-import Home from '/src/page/home.vue'
-import Youtube from '/src/page/youtube.vue'
+<script >
 
-const routes = {
-  '/': Home,
-  '/youtube': Youtube
-}
 
 export default {
-  data() {
-    return {
-      currentPath: window.location.hash
-    }
-  },
-  computed: {
-    currentView() {
-      return routes[this.currentPath.slice(1) || '/'] || NotFound
-    }
-  },
-  mounted() {
-    window.addEventListener('hashchange', () => {
-		  this.currentPath = window.location.hash
-		})
+  name : 'App',
+  components : {
   }
 }
+
 </script>
