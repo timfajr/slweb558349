@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from '/src/page/home.vue'
 import Youtube from '/src/page/youtube.vue'
 import Watch from '/src/page/watch.vue'
+import Upload from '/src/page/upload.vue'
 
 const routes = [
     {
@@ -19,7 +20,12 @@ const routes = [
         path: '/watch',
         name: 'Watch',
         component: Watch
-      },
+    },
+    {
+      path: '/upload',
+      name: 'Upload',
+      component: Upload
+  },
   ]
 
   const router = createRouter({

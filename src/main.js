@@ -6,7 +6,7 @@ import router from './router/index'
 import VuePlayerPlugin from "vue-youtube-iframe-api";
 
 const app = createApp(App)
-
+app.use
 app.use(VuePlayerPlugin)
 app.use(store)
 app.use(router)
