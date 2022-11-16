@@ -6,7 +6,7 @@ class SocketioService {
 
   setupSocketConnection() {  
 
-    this.socket = io('wss://api.bluebox.website');
+    this.socket = io('https://api.bluebox.website');
     
     this.socket.emit('my message', 'Hello there from Vue.');
     
