@@ -38,7 +38,7 @@
       import Navbar from "/src/components/Navbar.vue";
       import io from 'socket.io-client'
       import axios from 'axios'
-      const socket = io('http://localhost:3000')
+      const socket = io('http://api.bluebox.website/')
       export default {
         name: 'App',
         data() {
@@ -116,7 +116,7 @@
           };
           },
           async getData() {
-           const data = await axios.get('http://localhost:3000/movie/getAll')
+           const data = await axios.get('http://api.bluebox.website/movie/getAll')
            console.log(data.data)
            this.list = data.data
           },

@@ -38,7 +38,7 @@
 			submitFile(){
 				let formData = new FormData();
 				formData.append('myVideo', this.file);
-				axios.post( 'http://localhost:3000/upload',
+				axios.post( 'http://api.bluebox.website/',
 					formData,
 					{
 						headers: {

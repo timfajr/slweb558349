@@ -3,7 +3,7 @@
     <Navbar />
     <div class="flex flex-col place-items-center items-center justify-center pt-8 pb-6">
       <div class="flex" id="player" :videoId='videoId'/>  
-        <div class="flex justify-end w-2/3 pt-4 text-gray-300 font-normal" id="app">
+        <div class="flex justify-end w-2/3 pt-4 text-gray-300" id="app">
           <p>User Connected: {{totaluser}}</p>
           <div class="w-2"></div>
           <p>Video Status : {{status}}</p>
@@ -21,7 +21,7 @@
 import io from 'socket.io-client'
 import { ref } from 'vue'
 import axios from 'axios'
-const socket = io('http://localhost:3000')
+const socket = io('http://api.bluebox.website/')
 import Navbar from "/src/components/Navbar.vue"
     export default {
         props: ['id'],
@@ -78,7 +78,7 @@ import Navbar from "/src/components/Navbar.vue"
             console.log(player.getCurrentTime())
           },
           async getData() {
-           const data = await axios.get('http://localhost:3000/mymovie')
+           const data = await axios.get('http://api.bluebox.website/mymovie')
            this.list = data.data
           },
           async Updateuser() {
@@ -87,7 +87,7 @@ import Navbar from "/src/components/Navbar.vue"
 
           // Youtubeee ////
           youtube() {
-          const socket = io('http://localhost:3000')
+          const socket = io('http://api.bluebox.website/')
           var tag = document.createElement('script');
           tag.src = "http://www.youtube.com/iframe_api";
           var firstScriptTag = document.getElementsByTagName('script')[0];

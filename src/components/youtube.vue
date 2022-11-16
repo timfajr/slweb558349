@@ -23,7 +23,7 @@ import { usePlayer , PlayerState } from '@vue-youtube/core'
 import io from 'socket.io-client'
 import { onMounted, reactive, ref, watch } from "vue"
 
-const socket = io('http://localhost:3000')
+const socket = io('http://api.bluebox.website/')
 const nameUpdatesCount = ref(0);
 const wsdata = reactive({status:'Stopped', host: '', user: '', currentime: '', videotime: '', totaluser: ''});
 
