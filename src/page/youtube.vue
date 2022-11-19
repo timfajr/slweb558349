@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen flex flex-col">
+  <div class="bg-mainblue w-screen h-screen flex flex-col">
     <Navbar />
     <div class="flex flex-col place-items-center items-center justify-center pt-8 pb-6">
       <div class="flex" id="player" :videoId='videoId'/>  

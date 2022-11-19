@@ -1,6 +1,6 @@
 <template>
 <Navbar />
-<div class=" bg-orange-600 w-screen h-screen">
+<div class="bg-mainblue w-screen h-screen">
 
 </div>
 

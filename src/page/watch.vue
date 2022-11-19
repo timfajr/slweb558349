@@ -1,5 +1,5 @@
 <template>
-    <body class="flex w-screen flex-col h-screen">
+    <body class="bg-mainblue flex w-screen flex-col h-screen">
       <Navbar />
       <div class="flex justify-center pt-8 pb-6">
         <video
