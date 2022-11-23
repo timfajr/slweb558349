@@ -19,9 +19,7 @@
 
 <script>
 import io from 'socket.io-client'
-import { ref } from 'vue'
 import axios from 'axios'
-const socket = io('http://api.bluebox.website/')
 import Navbar from "/src/components/Navbar.vue"
     export default {
         props: ['id'],
@@ -33,6 +31,7 @@ import Navbar from "/src/components/Navbar.vue"
         user: '',
         host: '',
         ready: 'no',
+        page: '',
         status: 'Stopped',
         currentime: '0',
         videotime:'0',
@@ -40,56 +39,61 @@ import Navbar from "/src/components/Navbar.vue"
             }
         },
     mounted() {
+        this.Setupctx()
         this.Updateuser()
         this.youtube()
         },
-    beforeRouteUpdate (to, from) {
-        this.Updateuser()
-        this.youtube()
-    },
-    onBeforeRouteUpdate(to, from) {
-      this.Updateuser()
-      this.youtube()
-      console.log("route guard")
-    },
     components:{
         Navbar
       },
-      methods: {
-          getvideoid(){
-            video = this.video.id
-          },
-          pause(){
-            const video = document.querySelector('video');
-            video.onpause = (event) => {
-            socket.emit('status', "Paused")
-          };
-          },
-          play(){
-            const video = document.querySelector('video');
-            video.onplay = (event) => {
-            video.currentTime = this.videotime
-            socket.emit('host', this.user)
-            socket.emit('status', "Playing")
-          };
-          },
-          duration(){
-            this.currentime=player.getCurrentTime()
-            console.log(player.getCurrentTime())
-          },
-          async getData() {
-           const data = await axios.get('http://api.bluebox.website/mymovie')
-           this.list = data.data
+    watch:{
+      page: function (){
+          if ( this.page != "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/play" ){
+            this.$router.push({ path: this.page })
+          }
+      }
+    },
+    methods: {
+            Setupctx(){
+            if ( this.$route.params.src === "play" ){
+              this.room = this.$route.params.roomid
+              this.page = "/youtube/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
+              localStorage.setItem('access_token', this.$route.params.token )
+              localStorage.setItem('roomid', this.$route.params.roomid )
+              this.$socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : this.page
+              })
+            }
+            if (this.ready === "no")
+            {
+              setInterval(() => {
+              if (this.ready === "no"){
+                console.log("HIT")
+                this.$router.go(0)
+              }
+            }, 5000)
+            }
+            else {
+              this.$router.push({ path: this.page })
+            }
           },
           async Updateuser() {
             this.user = "user" + parseInt(99999*Math.random())
+            if (this.ready === "no")
+            {
+              this.$route.reload()
+            }
           },
 
           // Youtubeee ////
           youtube() {
-          const socket = io('http://api.bluebox.website/')
+          const socket = io('https://api.bluebox.website', { 
+            extraHeaders: {
+          "access_token": localStorage.getItem("access_token")
+          }})
           var tag = document.createElement('script');
-          tag.src = "http://www.youtube.com/iframe_api";
+          tag.src = "https://www.youtube.com/iframe_api";
           var firstScriptTag = document.getElementsByTagName('script')[0];
           firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
           var player;
@@ -105,53 +109,101 @@ import Navbar from "/src/components/Navbar.vue"
               }
             });
           }
-
           window.onPlayerReady = (event) => {
             event.target.playVideo();
+            this.ready = "yes";
           }
-
           window.onPlayerStateChange = (event) => {
             if (event.data == YT.PlayerState.ENDED) {
                 router.push('/')
-                socket.emit('status', "Ended")
+                socket.emit('status', {
+                roomid : this.$route.params.roomid ,
+                status : "Ended"
+                })
                 if(this.host == this.user)
                         {
-                            socket.emit('videotime', 0)
+                        socket.emit('yttime', {
+                        roomid : this.$route.params.roomid ,
+                        yttime : "0"
+                        })
                         }
             }
             if (event.data == YT.PlayerState.PLAYING) {
-                this.status = "Playing";
-                socket.emit('host', this.user)
-                socket.emit('status', "Playing")
+                this.ready = "yes"
+                this.status = "Playing"
+                socket.emit('host', {
+                        roomid : this.$route.params.roomid ,
+                        host : this.user
+                        })
+                socket.emit('ytstatus', {
+                        roomid : this.$route.params.roomid ,
+                        ytstatus : "Playing"
+                        })
                 if(this.host == this.user)
                         {
-                            socket.emit('videotime', event.target.getCurrentTime())
+                            this.$socket.emit('yttime', {
+                                  roomid : this.$route.params.roomid ,
+                                  yttime : event.target.getCurrentTime()
+                                  })
                         }
             }
             if (event.data == YT.PlayerState.PAUSED) {
-                socket.emit('host', this.user)
-                socket.emit('status', "Paused")
+                socket.emit('host', {
+                        roomid : this.$route.params.roomid ,
+                        host : this.user
+                        })
+                socket.emit('ytstatus', {
+                        roomid : this.$route.params.roomid ,
+                        ytstatus : "Paused"
+                        })
                 if(this.host == this.user)
                         {
-                            socket.emit('videotime', event.target.getCurrentTime())
+                          socket.emit('yttime', {
+                                  roomid : this.$route.params.roomid ,
+                                  yttime : event.target.getCurrentTime()
+                                  })
                         }
             }
             if (event.data == YT.PlayerState.UNSTARTED) {
-                player.seekTo(this.videotime,true)
+                if (this.currentime != event.target.getCurrentTime()){
+                  player.seekTo(this.videotime,true)
+                  player.playVideo()
+                }
                 player.playVideo()
             }
+
+            // update time per 0.5 sec
+            setInterval(() => {
+              if (this.host == this.user){
+                socket.emit('yttime', {
+                        roomid : this.$route.params.roomid ,
+                        yttime : event.target.getCurrentTime()
+                        })
+              }
+            }, 5000)
           }
           socket.on('connect', function () {
             console.log('connected')
           })
-          socket.on('newData', (data) => {
-            this.list.push(data)
+          socket.on('yttime', (data) => {
+            if(data){
+              this.videotime = data
+            }
           })
-          socket.on('videotime', (data) => {
-            this.videotime = data
+          socket.on('ytsrc', (data) => {
+            if(data){
+              this.videoId = data
+            }
           })
-          socket.on('status', (data) => {
-            this.status = data
+          socket.on('page', (data) => {
+            if(data){
+              this.page = data
+            }
+          })
+          socket.on('ytstatus', (data) => {
+            if (data) {
+              this.status = data
+            }
             if(data == "Paused"){
               player.seekTo(this.videotime, true)
               player.pauseVideo()
@@ -163,12 +215,12 @@ import Navbar from "/src/components/Navbar.vue"
             }
           })
           socket.on('host', (data) => {
-            this.host = data
+            if (data) {
+              this.host = data
+            }
           })
-          socket.on('totaluser', (data) => {
-            console.log("totaluser : " + data)
-            this.totaluser = data
-            console.log(this.totaluser)
+          socket.on('usercount', (data) => {
+            this.totaluser = data / 2
           })
           socket.on('disconnect', function () {
             console.log('disconnected')

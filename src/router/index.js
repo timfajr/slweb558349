@@ -4,34 +4,33 @@ import Home from '/src/page/home.vue'
 import Youtube from '/src/page/youtube.vue'
 import Watch from '/src/page/watch.vue'
 import Upload from '/src/page/upload.vue'
-import BEINSPORTS from '/src/page/beinsports.vue'
+import NotFound from '/src/page/notfound.vue'
 
 const routes = [
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      props: true
     },
     {
-      path: '/youtube',
+      path: '/youtube/:token/:roomid/:src',
       name: 'Youtube',
-      component: Youtube
+      component: Youtube,
+      props: true
     },
     {
-        path: '/watch',
+        path: '/watch/:token/:roomid/:src',
         name: 'Watch',
-        component: Watch
+        component: Watch,
+        props: true
     },
     {
       path: '/upload',
       name: 'Upload',
       component: Upload
     },
-    {
-      path: '/beinsports',
-      name: 'BEIN SPORTS',
-      component: BEINSPORTS
-    },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
   ]
 
   const router = createRouter({

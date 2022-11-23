@@ -6,11 +6,10 @@ class SocketioService {
 
   setupSocketConnection() {  
 
-    this.socket = io('https://api.bluebox.website');
-    
-    this.socket.emit('my message', 'Hello there from Vue.');
+    this.socket = io('http://localhost:3000');
     
   }
+
   disconnect() {
     if (this.socket) {
         this.socket.disconnect();
