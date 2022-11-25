@@ -20,11 +20,17 @@
 <script>
 	import axios from 'axios';
 	import Navbar from "/src/components/Navbar.vue";
+	
+	// Cookies
+	import { useCookies } from "vue3-cookies";
+	const { cookies } = useCookies();
+
 	export default {
 		data(){
 			return {
 				file: '',
-				uploadPercentage: 0
+				uploadPercentage: 0,
+				page: ''
 			}
 		},
 		components : {
@@ -38,7 +44,7 @@
 			submitFile(){
 				let formData = new FormData();
 				formData.append('myVideo', this.file);
-				axios.post( 'http://api.bluebox.website/',
+				axios.post( 'https://api.bluebox.website/',
 					formData,
 					{
 						headers: {
@@ -55,6 +61,33 @@
 					console.log('FAILURE!!');
 				});
 			},
-		}
+		},
+	watch:{
+      page: function () {
+          if ( cookies.get("page") != "/upload" ){
+            this.$router.push( { path: cookies.get("page") } )
+            console.log( "hit" )
+          }
+        }
+	},
+	sockets: {
+            connect() {
+              console.log('connected')
+            },
+            disconnect() {
+              console.log('disconnected')
+            },
+
+            // Event Controller
+            page(data) {
+              if (data){
+                this.page = data
+                cookies.set("page", data)
+              }
+            },
+            usercount(data) {
+              this.totaluser = data
+            },
+        },
 	}
 </script>

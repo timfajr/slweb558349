@@ -1,9 +1,9 @@
 <template>
     <nav class="bg-gray-300 space-x-3 p-2 flex flex-row justify-center justify-items-center w-screen relative">
-      <a :href="$router.resolve({path: ''}).href" >Home</a>
-      <a :href="$router.resolve({path: this.youtube}).href" @click="youtube" >Youtube</a>
-      <a :href="$router.resolve({path: this.watch}).href" @click="watch" >Watch</a>
-      <a :href="$router.resolve({path: '/upload' }).href" >Upload</a>
+      <button @click="home" >Home</button>
+      <button @click="youtube" >Youtube</button>
+      <button @click="watch" >Watch</button>
+      <button @click="upload" >Upload</button>
       <!-- Disabled Temporary
       <router-link
         to="/web"
@@ -30,34 +30,43 @@
   </template>
 
 <script>
+
+// Cookies
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
+
 export default {
     name: 'App',
     data() {
       return {
-        page: '',
-        watch: '',
-        youtube: ''
+        page: ''
       }
     },
     methods: {
       youtube(){
-        this.page = "/youtube/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
         this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : "/youtube/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
+                roomid : cookies.get("roomid") ,
+                page : "/youtube/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/play"
+            })
+      },
+      home(){
+        this.$socket.emit('page', {
+                roomid : cookies.get("roomid") ,
+                page : "/"
+            })
+      },
+      upload(){
+        this.$socket.emit('page', {
+                roomid : cookies.get("roomid") ,
+                page : "/upload"
             })
       },
       watch(){
-        this.page = "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
         this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
+                roomid : cookies.get("roomid") ,
+                page : "/watch/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/play"
             })
       }
-    },
-    mounted() {
-      this.watch = '/watch/' + localStorage.getItem('access_token') +"/" + localStorage.getItem('roomid') + '/play'
-      this.youtube = '/youtube/' + localStorage.getItem('access_token') + "/" + localStorage.getItem('roomid') + '/play'
-    },
+    }
 }
 </script>

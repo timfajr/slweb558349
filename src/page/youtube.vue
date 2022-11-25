@@ -21,6 +21,11 @@
 import io from 'socket.io-client'
 import axios from 'axios'
 import Navbar from "/src/components/Navbar.vue"
+
+// Cookies
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
+
     export default {
         props: ['id'],
         data: function() {
@@ -47,33 +52,33 @@ import Navbar from "/src/components/Navbar.vue"
         Navbar
       },
     watch:{
-      page: function (){
-          if ( this.page != "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/play" ){
-            this.$router.push({ path: this.page })
+      page: function () {
+          if ( cookies.get("page") != "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/play" ){
+            this.$router.push( { path: cookies.get("page") } )
+            console.log( "hit" )
           }
-      }
+        }
     },
     methods: {
-            Setupctx(){
+            Setupctx() {
+
             if ( this.$route.params.src === "play" ){
               this.room = this.$route.params.roomid
-              this.page = "/youtube/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
-              localStorage.setItem('access_token', this.$route.params.token )
-              localStorage.setItem('roomid', this.$route.params.roomid )
-              this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : this.page
-              })
+              this.$cookies.set('access_token',this.$route.params.token );
+              this.$cookies.set('roomid',this.$route.params.roomid );
             }
+
             if (this.ready === "no")
             {
               setInterval(() => {
+
               if (this.ready === "no"){
                 console.log("HIT")
                 this.$router.go(0)
               }
             }, 5000)
             }
+
             else {
               this.$router.push({ path: this.page })
             }
@@ -88,19 +93,20 @@ import Navbar from "/src/components/Navbar.vue"
 
           // Youtubeee ////
           youtube() {
+
           const socket = io('https://api.bluebox.website', { 
             extraHeaders: {
-          "access_token": localStorage.getItem("access_token")
+          "access_token": cookies.get("access_token")
           }})
+
           var tag = document.createElement('script');
           tag.src = "https://www.youtube.com/iframe_api";
           var firstScriptTag = document.getElementsByTagName('script')[0];
           firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
           var player;
+
           window.onYouTubeIframeAPIReady = () => {
             player = new YT.Player('player', {
-              height: 720,
-              width: 1280,
               playerVars: { 'autoplay': 1, 'controls': 1 },
               videoId: this.videoId,
               events: {
@@ -114,6 +120,7 @@ import Navbar from "/src/components/Navbar.vue"
             this.ready = "yes";
           }
           window.onPlayerStateChange = (event) => {
+
             if (event.data == YT.PlayerState.ENDED) {
                 router.push('/')
                 socket.emit('status', {
@@ -128,9 +135,9 @@ import Navbar from "/src/components/Navbar.vue"
                         })
                         }
             }
+
             if (event.data == YT.PlayerState.PLAYING) {
                 this.ready = "yes"
-                this.status = "Playing"
                 socket.emit('host', {
                         roomid : this.$route.params.roomid ,
                         host : this.user
@@ -139,14 +146,20 @@ import Navbar from "/src/components/Navbar.vue"
                         roomid : this.$route.params.roomid ,
                         ytstatus : "Playing"
                         })
+                socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : this.page
+                })
+
                 if(this.host == this.user)
-                        {
-                            this.$socket.emit('yttime', {
-                                  roomid : this.$route.params.roomid ,
-                                  yttime : event.target.getCurrentTime()
-                                  })
-                        }
+                  {
+                    socket.emit('yttime', {
+                          roomid : this.$route.params.roomid ,
+                          yttime : event.target.getCurrentTime()
+                          })
+                  }
             }
+
             if (event.data == YT.PlayerState.PAUSED) {
                 socket.emit('host', {
                         roomid : this.$route.params.roomid ,
@@ -164,6 +177,7 @@ import Navbar from "/src/components/Navbar.vue"
                                   })
                         }
             }
+
             if (event.data == YT.PlayerState.UNSTARTED) {
                 if (this.currentime != event.target.getCurrentTime()){
                   player.seekTo(this.videotime,true)
@@ -172,57 +186,78 @@ import Navbar from "/src/components/Navbar.vue"
                 player.playVideo()
             }
 
-            // update time per 0.5 sec
-            setInterval(() => {
-              if (this.host == this.user){
-                socket.emit('yttime', {
-                        roomid : this.$route.params.roomid ,
-                        yttime : event.target.getCurrentTime()
-                        })
-              }
+          // update time per 0.5 sec
+          setInterval(() => {
+
+            if (this.host == this.user){
+              socket.emit('yttime', {
+                      roomid : this.$route.params.roomid ,
+                      yttime : event.target.getCurrentTime()
+                      })
+            }
             }, 5000)
           }
+
           socket.on('connect', function () {
             console.log('connected')
           })
+          
+          socket.on('page', (data) => {
+
+          if(data){
+            this.page = data
+            cookies.set("page", data)
+          }
+          })
+
           socket.on('yttime', (data) => {
+
             if(data){
               this.videotime = data
+
             }
           })
+
           socket.on('ytsrc', (data) => {
+
             if(data){
               this.videoId = data
+
             }
           })
-          socket.on('page', (data) => {
-            if(data){
-              this.page = data
-            }
-          })
+
           socket.on('ytstatus', (data) => {
+
             if (data) {
               this.status = data
             }
+
             if(data == "Paused"){
               player.seekTo(this.videotime, true)
               player.pauseVideo()
             }
+
             if(data == "Playing"){
               if(this.host != this.user){
                 player.playVideo();
               }
             }
           })
+
           socket.on('host', (data) => {
+
             if (data) {
               this.host = data
             }
           })
+
           socket.on('usercount', (data) => {
+
             this.totaluser = data / 2
           })
+
           socket.on('disconnect', function () {
+
             console.log('disconnected')
           })
         }

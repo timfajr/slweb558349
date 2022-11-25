@@ -7,7 +7,8 @@
         :src=videosrc
         poster="https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217"
         width="620"
-        autoplay
+        allow="autoplay"
+        autoplay="true"
         loop
         controls controlsList="nodownload"></video>
       </div>
@@ -37,6 +38,9 @@
       <script scope>
       import Navbar from "/src/components/Navbar.vue";
       import axios from 'axios'
+      import { useCookies } from "vue3-cookies";
+      const { cookies } = useCookies();
+
       export default {
         name: 'App',
         data() {
@@ -61,6 +65,7 @@
             Navbar
         },
         mounted() {
+          this.click()
           this.Setupctx()
           this.play()
           this.pause()
@@ -82,48 +87,50 @@
           }
         },
         page: function (){
-          if ( this.page != "/watch/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/play" ){
-            this.$router.push({ path: this.page })
+          if ( this.$cookies.get("page") != "/watch/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/play" ){
+            this.$router.push( { path: this.$cookies.get("page") } )
+            console.log( "hit" )
           }
         }
         },
         sockets: {
-                connect() {
-                  console.log('connected')
-                },
-                disconnect() {
-                  console.log('disconnected')
-                },
+            connect() {
+              console.log('connected')
+            },
+            disconnect() {
+              console.log('disconnected')
+            },
 
-                // Event Controller
-                host(data) {
-                  if (data){
-                    this.host = data
-                  }
-                },
-                status(data) {
-                  if (data){
-                    this.status = data
-                  }
-                },
-                videosrc(data) {
-                  if (data){
-                    this.videosrc = data
-                  }
-                },
-                videotime(data) {
-                  if (data){
-                    this.videotime = data
-                  }
-                },
-                page(data) {
-                  if (data){
-                    this.page = data
-                  }
-                },
-                usercount(data) {
-                  this.totaluser = data
-                },
+            // Event Controller
+            host(data) {
+              if (data){
+                this.host = data
+              }
+            },
+            status(data) {
+              if (data){
+                this.status = data
+              }
+            },
+            videosrc(data) {
+              if (data){
+                this.videosrc = data
+              }
+            },
+            videotime(data) {
+              if (data){
+                this.videotime = data
+              }
+            },
+            page(data) {
+              if (data){
+                this.page = data
+                cookies.set("page", data)
+              }
+            },
+            usercount(data) {
+              this.totaluser = data
+            },
         },
         methods: {
           Decodetoken(){
@@ -133,19 +140,19 @@
           Setupctx(){
             if ( this.$route.params.src === "play" ){
               this.room = this.$route.params.roomid
-              this.page = "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
-              localStorage.setItem('access_token', this.$route.params.token )
-              localStorage.setItem('roomid', this.$route.params.roomid )
-              this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : this.page
-              })
+              this.$cookies.set('access_token',this.$route.params.token );
+              this.$cookies.set('roomid',this.$route.params.roomid );
             }
             else {
               this.$router.push({ path: this.page })
             }
+            const video = document.querySelector('video');
+            video.onload = function() {
+            video.play()
+          }
           },
           Demovideo(){
+            const video = document.querySelector('video');
             this.$socket.emit('host', {
                 roomid : this.$route.params.roomid ,
                 host : this.user
@@ -175,7 +182,8 @@
            const data = await axios.get('https://api.bluebox.website/movie/getAll')
            this.list = data.data
           },
-          Moviebutton(selectedItem){
+          Moviebutton(selectedItem) {
+            const video = document.querySelector('video');
             this.$socket.emit('host', {
                 roomid : this.$route.params.roomid ,
                 host : this.user
@@ -196,7 +204,7 @@
                 roomid : this.$route.params.roomid ,
                 page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
             })
-            console.log(selectedItem)
+            video.play()
           },
           pause(){
           const video = document.querySelector('video');
@@ -206,21 +214,44 @@
                 host   : this.user
             })
             this.$socket.emit('status',{ roomid: this.$route.params.roomid, status : "Paused" })}
+            this.$socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
+            })
+          },
+          click(){
+            const video = document.querySelector('video');
+            video.onclick = (event) =>{
+              if (video.paused === false) {
+                console.log('paused')
+                video.pause();
+            } else {
+                video.play();
+                console.log('playing')
+            }
+            }
           },
           play(){
             const video = document.querySelector('video');
-            video.onplay = (event) => {
+            video.onplay = (event) => 
+            {
             video.currentTime = this.videotime
               this.$socket.emit('host', {
                 roomid : this.$route.params.roomid ,
                 host   : this.user
             })
+
             this.$socket.emit('status', 
             {
                 roomid : this.$route.params.roomid ,
                 status : "Playing"
-            }
-            )
+            })
+
+            this.$socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
+            })
+            video.play()
             }
           },
           duration(){
