@@ -48,6 +48,7 @@
             user: '',
             host: '',
             token: '',
+            ready: 'no',
             page: '',
             room: '' ,
             videosrc: '',
@@ -124,6 +125,7 @@
             },
             page(data) {
               if (data){
+                this.ready = "yes"
                 this.page = data
                 cookies.set("page", data)
               }
@@ -142,6 +144,16 @@
               this.room = this.$route.params.roomid
               this.$cookies.set('access_token',this.$route.params.token );
               this.$cookies.set('roomid',this.$route.params.roomid );
+            }
+            if (this.ready === "no")
+            {
+              setInterval(() => {
+
+              if (this.ready === "no"){
+                console.log("HIT")
+                this.$router.go(0)
+              }
+            }, 5000)
             }
             else {
               this.$router.push({ path: this.page })
