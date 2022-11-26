@@ -31,7 +31,7 @@ export default {
   },
   watch:{
       page: function () {
-          if ( cookies.get("page") != "/" ){
+          if ( cookies.get("page") != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
             console.log( "hit" )
           }
