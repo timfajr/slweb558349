@@ -17,7 +17,7 @@ export default {
         data() {
           return {
             user: '',
-            ready: false,
+            ready: 'no',
             page: '',
             host: '',
             status: 'Stopped',
@@ -38,6 +38,30 @@ export default {
           }
         }
 	},
+  mounted(){
+    this.Setupctx()
+  },
+  methods:{
+    Setupctx(){
+            if (this.ready === "no")
+            {
+              this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                    })
+              this.$cookies.set('access_token',this.$route.params.token );
+              this.$cookies.set('roomid',this.$route.params.roomid );
+              setInterval(() => {
+
+              if (this.ready === "no"){
+                console.log("HIT")
+                this.$router.go(0)
+              }
+            }, 5000)
+            }
+          },
+  },
+
 	sockets: {
             connect() {
               console.log('connected')
@@ -49,8 +73,9 @@ export default {
             // Event Controller
             page(data) {
               if (data){
-                this.ready = true
+                this.ready = "yes"
                 this.page = data
+                console.log("ready")
                 cookies.set("page", data)
               }
             },

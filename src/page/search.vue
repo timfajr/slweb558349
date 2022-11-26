@@ -34,6 +34,7 @@
         return {
         user: '',
         page: '',
+        ready: 'no',
         host: '',
         videos: [],
         selectedVideo: null,

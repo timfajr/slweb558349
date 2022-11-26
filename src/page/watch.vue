@@ -140,6 +140,7 @@
             const decode = VueJwtDecode.decode(this.$route.params.token)
           },
           Setupctx(){
+            
             if ( this.$route.params.src === "play" ){
               this.room = this.$route.params.roomid
               this.$cookies.set('access_token',this.$route.params.token );
@@ -148,7 +149,6 @@
             if (this.ready === "no")
             {
               setInterval(() => {
-
               if (this.ready === "no"){
                 console.log("HIT")
                 this.$router.go(0)

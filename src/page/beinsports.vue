@@ -20,6 +20,7 @@
                 user: '',
                 page: '',
                 host: '',
+                ready: 'no',
                 iframeurl: '',
                 totaluser:'0'   
               }
@@ -29,6 +30,7 @@
     },
     mounted() {
         this.geturl()
+        this.Setupctx()
         },
     methods: {
         geturl(){
@@ -37,7 +39,21 @@
             var innerDoc = iframe.contentWindow.document.refferer
             var currentFrame = iframe.contentWindow.location.url
             var test = iframe.contentDocument.referrer
-        }
+        },
+        Setupctx(){
+            if (this.ready === "no")
+            {
+              this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/beinsports/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                    })
+              this.$cookies.set('access_token',this.$route.params.token );
+              this.$cookies.set('roomid',this.$route.params.roomid );
+              setInterval(() => {
+                this.$router.go(0)
+            }, 5000)
+            }
+          }
     },
     watch:{
         page: function () {
@@ -59,6 +75,7 @@
             page(data) {
                 if (data){
                 this.page = data
+                this.ready = "yes"
                 cookies.set("page", data)
                 }
             },

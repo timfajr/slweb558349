@@ -40,7 +40,7 @@ const { cookies } = useCookies();
         status: 'Stopped',
         currentime: '0',
         videotime:'0',
-        totaluser:'0'
+        totaluser: 0
             }
         },
     mounted() {
@@ -70,6 +70,12 @@ const { cookies } = useCookies();
 
             if (this.ready === "no")
             {
+              this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + cookies.get('ytsrc')
+                    })
+              this.$cookies.set('access_token',this.$route.params.token );
+              this.$cookies.set('roomid',this.$route.params.roomid );
               setInterval(() => {
 
               if (this.ready === "no"){
@@ -77,10 +83,6 @@ const { cookies } = useCookies();
                 this.$router.go(0)
               }
             }, 5000)
-            }
-
-            else {
-              this.$router.push({ path: this.page })
             }
           },
           async Updateuser() {
@@ -109,6 +111,7 @@ const { cookies } = useCookies();
             player = new YT.Player('player', {
               height: window.innerHeight,
               width: window.innerWidth,
+              allowfullscreen: "true",
               playerVars: { 'autoplay': 1, 'controls': 1 , 'rel': 0, 'showinfo': 0 },
               videoId: this.videoId,
               events: {
@@ -248,7 +251,7 @@ const { cookies } = useCookies();
 
           socket.on('usercount', (data) => {
 
-            this.totaluser = data / 2
+            this.totaluser = data
           })
 
           socket.on('disconnect', function () {
