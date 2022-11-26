@@ -1,0 +1,33 @@
+<template>
+  <div class="bg-mainblue flex flex-row justify-center align-middle items-center ">
+      <ul class="mx-10 grid grid-cols-2">
+        <VideoListItem
+          v-for="video in videos"
+          :video="video"
+          :key="video.id.videoId" 
+          @videoSelect="onVideoSelect"
+        ></VideoListItem>
+      </ul>
+    </div>
+  </template>
+  
+  <script>
+  import VideoListItem from "/src/components/VideoListItem.vue";
+  import SearchBar from "/src/components/SearchBar.vue";
+  export default {
+    name: "VideoList",
+    components: {
+      VideoListItem,
+      SearchBar
+    },
+    props: {
+      videos: Array,
+    },
+    methods: {
+      onVideoSelect: function (video) {
+        this.$emit("videoSelect", video);
+      }
+    }
+  }
+
+  </script>

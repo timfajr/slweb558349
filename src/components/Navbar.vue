@@ -1,9 +1,11 @@
 <template>
-    <nav class="bg-gray-300 space-x-3 p-2 flex flex-row justify-center justify-items-center w-screen relative">
-      <button @click="home" >Home</button>
-      <button @click="youtube" >Youtube</button>
-      <button @click="watch" >Watch</button>
-      <button @click="upload" >Upload</button>
+    <nav class="bg-gray-300 space-x-3 p-2 pt-10 text-lg font-semibold flex flex-row justify-center justify-items-center w-screen relative">
+      <button @click="home">Home</button>
+      <button @click="ytsearch">Youtube</button>
+      <button @click="watch">Watch</button>
+      <button @click="beinsports">Beinsports</button>
+      <button @click="upload">Upload Movie</button>
+      <button @click="ytwatch">... WatchYT ( dev only ) ...</button>
       <!-- Disabled Temporary
       <router-link
         to="/web"
@@ -43,10 +45,22 @@ export default {
       }
     },
     methods: {
-      youtube(){
+      ytwatch(){
         this.$socket.emit('page', {
                 roomid : cookies.get("roomid") ,
-                page : "/youtube/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/play"
+                page : "/youtube/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/" + cookies.get('ytsrc')
+            })
+      },
+      beinsports(){
+        this.$socket.emit('page', {
+                roomid : cookies.get("roomid") ,
+                page : "/beinsports/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/play"
+            })
+      },
+      ytsearch(){
+        this.$socket.emit('page', {
+                roomid : cookies.get("roomid") ,
+                page : "/search/" + cookies.get("access_token") + "/" + cookies.get("roomid")
             })
       },
       home(){

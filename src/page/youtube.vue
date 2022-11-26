@@ -1,8 +1,8 @@
 <template>
   <div class="bg-mainblue w-screen h-screen flex flex-col">
     <Navbar />
-    <div class="flex flex-col place-items-center items-center justify-center pt-8 pb-6">
-      <div class="flex" id="player" :videoId='videoId'/>  
+    <div class="flex flex-col place-items-center items-center justify-center pt-8 pb-6 ">
+      <div class="flex aspect-video w-2/3 h-full" id="player" :videoId='videoId'/>  
         <div class="flex justify-end w-2/3 pt-4 text-gray-300" id="app">
           <p>User Connected: {{totaluser}}</p>
           <div class="w-2"></div>
@@ -32,7 +32,7 @@ const { cookies } = useCookies();
             return {
         videoTitle: '',
         duration: '',
-        videoId: 'ZbU2szTYnE8',
+        videoId: cookies.get("ytsrc") || 'dQw4w9WgXcQ',
         user: '',
         host: '',
         ready: 'no',
@@ -107,7 +107,9 @@ const { cookies } = useCookies();
 
           window.onYouTubeIframeAPIReady = () => {
             player = new YT.Player('player', {
-              playerVars: { 'autoplay': 1, 'controls': 1 },
+              height: window.innerHeight,
+              width: window.innerWidth,
+              playerVars: { 'autoplay': 1, 'controls': 1 , 'rel': 0, 'showinfo': 0 },
               videoId: this.videoId,
               events: {
                 'onReady': window.onPlayerReady,
@@ -115,6 +117,7 @@ const { cookies } = useCookies();
               }
             });
           }
+
           window.onPlayerReady = (event) => {
             event.target.playVideo();
             this.ready = "yes";
@@ -122,18 +125,15 @@ const { cookies } = useCookies();
           window.onPlayerStateChange = (event) => {
 
             if (event.data == YT.PlayerState.ENDED) {
-                router.push('/')
-                socket.emit('status', {
-                roomid : this.$route.params.roomid ,
-                status : "Ended"
-                })
-                if(this.host == this.user)
-                        {
-                        socket.emit('yttime', {
+                socket.emit('ytstatus', {
                         roomid : this.$route.params.roomid ,
-                        yttime : "0"
+                        ytstatus : "Ended"
                         })
-                        }
+                        
+                socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                })
             }
 
             if (event.data == YT.PlayerState.PLAYING) {
@@ -146,10 +146,6 @@ const { cookies } = useCookies();
                         roomid : this.$route.params.roomid ,
                         ytstatus : "Playing"
                         })
-                socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : this.page
-                })
 
                 if(this.host == this.user)
                   {
