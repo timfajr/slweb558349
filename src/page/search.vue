@@ -56,7 +56,7 @@
           params: {
             key: API_KEY,
             type: "video",
-            maxResults: "50",
+            maxResults: "10",
             part: "snippet",
             q: searchTerm,
           },
@@ -84,7 +84,6 @@
     watch:{
         page: function () {
 
-            // Jangan lupa ganti
             if ( this.$cookies.get("page") != "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
             console.log( "hit" )

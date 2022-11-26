@@ -17,6 +17,7 @@ export default {
         data() {
           return {
             user: '',
+            ready: false,
             page: '',
             host: '',
             status: 'Stopped',
@@ -48,6 +49,7 @@ export default {
             // Event Controller
             page(data) {
               if (data){
+                this.ready = true
                 this.page = data
                 cookies.set("page", data)
               }

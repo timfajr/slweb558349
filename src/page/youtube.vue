@@ -53,7 +53,7 @@ const { cookies } = useCookies();
       },
     watch:{
       page: function () {
-          if ( cookies.get("page") != "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/play" ){
+          if ( cookies.get("page") != "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + cookies.get('ytsrc') ){
             this.$router.push( { path: cookies.get("page") } )
             console.log( "hit" )
           }
@@ -146,7 +146,6 @@ const { cookies } = useCookies();
                         roomid : this.$route.params.roomid ,
                         ytstatus : "Playing"
                         })
-
                 if(this.host == this.user)
                   {
                     socket.emit('yttime', {
