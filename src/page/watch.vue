@@ -226,14 +226,14 @@
                 host   : this.user
             })
             this.$socket.emit('status',{ roomid: this.$route.params.roomid, status : "Paused" })}
-            this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
-            })
           },
           click(){
             const video = document.querySelector('video');
             video.onclick = (event) =>{
+              this.$socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
+            })
               if (video.paused === false) {
                 console.log('paused')
                 video.pause();
@@ -257,11 +257,6 @@
             {
                 roomid : this.$route.params.roomid ,
                 status : "Playing"
-            })
-
-            this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
             })
             video.play()
             }

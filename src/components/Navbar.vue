@@ -66,7 +66,7 @@ export default {
       home(){
         this.$socket.emit('page', {
                 roomid : cookies.get("roomid") ,
-                page : "/"
+                page : "/" + cookies.get("access_token") + "/" + cookies.get("roomid")
             })
       },
       upload(){

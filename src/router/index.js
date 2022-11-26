@@ -10,7 +10,7 @@ import search from '/src/page/search.vue'
 
 const routes = [
     {
-      path: '/',
+      path: '/:token/:roomid/',
       name: 'Home',
       component: Home,
       props: true
