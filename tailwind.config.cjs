@@ -10,6 +10,10 @@ module.exports = {
         'mainblue': '#234899',
         'mainyellow': '#FCC139',
         'fontwhite': '#F2F2F2',
+        'backgroundblue': '#32559F'
+      },
+      fontFamily: {
+        Poppins: ['Poppins, sans-serif'],
       },
     },
   },

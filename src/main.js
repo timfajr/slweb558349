@@ -12,6 +12,9 @@ import VueSocketIO from 'vue-3-socket.io';
 import SOCKETIO from 'socket.io-client'
 const app = createApp(App)
 
+import Vue3EasyDataTable from "vue3-easy-data-table";
+import "vue3-easy-data-table/dist/style.css";
+app.component("EasyDataTable", Vue3EasyDataTable);
 app.use(VueCookies);
 
 app.use(new VueSocketIO({

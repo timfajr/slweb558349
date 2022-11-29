@@ -3,12 +3,18 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from '/src/page/home.vue'
 import Youtube from '/src/page/youtube.vue'
 import Watch from '/src/page/watch.vue'
-import Upload from '/src/page/upload.vue'
 import NotFound from '/src/page/notfound.vue'
-import beinsports from '/src/page/beinsports.vue'
-import search from '/src/page/search.vue'
+import Search from '/src/page/search.vue'
+
+// Admin
+import AdminLogin from '/src/page/admin/adminlogin.vue'
+import AdminDashboard from '/src/page/admin/dashboard.vue'
+import AdminUpload from '/src/page/admin/upload.vue'
+import AdminMovies from '/src/page/admin/movie.vue'
 
 const routes = [
+  
+    // User
     {
       path: '/:token/:roomid/',
       name: 'Home',
@@ -26,7 +32,7 @@ const routes = [
     {
       path: '/search/:token/:roomid/',
       name: 'search',
-      component: search,
+      component: Search,
       props: true
     },
 
@@ -37,19 +43,29 @@ const routes = [
         props: true
     },
 
+    // Admin
     {
-      path: '/beinsports/:token/:roomid/:src',
-      name: 'beinsports',
-      component: beinsports,
-      props: true
+      path: '/admin/login/',
+      name: 'AdminLogin',
+      component: AdminLogin
+    },
+    {
+      path: '/admin/dashboard/',
+      name: 'AdminDashboard',
+      component: AdminDashboard
+    },
+    {
+      path: '/admin/movies/',
+      name: 'AdminMovies',
+      component: AdminMovies
+    },
+    {
+      path: '/admin/upload/',
+      name: 'AdminUpload',
+      component: AdminUpload
     },
 
-    {
-      path: '/upload',
-      name: 'Upload',
-      component: Upload
-    },
-
+    // Not Found Handler
     { path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound

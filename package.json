@@ -18,6 +18,7 @@
     "vue-socket.io": "^3.0.10",
     "vue-youtube-iframe-api": "^0.1.2",
     "vue3-cookies": "^1.0.6",
+    "vue3-easy-data-table": "^1.5.17",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

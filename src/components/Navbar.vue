@@ -1,9 +1,8 @@
 <template>
-    <nav class="bg-gray-300 space-x-3 p-2 pt-10 text-lg font-semibold flex flex-row justify-center justify-items-center w-screen relative">
+    <nav class="bg-mainblue space-x-3 border-b-2 shadow-lg shadow-stone-800 border-gray-300 text-white p-2 pt-6 text-lg font-semibold flex flex-row justify-center justify-items-center w-screen rounded-b-full opacity-10 hover:opacity-80">
       <button @click="home">Home</button>
       <button @click="ytsearch">Youtube</button>
       <button @click="watch">Watch</button>
-      <button @click="beinsports">Beinsports</button>
       <button @click="upload">Upload Movie</button>
       <button @click="ytwatch">... WatchYT ( dev only ) ...</button>
       <!-- Disabled Temporary
@@ -49,12 +48,6 @@ export default {
         this.$socket.emit('page', {
                 roomid : cookies.get("roomid") ,
                 page : "/youtube/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/" + cookies.get('ytsrc')
-            })
-      },
-      beinsports(){
-        this.$socket.emit('page', {
-                roomid : cookies.get("roomid") ,
-                page : "/beinsports/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/play"
             })
       },
       ytsearch(){

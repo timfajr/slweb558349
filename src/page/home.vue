@@ -1,7 +1,6 @@
 <template>
-<Navbar />
 <div class="bg-mainblue w-screen h-screen">
-
+  <Navbar />
 </div>
 
 </template>

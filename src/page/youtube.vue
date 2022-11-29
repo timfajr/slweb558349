@@ -1,9 +1,10 @@
 <template>
-  <div class="bg-mainblue w-screen h-screen flex flex-col">
-    <Navbar />
-    <div class="flex flex-col place-items-center items-center justify-center pt-8 pb-6 ">
-      <div class="flex aspect-video w-2/3 h-full" id="player" :videoId='videoId'/>  
-        <div class="flex justify-end w-2/3 pt-4 text-gray-300" id="app">
+  <div class="relative bg-black w-screen h-screen flex flex-col overflow-clip">
+    <Navbar class="absolute top-0 left-0 z-20" />
+    <div class="flex flex-col place-items-center items-center justify-center absolute z-1 left-0 w-screen h-screen">
+      <div class="flex aspect-video w-screen h-screen " id="player" :videoId='videoId'/>  
+      <!--
+      <div class="flex justify-end w-2/3 pt-4 text-gray-300" id="app">
           <p>User Connected: {{totaluser}}</p>
           <div class="w-2"></div>
           <p>Video Status : {{status}}</p>
@@ -13,6 +14,7 @@
           <p>Host : {{host}}</p>
           <p>User : {{user}}</p>
         </div>
+      -->
       </div>  
   </div>
 </template>

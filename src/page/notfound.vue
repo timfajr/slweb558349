@@ -7,7 +7,7 @@
     <span class="text-white text-6xl block pt-10 pb-2"><span>4  0  4</span></span>
     <span class="text-white text-lg ">Sorry, We couldn't find what you are looking for!</span>
     <div class="mt-10">
-    <a href="{{url()->previous()}}" class="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md">Go back </a>
+    <a @click="goback" class="text-gray-500 font-mono text-xl bg-gray-200 p-3 rounded-md hover:shadow-md">Go back </a>
     </div>
     </div>
     </center>
@@ -32,6 +32,11 @@
             },
             components : {
                 Navbar
+      },
+      methods: {
+        goback(){
+          this.$route.go(-1)
+        }
       }
     }
     </script>

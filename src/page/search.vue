@@ -2,12 +2,16 @@
     <body class="bg-mainblue flex w-screen min-h-screen flex-col">
         <Navbar />
         <div class="flex flex-col m-10">
-            <div class="border-4 rounded-xl bg-mainblue w-8/12 flex flex-col justify-center self-center items-center">
+            <div class="border-2 rounded-xl bg-backgroundblue w-8/12 flex flex-col justify-center self-center items-center bg-opacity-50 border-white shadow-xl">
                 <div class="flex flex-row w-full justify-center self-center items-center">
-                    <div class="text-white p-2 m-2 border-4 rounded-xl text-center text-xl w-1/6">Youtube Search</div>
+                    <div class="text-white p-2 m-2 border-2 rounded-xl text-center text-xl w-1/6 shadow-xl">Youtube Video Search</div>
                     <SearchBar @termChange="onTermChange" class='p-4 w-2/3 m-4'/>
                 </div>
-                <VideoList :videos="videos" @videoSelect="onVideoSelect" />
+                <div class="flex flex-row w-full justify-center self-center items-center -mt-10">
+                    <div class="text-white p-2 m-2 border-2 rounded-xl text-center text-xl w-1/6 shadow-xl">Play Youtube URL</div>
+                    <YoutubeURL @youtubeurl="Youtube" class='p-4 w-2/3 m-4'/>
+                </div>
+                <VideoList :videos="videos" @videoSelect="onVideoSelect" class="mb-8"/>
             </div>
           </div>    
     </body>
@@ -20,6 +24,7 @@
     import VideoDetail from "/src/components/VideoDetail.vue";
     import VideoList from "/src/components/VideoList.vue";
     import Navbar from "/src/components/Navbar.vue";
+    import YoutubeURL from "/src/components/YoutubeURL.vue";
 
     // Cookies
     import { useCookies } from "vue3-cookies";
@@ -48,6 +53,7 @@
         SearchBar,
         VideoList,
         VideoDetail,
+        YoutubeURL
     },
 
     methods: {
@@ -63,6 +69,22 @@
           },
         })
         .then(({ data }) => (this.videos = data.items));
+    },
+    Youtube: function (url) {
+    var youtube = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((?:\w|-){11})(?:&list=(\S+))?/,
+        yt = url.match(youtube);
+
+    if (yt) {
+        console.log(yt[1]);
+        this.$socket.emit('ytsrc', {
+                roomid : this.$route.params.roomid ,
+                ytsrc : yt[1]
+            })
+            this.$socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + yt[1]
+            })
+    }
     },
     onVideoSelect: function (video) {
       console.log(video)
