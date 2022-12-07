@@ -86,10 +86,9 @@ const { cookies } = useCookies();
               this.$cookies.set('roomid',this.$route.params.roomid );
               setInterval(() => {
               if (this.ready === "no"){
-                console.log("HIT")
                 this.$router.go(0)
               }
-            }, 2500)
+            }, 5000)
             }
           },
           async Updateuser() {
@@ -129,6 +128,7 @@ const { cookies } = useCookies();
           }
 
           window.onPlayerReady = (event) => {
+            this.ready = "yes";
             event.target.playVideo();
           }
           window.onPlayerStateChange = (event) => {
@@ -200,7 +200,7 @@ const { cookies } = useCookies();
                       yttime : event.target.getCurrentTime()
                       })
             }
-            }, 5000)
+            }, 500)
           }
 
           socket.on('connect', function () {
