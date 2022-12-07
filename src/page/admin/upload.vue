@@ -102,7 +102,7 @@
 			submitFile(){
 				let formData = new FormData()
 				formData.append('myVideo', this.file)
-				axios.post( 'http://localhost:3000/upload',
+				axios.post( 'https://api.bluebox.website/upload',
 					formData,
 					{
 						headers: {
@@ -122,7 +122,7 @@
 			submitImage(){
 				let formData = new FormData()
 				formData.append('myImage', this.image)
-				axios.post( 'http://localhost:3000/uploadimage',
+				axios.post( 'https://api.bluebox.website/uploadimage',
 					formData,
 					{
 						headers: {
@@ -154,7 +154,7 @@
 				url: this.videourl,
 				imgurl: this.imageurl
             	}
-				axios.post( 'http://localhost:3000/admin/post/movie',
+				axios.post( 'https://api.bluebox.website/admin/post/movie',
 					formData2,
 					{
 						headers: {

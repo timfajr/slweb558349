@@ -51,7 +51,7 @@
             cookies.set('atoken', '')
             setInterval(() => {
             console.log('hit')
-            const api = "http://localhost:3000/admin/token"
+            const api = "https://api.bluebox.website/admin/token"
             axios
             .post(api,{},{ 
               headers: {
@@ -72,7 +72,7 @@
         }, 1000 * 60)
         },
         submitForm() {
-            axios.post('http://localhost:3000/admin/login', {
+            axios.post('https://api.bluebox.website/admin/login', {
                 username: this.username,
                 password: this.password
             }).then(response => {

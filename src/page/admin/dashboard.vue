@@ -37,7 +37,7 @@
       <div class="flex flex-row space-x-2 justify-center border-b-2">
         Device ID
       </div>
-      <div v-for="i in devices.devices" :key="deviceid" class="flex flex-row space-x-2 justify-center">
+      <div v-for="i in devices.devices" :key="i" class="flex flex-row space-x-2 justify-center">
         {{i.deviceid}}
       </div>
   </template>
@@ -62,7 +62,7 @@
           Transaction Date 
         </li>
       </ul>
-      <ul v-for="i in transaction.transaction" :key="transaction.transaction" class="grid grid-cols-4 text-center space-y-2">
+      <ul v-for="i in transaction.transaction" :key="i" class="grid grid-cols-4 text-center space-y-2">
           <li>
           {{i.item}}
           </li>
@@ -93,7 +93,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
 import { Header, ServerOptions, Item } from "vue3-easy-data-table";
-import NavbarAdmin from "../../components/navbaradmin.vue";
+import NavbarAdmin from "../../components/Navbaradmin.vue"
 import axios, { AxiosRequestConfig} from 'axios';
 import dayjs from "dayjs";
 
@@ -126,20 +126,20 @@ setup() {
     rowsPerPage: 25,
     })
 
-    var api = `http://localhost:3000/admin/getdevices?page=${1}&limit=${25}`
+    var api = `https://api.bluebox.website/admin/getdevices?page=${1}&limit=${25}`
     const restApiUrl = computed(() => {
     const { page, rowsPerPage, sortBy, sortType } = serverOptions.value;
     if (sortBy && sortType) {
         if (sortType == "asc")
         {
-            api = `http://localhost:3000/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
-            return `http://localhost:3000/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+            api = `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+            return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
         }
-        api = `http://localhost:3000/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
-        return `http://localhost:3000/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+        api = `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+        return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
     } else {
-        api = `http://localhost:3000/admin/getdevices?page=${page}&limit=${rowsPerPage}`
-        return `http://localhost:3000/admin/getdevices?page=${page}&limit=${rowsPerPage}`
+        api = `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}`
+        return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}`
     }
     })
 

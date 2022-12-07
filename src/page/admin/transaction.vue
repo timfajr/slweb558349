@@ -37,7 +37,7 @@
     import { defineComponent, ref, computed, watch } from "vue";
     import { Header, ServerOptions, Item } from "vue3-easy-data-table";
     import axios, { AxiosRequestConfig} from 'axios';
-    import NavbarAdmin from "../../components/navbaradmin.vue"
+    import NavbarAdmin from "../../components/Navbaradmin.vue"
     import dayjs from "dayjs";
     
     // Cookies
@@ -70,20 +70,20 @@
         rowsPerPage: 25,
         })
         
-        var api = `http://localhost:3000/admin/gettransaction?page=${1}&limit=${25}`
+        var api = `https://api.bluebox.website/admin/gettransaction?page=${1}&limit=${25}`
         const restApiUrl = computed(() => {
         const { page, rowsPerPage, sortBy, sortType } = serverOptions.value;
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                api = `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
-                return `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                api = `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
-            api = `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
-            return `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            api = `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
         } else {
-            api = `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
-            return `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
+            api = `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
+            return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
         }
         })
         
