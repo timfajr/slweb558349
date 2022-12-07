@@ -2,13 +2,12 @@
     <div class="bg-mainblue min-h-screen h-full overflow-x-hidden">
       <Navbar />
       <div class="flex flex-col justify-center self-center mb-20">
-        <div class="flex flex-col justify-center self-center h-full pt-20 w-9/12 ">
-            <div class="flex justify-start text-2xl font-semibold text-white"> My Profile</div>
+        <div class="flex flex-col justify-center self-center h-full w-11/12 ">
               <div class="flex flex-row justify-center w-full self-center items-center pt-10">
-                <div class="border-4 w-full h-full rounded-xl flex text-white"> 
+                <div class="bg-white bg-opacity-10 w-full h-full rounded-xl flex text-white text-sm"> 
                 <div class="flex flex-col w-full justify-start self-start p-10">
                     <div class="flex flex-row justify-between">
-                        <div class="flex flex-row space-x-3 pl-4">
+                        <div class="flex flex-row space-x-3 pl-4 justify-center self-start">
                             <Button @click="addbalance" class="bg-white bg-opacity-10 rounded-xl p-2 pr-4">
                                 <font-awesome-icon icon="cart-plus" class="px-2" /> Balance
                             </Button>
@@ -20,21 +19,25 @@
                             </Button>
                         </div>
                         <div class="flex flex-row space-x-3 pl-4">
-                            <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
-                                <font-awesome-icon icon="clapperboard" class="pr-2" />
-                                Subcription : {{ data.subscription}}
+                            <div class="flex flex-col space-y-3">
+                                <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
+                                    <font-awesome-icon icon="clapperboard" class="pr-2" />
+                                    Subcription : {{ data.subscription}}
+                                </div>
+                                <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
+                                    <font-awesome-icon icon="calendar-xmark" class="pr-2" />
+                                    Expire at : {{formatDate(data.expires)}}
+                                </div>  
                             </div>
-                            <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
-                                <font-awesome-icon icon="calendar-xmark" class="pr-2" />
-                                Expire at : {{formatDate(data.expires)}}
-                            </div>  
-                            <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
-                                <font-awesome-icon icon="calendar" class="pr-2" />
-                                Time left : {{ data.timeleft}} Day
-                            </div>  
-                            <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
-                                <font-awesome-icon icon="money-bill-1" class="pr-2" />
-                                Balance : L$ {{ data.balance}}
+                            <div class="flex flex-col space-y-3">
+                                <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
+                                    <font-awesome-icon icon="calendar" class="pr-2" />
+                                    Time left : {{ data.timeleft}} Day
+                                </div>  
+                                <div class="bg-white bg-opacity-10 rounded-xl p-2 px-4">
+                                    <font-awesome-icon icon="money-bill-1" class="pr-2" />
+                                    Balance : L$ {{ data.balance}}
+                                </div>
                             </div>
                     </div>
                     </div>

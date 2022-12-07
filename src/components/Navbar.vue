@@ -1,6 +1,6 @@
 <template>
-    <nav class="bg-mainblue text-white p-2 text-xl font-semibold flex flex-row justify justify-between w-screen pt-12 ">
-      <div class="space-x-6 flex flex-row justify-start ml-24 font-normal bg-white bg-opacity-10 rounded-2xl p-2 self-center">
+    <nav class="bg-mainblue text-white p-2 text-xl font-semibold flex flex-row justify space-x-12 justify-center w-screen pt-12 ">
+      <div class="space-x-6 flex flex-row justify-center font-normal bg-white bg-opacity-10 rounded-2xl p-2 self-center px-4">
       <div class="flex flex-row p-2">
           <img src="../images/Untitled.png" class="object-contain h-10 w-18 rounded" />
       </div>
@@ -25,7 +25,7 @@
         </div>
       </router-link>
       </div>
-      <div class="space-x-4 flex flex-row rounded-2xl bg-white bg-opacity-10 p-4 mr-24">
+      <div class="space-x-4 flex flex-row rounded-2xl bg-white bg-opacity-10 p-4">
         <button class="hover:animate-pulse p-2 rounded bg-mainyellow text-mainblue px-4"> <font-awesome-icon icon="bell" /> </button>
         <button @click="myprofile" class="hover:animate-pulse p-2 rounded bg-mainyellow text-mainblue px-4"> <font-awesome-icon icon="user" /> </button>
       </div>

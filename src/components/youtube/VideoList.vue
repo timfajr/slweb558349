@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-mainblue flex flex-row justify-center align-middle items-center ">
+  <div class="flex flex-row justify-center align-middle items-center ">
       <ul class="mx-10 grid grid-cols-2">
         <VideoListItem
           v-for="video in videos"
