@@ -151,7 +151,7 @@ export default {
     checkout() {
     const api = "https://api.bluebox.website/user/30daysub"
     const request = {
-            "ownerid": "uuuu",
+            "ownerid": this.data.ownerid,
             "item": this.$store.state.cart.items[0].item,
             "qty" : this.$store.state.cart.items[0].qty,
             }
