@@ -6,7 +6,7 @@ class SocketioService {
 
   setupSocketConnection() {  
 
-    this.socket = io('http://api.bluebox.website');
+    this.socket = io('https://api.bluebox.website');
     
   }
 

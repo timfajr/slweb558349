@@ -36,7 +36,7 @@ app.component("EasyDataTable", Vue3EasyDataTable);
 app.use(VueCookies);
 
 app.use(new VueSocketIO({
-    connection: SOCKETIO('http://localhost:3000', {
+    connection: SOCKETIO('https://api.bluebox.website', {
         extraHeaders: {
           "access_token": cookies.get('access_token')
         }

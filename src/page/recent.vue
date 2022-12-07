@@ -27,6 +27,13 @@
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
+
 // Dep
 import axios from "axios";
 
@@ -36,7 +43,6 @@ import Pagination from '/src/components/Pagination.vue'
 
 import WalletButton from "/src/components/store/WalletButton.vue"
 import SearchBar from "/src/components/store/SearchBar.vue";
-import VideoDetail from "/src/components/store/VideoDetail.vue";
 import VideoList from "/src/components/store/VideoList.vue";
 
 export default {
@@ -45,7 +51,6 @@ export default {
     Pagination,
     Navbar,
     SearchBar,
-    VideoDetail,
     WalletButton,
     VideoList
   },
@@ -90,27 +95,26 @@ export default {
             }
           }, 5000)
           }
-          axios.get('http://localhost:3000/user/me', {
+          axios.get('https://api.bluebox.website/user/me', {
               headers: {
                 'access_token' : this.$route.params.token
               }
           }).then(response => {
-              console.log( response.status )
               if ( response.data.message === "success" ){
                   this.response = 'OK'
               }
           }).catch(error => {
-              console.log(error)
               this.response = error
           })
     },
     onPageChange(page) {
       this.currentPage = page;
-      const api = `http://localhost:3000/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
+      const api = `https://api.bluebox.website/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
       axios
       .get(api, {
-          header: {
-              'access_token' : this.$cookies.get("access_token")
+          headers: {
+            'Content-Type': 'application/json',
+            'access_token': this.$route.params.token
           }
       })
       .then(response => {
@@ -119,11 +123,12 @@ export default {
       });
   },
   onStartup () {
-    const api = `http://localhost:3000/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
+    const api = `https://api.bluebox.website/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
     axios
       .get(api, {
-          header: {
-              'access_token' : this.$cookies.get("access_token")
+          headers: {
+            'Content-Type': 'application/json',
+            'access_token': this.$route.params.token
           }
       })
       .then(response => {
@@ -132,16 +137,16 @@ export default {
       });
   },
   onTermChange: function (searchTerm) {
-    const api = `http://localhost:3000/movie/search?title=${searchTerm}`
+    const api = `https://api.bluebox.website/movie/search?title=${searchTerm}`
     axios
       .get(api, {
-        header: {
-              'access_token' : this.$cookies.get("access_token")
+        headers: {
+            'Content-Type': 'application/json',
+            'access_token': this.$route.params.token
           }
       })
       .then(response => {
         this.videos = response.data.data
-        console.log(response.data.data)
       });
   },
   onVideoSelect(video)

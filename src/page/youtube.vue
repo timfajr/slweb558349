@@ -104,7 +104,7 @@ const { cookies } = useCookies();
           // Youtubeee ////
           youtube() {
 
-          const socket = io('http://localhost:3000', { 
+          const socket = io('https://api.bluebox.website', { 
             extraHeaders: {
           "access_token": cookies.get("access_token")
           }})

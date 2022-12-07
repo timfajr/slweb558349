@@ -81,7 +81,7 @@
                 <div class="h-10 bg-backgroundblue" />
                 <VideoList :videos="videos" @videoSelect="onVideoSelect" class="mb-8 "/>
                 <div id="pagination">
-                    <pagination
+                    <Pagination2
                       :totalPages="totalPages"
                       :perPage="rowsPerPage"
                       :currentPage="currentPage"
@@ -103,13 +103,19 @@ import { Carousel, Slide , Navigation } from 'vue3-carousel'
 // Dep
 import axios from "axios";
 
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
+
 // Component
 import Navbar from "/src/components/Navbar.vue";
 import Pagination2 from '/src/components/Pagination.vue'
 
 import WalletButton from "/src/components/store/WalletButton.vue"
 import SearchBar from "/src/components/store/SearchBar.vue";
-import VideoDetail from "/src/components/store/VideoDetail.vue";
 import VideoList from "/src/components/store/VideoList.vue";
 import VideoListItem from "/src/components/store/carouselitem.vue";
 
@@ -119,7 +125,6 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
       Pagination2,
       Navbar,
       SearchBar,
-      VideoDetail,
       WalletButton,
       VideoList,
       VideoListItem,
@@ -159,7 +164,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
           }
       },
       selectedgenre: function (){
-        const api = "http://localhost:3000/movie/getgenre?genre=" + this.selectedgenre
+        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
         axios
             .get(api, {
                 headers: {
@@ -183,7 +188,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
         })
       },
       Latest(){
-        const api = `http://localhost:3000/movie/getAll?sortBy=-created_at`
+        const api = `https://api.bluebox.website/movie/getAll?sortBy=-created_at`
         axios
             .get(api, {
                 headers: {
@@ -196,7 +201,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
             })
       },
       topPicks(){
-        const api = `http://localhost:3000/movie/getTop?sortBy=-created_at`
+        const api = `https://api.bluebox.website/movie/getTop?sortBy=-created_at`
         axios
             .get(api, {
                 headers: {
@@ -209,7 +214,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
             })
       },
       genreList(){
-        const api = "http://localhost:3000/genre"
+        const api = "https://api.bluebox.websitegenre"
         axios
             .get(api, {
                 headers: {
@@ -222,7 +227,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
             })
       },
       genreStartup(){
-        const api = "http://localhost:3000/movie/getgenre?genre=" + "biography"
+        const api = "https://api.bluebox.websitemovie/getgenre?genre=" + "biography"
         axios
             .get(api, {
                 headers: {
@@ -236,7 +241,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
             })
       },
       selectedGenre(){
-        const api = "http://localhost:3000/movie/getgenre?genre=" + this.selectedgenre
+        const api = "https://api.bluebox.websitemovie/getgenre?genre=" + this.selectedgenre
         axios
             .get(api, {
                 headers: {
@@ -264,7 +269,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
               }
             }, 5000)
             }
-            axios.get('http://localhost:3000/user/me', {
+            axios.get('https://api.bluebox.website/user/me', {
                 headers: {
                 'Content-Type': 'application/json',
                 'access_token': this.$route.params.token
@@ -281,7 +286,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
       },
       onPageChange(page) {
         this.currentPage = page;
-        const api = `http://localhost:3000/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
+        const api = `https://api.bluebox.website/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
         axios
         .get(api, {
             headers: {
@@ -295,7 +300,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
         });
     },
     onStartup () {
-      const api = `http://localhost:3000/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
+      const api = `https://api.bluebox.website/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
       axios
         .get(api, {
             headers: {
@@ -309,7 +314,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
         });
     },
     onTermChange: function (searchTerm) {
-      const api = `http://localhost:3000/movie/search?title=${searchTerm}`
+      const api = `https://api.bluebox.website/movie/search?title=${searchTerm}`
       axios
         .get(api, {
           headers: {

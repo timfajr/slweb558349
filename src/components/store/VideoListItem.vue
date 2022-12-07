@@ -18,7 +18,7 @@
       <div class="mx-5 my-4">
         <div class="flex flex-col container justify-center align-middle space-y-2">
           <div class="flex flex-row container space-x-4 text-center"> 
-            <div class="font-semibold truncate bg-mainyellow rounded-xl px-2 p-1 text-center text-black capitalize">{{ video.genre }}</div>
+            <div class="text-md font-semibold truncate bg-mainyellow rounded-xl px-2 p-1 text-center text-mainblue capitalize">{{ video.genre }}</div>
         </div>
       </div>
       </div>

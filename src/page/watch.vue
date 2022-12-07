@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     onStartup () {
-        const api = "http://localhost:3000/movie/getid?id=" + this.$route.params.id
+        const api = "https://api.bluebox.website/movie/getid?id=" + this.$route.params.id
         axios
             .get(api, {
                 headers: {

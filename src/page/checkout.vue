@@ -149,7 +149,7 @@ export default {
     },
     methods:{
     checkout() {
-    const api = "http://localhost:3000/user/30daysub"
+    const api = "https://api.bluebox.website/user/30daysub"
     const request = {
             "ownerid": "uuuu",
             "item": this.$store.state.cart.items[0].item,
@@ -189,7 +189,7 @@ export default {
         return dayjs(date).format('DD-MM-YYYY');
     },
     onStartup () {
-    const api = "http://localhost:3000/user/me"
+    const api = "https://api.bluebox.website/user/me"
     axios
         .get(api, {
             headers: {

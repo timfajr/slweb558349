@@ -6,7 +6,7 @@
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-6 h-6"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </button>
         </span>
-        <input @keypress.enter="onInput" type="text" class="w-full p-4 rounded-xl py-4 text-md pl-14 focus:outline-none focus:bg-gray-800 focus:text-white" placeholder="Search Videos" />
+        <input @keypress.enter="onInput" type="text" class="w-full p-4 rounded-xl py-4 text-md pl-14 focus:outline-none focus:bg-gray-800 focus:text-white" placeholder="Search Videos Title" />
       </div>
     </div>
   </template>

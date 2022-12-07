@@ -170,7 +170,7 @@ export default {
         return dayjs(date).format('DD-MM-YYYY');
     },
     onStartup () {
-    const api = "http://localhost:3000/user/me"
+    const api = "https://api.bluebox.website/user/me"
     axios
         .get(api, {
             headers: {

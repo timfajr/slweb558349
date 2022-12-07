@@ -129,7 +129,7 @@ export default {
         }
     },
     onStartup () {
-        const api = "http://localhost:3000/movie/getgenre?genre=" + this.video.genre
+        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.video.genre
         axios
             .get(api, {
                 headers: {

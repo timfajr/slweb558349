@@ -2,7 +2,7 @@
     <nav class="bg-mainblue text-white p-2 text-xl font-semibold flex flex-row justify justify-between w-screen pt-12 ">
       <div class="space-x-6 flex flex-row justify-start ml-24 font-normal bg-white bg-opacity-10 rounded-2xl p-2 self-center">
       <div class="flex flex-row p-2">
-          <img src="../images/Untitled.png" class="object-contain h-12 w-22 rounded" />
+          <img src="../images/Untitled.png" class="object-contain h-10 w-18 rounded" />
       </div>
       <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="home" :to="{ name: 'Home', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
         <div class="flex flex-row p-2 ">
@@ -33,10 +33,6 @@
   </template>
 
 <script>
-
-// Cookies
-import { useCookies } from "vue3-cookies";
-const { cookies } = useCookies();
 
 export default {
     name: 'App',

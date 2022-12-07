@@ -30,7 +30,6 @@
 import Navbar from "/src/components/Navbar.vue";
 
 import SearchBar from "/src/components/youtube/SearchBar.vue";
-import VideoDetail from "/src/components/youtube/VideoDetail.vue";
 import VideoList from "/src/components/youtube/VideoList.vue";
 import YoutubeURL from "/src/components/youtube/YoutubeURL.vue";
 
@@ -60,7 +59,6 @@ components : {
     Navbar,
     SearchBar,
     VideoList,
-    VideoDetail,
     YoutubeURL
 },
 
