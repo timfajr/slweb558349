@@ -130,7 +130,6 @@ const { cookies } = useCookies();
 
           window.onPlayerReady = (event) => {
             event.target.playVideo();
-            this.ready = "yes";
           }
           window.onPlayerStateChange = (event) => {
 
@@ -166,6 +165,7 @@ const { cookies } = useCookies();
             }
 
             if (event.data == YT.PlayerState.PAUSED) {
+                this.ready = "yes";
                 socket.emit('host', {
                         roomid : this.$route.params.roomid ,
                         host : this.user
@@ -185,6 +185,7 @@ const { cookies } = useCookies();
 
             if (event.data == YT.PlayerState.UNSTARTED) {
                 if (this.currentime != event.target.getCurrentTime()){
+                  this.ready = "yes";
                   player.seekTo(this.videotime,true)
                   player.playVideo()
                 }
