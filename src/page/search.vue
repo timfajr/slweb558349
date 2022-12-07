@@ -2,13 +2,13 @@
     <body class="bg-mainblue flex w-screen min-h-screen flex-col">
         <Navbar />
         <div class="flex flex-col m-10">
-            <div class="p-4 rounded-xl bg-white bg-opacity-10  w-8/12 flex flex-col justify-center self-center items-center border-white shadow-xl">
+            <div class="p-4 rounded-xl bg-white bg-opacity-10  w-11/12 flex flex-col justify-center self-center items-center border-white shadow-xl">
                 <div class="flex flex-row w-full justify-center self-center items-center">
-                    <div class="text-white p-2 m-2 border-2 rounded-xl text-center text-lg w-1/4 shadow-xl">Youtube Video </div>
+                    <div class="text-white p-2 m-2 border-2 rounded-xl text-center text-md w-1/4 shadow-xl">Youtube Video </div>
                     <SearchBar @termChange="onTermChange" class='p-4 w-2/3 m-4'/>
                 </div>
                 <div class="flex flex-row w-full justify-center self-center items-center -mt-10">
-                    <div class="text-white p-2 m-2 border-2 rounded-xl text-center text-lg w-1/4 shadow-xl">Play Youtube URL</div>
+                    <div class="text-white p-2 m-2 border-2 rounded-xl text-center text-md w-1/4 shadow-xl">Play Youtube URL</div>
                     <YoutubeURL @youtubeurl="Youtube" class='p-4 w-2/3 m-4'/>
                 </div>
                 <VideoList :videos="videos" @videoSelect="onVideoSelect" class="mb-8"/>
