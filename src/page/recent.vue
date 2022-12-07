@@ -74,7 +74,7 @@ export default {
   },
   watch:{
     page: function () {
-        if ( cookies.get("page") != "/store/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+        if ( cookies.get("page") != "/recent/" + this.$route.params.token + "/" + this.$route.params.roomid ){
           this.$router.push( { path: cookies.get("page") } )
         }
     }
@@ -85,7 +85,7 @@ export default {
           {
             this.$socket.emit('page', {
                   roomid : this.$route.params.roomid ,
-                  page : "/store/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                  page : "/recent/"+ this.$route.params.token + "/"+ this.$route.params.roomid
                   })
             this.$cookies.set('access_token',this.$route.params.token );
             this.$cookies.set('roomid',this.$route.params.roomid );
