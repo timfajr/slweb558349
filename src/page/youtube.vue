@@ -89,7 +89,7 @@ const { cookies } = useCookies();
                 console.log("HIT")
                 this.$router.go(0)
               }
-            }, 500)
+            }, 2500)
             }
           },
           async Updateuser() {
