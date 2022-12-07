@@ -214,7 +214,7 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
             })
       },
       genreList(){
-        const api = "https://api.bluebox.websitegenre"
+        const api = "https://api.bluebox.website/genre"
         axios
             .get(api, {
                 headers: {
