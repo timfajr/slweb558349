@@ -12,8 +12,8 @@
   </template>
   
   <script>
-  import VideoListItem from "/src/components/VideoListItem.vue";
-  import SearchBar from "/src/components/SearchBar.vue";
+  import VideoListItem from "/src/components/youtube/VideoListItem.vue";
+  import SearchBar from "/src/components/youtube/SearchBar.vue";
   export default {
     name: "VideoList",
     components: {

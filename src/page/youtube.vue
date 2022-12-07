@@ -22,7 +22,7 @@
 <script>
 import io from 'socket.io-client'
 import axios from 'axios'
-import Navbar from "/src/components/Navbar.vue"
+import Navbar from "/src/components/Navbar_fullscreen.vue"
 
 // Cookies
 import { useCookies } from "vue3-cookies";
@@ -63,7 +63,6 @@ const { cookies } = useCookies();
     },
     methods: {
             Setupctx() {
-
             if ( this.$route.params.src === "play" ){
               this.room = this.$route.params.roomid
               this.$cookies.set('access_token',this.$route.params.token );
@@ -98,7 +97,7 @@ const { cookies } = useCookies();
           // Youtubeee ////
           youtube() {
 
-          const socket = io('https://api.bluebox.website', { 
+          const socket = io('http://localhost:3000', { 
             extraHeaders: {
           "access_token": cookies.get("access_token")
           }})

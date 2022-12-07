@@ -4,8 +4,8 @@
         <iframe class="embed-responsive-item" :src="videoUrl"></iframe>
       </div>
       <div class="details">
-        <h4>{{ video.snippet.title}}</h4>
-        <p>{{ video.snippet.description }}</p>
+        <h4>{{ video.title}}</h4>
+        <p>{{ video.description }}</p>
       </div>
     </div>
   </template>

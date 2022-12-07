@@ -27,6 +27,7 @@
     // Cookies
     import { useCookies } from "vue3-cookies"
     const { cookies } = useCookies()
+    
     import Navbaradmin from "/src/components/Navbaradmin.vue"
     export default {
             name: 'App',
@@ -47,24 +48,28 @@
       methods:{
         Setupctx(){
             setInterval(() => {
-            axios.post('http://localhost:3000/admin/token', {
-                username: this.username,
-                password: this.password
-            }).then(response => {
-                console.log( response.status )
-                if ( response.data.message === "success" ){
-                    this.jwtstatus = 'OK'
+
+            const api = "http://localhost:3000/admin/token"
+            axios
+            .post(api,{},{ 
+              headers: {
+                'access_token': cookies.get("atoken")
+            }})
+            .then(response => {
+              console.log(response.status)
+                if ( response.status === 200 ){
+                  this.jwtstatus = "OK"
+                  this.$router.push("/admin/dashboard")
                 }
             }).catch(error => {
                 console.log(error)
                 this.response = error
                 this.jwtstatus = 'Expired'
             })
-            this.jwtstatus = 'Expired'
-            if ( this.jwtstatus == 'OK' ) {
-            this.$router.go(0)
+            if ( this.jwtstatus == 'Expired' ) {
+            this.$router.push("/admin/login")
             }
-        }, 15000)
+        }, 5000)
         },
         submitForm() {
             axios.post('http://localhost:3000/admin/login', {
@@ -75,10 +80,8 @@
                 console.log( response )
                 this.success = response.data.message
                 this.response = JSON.stringify( response.data, null, 2 )
-
                 if ( response.data.message === "success" ){
                     cookies.set('atoken', response.data.access_token)
-                    cookies.set('rtoken', response.data.refresh_token)
                     this.jwtstatus ='OK'
                 }
             }).catch(error => {

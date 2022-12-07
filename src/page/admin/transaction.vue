@@ -1,6 +1,6 @@
 
 <template>
-    <div class="bg-mainblue w-screen h-screen pb-10">
+    <div class="bg-mainblue w-screen h-full h-min-screen pb-10">
         <NavbarAdmin />
         <div class="flex flex-row justify-center justify-items-center mt-10">
         <div class="w-8/12">
@@ -18,20 +18,9 @@
             border-cell
             buttons-pagination
         >
-        <template #item-operation="item">
-            <div class="flex flex-row space-x-2 justify-center">
-              <img
-                src="/src/images/delete.png"
-                class="w-6"
-                @click="deleteItem(item)"
-              />
-              <img
-                src="/src/images/edit.png"
-                class="w-6"
-                @click="editItem(item)"
-              />
-            </div>
-        </template>
+        <template #item-created_at="created_at">
+            <p>{{formatDate(created_at.created_at)}}</p>
+          </template>
     
         <template #pagination="{ prevPage, nextPage, isFirstPage, isLastPage }">
             <button :disabled="isFirstPage" @click="prevPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">prev page</button>
@@ -49,13 +38,14 @@
     import { Header, ServerOptions, Item } from "vue3-easy-data-table";
     import axios, { AxiosRequestConfig} from 'axios';
     import NavbarAdmin from "../../components/navbaradmin.vue"
-
+    import dayjs from "dayjs";
+    
     // Cookies
     import { useCookies } from "vue3-cookies"
     const { cookies } = useCookies()
-    
-    import router from "../../router";
 
+    import router from "../../router";
+    
     export default defineComponent({
     
     components:{
@@ -65,36 +55,35 @@
     setup() {
         const headers: Header[] = [
         { text: "_id", value: "_id"},
-        { text: "title", value: "title", sortable: true },
-        { text: "genre", value: "genre", sortable: true  },
-        { text: "topick", value: "topick" , sortable: true },
-        { text: "url", value: "url" , sortable: true },
-        { text: "imgurl", value: "imgurl" , sortable: true },
-        { text: "created at", value: "created_at" , sortable: true },
-        { text: "Operation", value: "operation" , width: 100}
+        { text: "ownerid", value: "ownerid", sortable: true },
+        { text: "item", value: "item", sortable: true  },
+        { text: "quantity", value: "quantity" , sortable: true },
+        { text: "price", value: "price" },
+        { text: "total", value: "total" , sortable: true },
+        { text: "transaction date", value: "created_at" , sortable: true }
         ];
         const items = ref<Item[]>([])
 
         const serverItemsLength = ref(0)
         const serverOptions = ref<ServerOptions>({
         page: 1,
-        rowsPerPage: 5,
+        rowsPerPage: 25,
         })
         
-        var api = `http://localhost:3000/movie/getAll?page=${1}&limit=${5}`
+        var api = `http://localhost:3000/admin/gettransaction?page=${1}&limit=${25}`
         const restApiUrl = computed(() => {
         const { page, rowsPerPage, sortBy, sortType } = serverOptions.value;
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                api = `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
-                return `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                api = `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                return `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
-            api = `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
-            return `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            api = `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            return `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
         } else {
-            api = `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}`
-            return `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}`
+            api = `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
+            return `http://localhost:3000/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
         }
         })
         
@@ -107,7 +96,11 @@
         const editItem = (val: Item) => {
           console.log(val)
         };
-        
+
+        const formatDate = (date) => {
+            return dayjs(date).format('DD-MM-YYYY');
+        };
+
         const submitEdit = (val: Item) => {
           console.log(val)
         };
@@ -126,12 +119,12 @@
                 .then(function (response) {
                     //state.tableData = response.data.data;
                     if(response.status == 200){
-                      items.value = response.data.data
-                      serverItemsLength.value = response.data.totalitem
-                      loading.value = false;
+                    items.value = response.data.devices
+                    serverItemsLength.value = response.data.totalitem
+                    loading.value = false;
                     }
                     else{
-                      router.push("/admin/login")
+                    router.push('/admin/login')
                     }
                 })
                 .catch(function (error) {
@@ -160,6 +153,7 @@
         loading,
         deleteItem,
         editItem,
+        formatDate,
         submitEdit
         }
     },

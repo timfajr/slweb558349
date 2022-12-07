@@ -12,13 +12,24 @@ import VueSocketIO from 'vue-3-socket.io';
 import SOCKETIO from 'socket.io-client'
 const app = createApp(App)
 
+// Font
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+// Data Table 
 import Vue3EasyDataTable from "vue3-easy-data-table";
 import "vue3-easy-data-table/dist/style.css";
+
+library.add(fas, fab);
+app.component("font-awesome-icon", FontAwesomeIcon);
+
 app.component("EasyDataTable", Vue3EasyDataTable);
 app.use(VueCookies);
 
 app.use(new VueSocketIO({
-    connection: SOCKETIO('https://api.bluebox.website', {
+    connection: SOCKETIO('http://localhost:3000', {
         extraHeaders: {
           "access_token": cookies.get('access_token')
         }

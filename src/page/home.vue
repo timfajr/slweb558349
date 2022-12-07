@@ -7,8 +7,8 @@
 
 <script>
 // Cookies
-import { useCookies } from "vue3-cookies";
-const { cookies } = useCookies();
+import { useCookies } from "vue3-cookies"
+const { cookies } = useCookies()
 
 import Navbar from "/src/components/Navbar.vue";
 export default {
@@ -35,7 +35,7 @@ export default {
             this.$router.push( { path: cookies.get("page") } )
             console.log( "hit" )
           }
-        }
+      }
 	},
   mounted(){
     this.Setupctx()
@@ -74,7 +74,6 @@ export default {
               if (data){
                 this.ready = "yes"
                 this.page = data
-                console.log("ready")
                 cookies.set("page", data)
               }
             },

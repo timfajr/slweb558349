@@ -1,7 +1,12 @@
-import { useStore } from 'vuex'
+import { createStore} from "vuex" 
+import cart from './modules/cart.js'
 
-export default {
-  setup () {
-    const store = useStore()
-  }
-}
+const debug = process.env.NODE_ENV !== 'production'
+
+const store = createStore({
+  modules: {
+    cart
+  },
+  strict: debug,
+})
+export default store

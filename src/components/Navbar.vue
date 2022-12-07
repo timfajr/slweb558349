@@ -1,32 +1,34 @@
 <template>
-    <nav class="bg-mainblue space-x-3 border-b-2 shadow-lg shadow-stone-800 border-gray-300 text-white p-2 pt-6 text-lg font-semibold flex flex-row justify-center justify-items-center w-screen rounded-b-full opacity-10 hover:opacity-80">
-      <button @click="home">Home</button>
-      <button @click="ytsearch">Youtube</button>
-      <button @click="watch">Watch</button>
-      <button @click="upload">Upload Movie</button>
-      <button @click="ytwatch">... WatchYT ( dev only ) ...</button>
-      <!-- Disabled Temporary
-      <router-link
-        to="/web"
-        active-class="p-2 rounded bg-blue-400 text-blue-100"
-        >Web</router-link
-      >
-      <router-link
-        to="/movielibrary/"
-        active-class="p-2 rounded bg-red-500 text-gray-200"
-        >Movielibrary</router-link
-      >
-      <router-link
-        to="/storemovies/"
-        active-class="p-2 rounded bg-indigo-500 text-indigo-200"
-        >Store Movies</router-link
-      >
-      <router-link
-        to="/requestmovies/"
-        active-class="p-2 rounded bg-indigo-500 text-indigo-200"
-        >Request Movies</router-link
-      >
-      -->
+    <nav class="bg-mainblue text-white p-2 text-xl font-semibold flex flex-row justify justify-between w-screen pt-12 ">
+      <div class="space-x-6 flex flex-row justify-start ml-24 font-normal bg-white bg-opacity-10 rounded-2xl p-2 self-center">
+      <div class="flex flex-row p-2">
+          <img src="../images/Untitled.png" class="object-contain h-12 w-22 rounded" />
+      </div>
+      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="home" :to="{ name: 'Home', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+        <div class="flex flex-row p-2 ">
+          <font-awesome-icon icon="fa-solid fa-house-chimney" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Home
+        </div>
+      </router-link>
+      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="store" :to="{ name: 'Store', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+        <div class="flex flex-row p-2">
+          <font-awesome-icon icon="fa-solid fa-video" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Movies
+        </div>
+      </router-link>
+      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="recent" :to="{ name: 'RecentlyAdded', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+        <div class="flex flex-row p-2">
+          <font-awesome-icon icon="fa-solid fa-calendar-check" class="bg-mainyellow p-1 w-5 h-5  rounded mr-2" />  Recently Added
+        </div>
+      </router-link>
+      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="search" :to="{ name: 'search', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+        <div class="flex flex-row p-2">
+          <font-awesome-icon icon="fa-brands fa-youtube" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Youtube
+        </div>
+      </router-link>
+      </div>
+      <div class="space-x-4 flex flex-row rounded-2xl bg-white bg-opacity-10 p-4 mr-24">
+        <button class="hover:animate-pulse p-2 rounded bg-mainyellow text-mainblue px-4"> <font-awesome-icon icon="bell" /> </button>
+        <button @click="myprofile" class="hover:animate-pulse p-2 rounded bg-mainyellow text-mainblue px-4"> <font-awesome-icon icon="user" /> </button>
+      </div>
     </nav>
   </template>
 
@@ -40,40 +42,72 @@ export default {
     name: 'App',
     data() {
       return {
-        page: ''
+        page: '',
+        activate : 'home'
       }
     },
     methods: {
-      ytwatch(){
+      search(){
         this.$socket.emit('page', {
-                roomid : cookies.get("roomid") ,
-                page : "/youtube/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/" + cookies.get('ytsrc')
-            })
-      },
-      ytsearch(){
-        this.$socket.emit('page', {
-                roomid : cookies.get("roomid") ,
-                page : "/search/" + cookies.get("access_token") + "/" + cookies.get("roomid")
+                roomid : this.$route.params.roomid ,
+                page : "/search/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
       home(){
         this.$socket.emit('page', {
-                roomid : cookies.get("roomid") ,
-                page : "/" + cookies.get("access_token") + "/" + cookies.get("roomid")
+                roomid : this.$route.params.roomid ,
+                page : "/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
-      upload(){
+      store(){
         this.$socket.emit('page', {
-                roomid : cookies.get("roomid") ,
-                page : "/upload"
+                roomid : this.$route.params.roomid ,
+                page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
-      watch(){
+      recent(){
         this.$socket.emit('page', {
-                roomid : cookies.get("roomid") ,
-                page : "/watch/" + cookies.get("access_token") + "/" + cookies.get("roomid") + "/play"
+                roomid : this.$route.params.roomid ,
+                page : "/recent/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
-      }
+      },
+      myprofile(){
+        this.$socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : "/myprofile/" + this.$route.params.token + "/" + this.$route.params.roomid
+            })
+      },
     }
 }
 </script>
+
+<style>
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.link-active{
+  background-color: #FCC139;
+  color: #234899;
+  animation: fadeInOut 1s;
+}
+.fa-solid{
+  color: #234899;
+}
+.fa-house-chimney{
+  color: #234899;
+}
+.fa-video{
+  color: #234899;
+}
+.fa-calendar-check{
+  color: #234899;
+}
+.fa-youtube{
+  color: #234899;
+}
+</style>

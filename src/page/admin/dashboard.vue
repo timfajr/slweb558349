@@ -1,6 +1,6 @@
 
 <template>
-<div class="bg-mainblue w-screen h-screen">
+<div class="bg-mainblue w-screen h-full min-h-screen">
     <NavbarAdmin />
     <div class="flex flex-row justify-center justify-items-center mt-10">
     <div class="w-8/12">
@@ -33,10 +33,57 @@
         </div>
     </template>
 
+  <template #item-devices="devices">
+      <div class="flex flex-row space-x-2 justify-center border-b-2">
+        Device ID
+      </div>
+      <div v-for="i in devices.devices" :key="deviceid" class="flex flex-row space-x-2 justify-center">
+        {{i.deviceid}}
+      </div>
+  </template>
+
+  <template #item-timeleft="timeleft">
+    <p>{{timeleft.timeleft}} Day</p>
+  </template>
+  
+  <template #expand="transaction">
+    <div class="grid">
+      <ul class="grid grid-cols-4 text-center border-b-2">
+        <li>
+          Item
+        </li>
+        <li>
+          QTY
+        </li>
+        <li>
+          Total
+        </li>
+        <li>
+          Transaction Date 
+        </li>
+      </ul>
+      <ul v-for="i in transaction.transaction" :key="transaction.transaction" class="grid grid-cols-4 text-center space-y-2">
+          <li>
+          {{i.item}}
+          </li>
+          <li>
+            {{i.quantity}}
+          </li>
+          <li>
+            {{i.total}}
+          </li>
+          <li>
+            {{ formatDate(i.created_at) }}
+          </li>
+        </ul>
+    </div>
+    </template>
+
     <template #pagination="{ prevPage, nextPage, isFirstPage, isLastPage }">
         <button :disabled="isFirstPage" @click="prevPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">prev page</button>
         <button :disabled="isLastPage" @click="nextPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">next page</button>
-      </template>
+    </template>
+
     </EasyDataTable>
     {{ restApiUrl }}
     </div>
@@ -49,7 +96,12 @@ import { defineComponent, ref, computed, watch } from "vue";
 import { Header, ServerOptions, Item } from "vue3-easy-data-table";
 import NavbarAdmin from "../../components/navbaradmin.vue";
 import axios, { AxiosRequestConfig} from 'axios';
+import dayjs from "dayjs";
 
+// Cookies
+import { useCookies } from "vue3-cookies"
+import router from "../../router";
+const { cookies } = useCookies()
 
 export default defineComponent({
 
@@ -60,10 +112,11 @@ components:{
 setup() {
     const headers: Header[] = [
     { text: "_id", value: "_id" , width: 200},
-    { text: "deviceid", value: "deviceid", sortable: true , width: 300 },
+    { text: "deviceid", value: "devices", sortable: true , width: 300 },
     { text: "ownerid", value: "ownerid", sortable: true , width: 300},
-    { text: "transaction", value: "transaction" },
-    { text: "purchased movie", value: "purchased_movie" },
+    { text: "subscription", value: "subscription" },
+    { text: "timeleft", value: "timeleft" },
+    { text: "balance", value: "balance" },
     { text: "Operation", value: "operation" , width: 100}
     ];
     const items = ref<Item[]>([])
@@ -105,22 +158,31 @@ setup() {
       console.log(val)
     };
 
+    const formatDate = (date) => {
+            return dayjs(date).format('DD-MM-YYYY');
+    };
+
     const getListings = async () => {
         loading.value=true;
             const config: AxiosRequestConfig =  {
                 method: 'get',
                 url: api,
                 headers: {
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'access_token': cookies.get("atoken")
                 }
             };
             axios(config)
             .then(function (response) {
                 //state.tableData = response.data.data;
-                items.value = response.data.devices
-                serverItemsLength.value = response.data.totalitem
-                console.log(items)
-                loading.value = false;
+                if ( response.status == 200 ){
+                  items.value = response.data.devices
+                  serverItemsLength.value = response.data.totalitem
+                  loading.value = false;
+                }
+                else{
+                  router.push("/admin/login")
+                }
             })
             .catch(function (error) {
                 console.log(error);
@@ -133,7 +195,7 @@ setup() {
 
     watch(
     serverOptions,
-    (value) => {
+    () => {
         getListings();
     },
     { deep: true }
@@ -148,6 +210,7 @@ setup() {
     loading,
     deleteItem,
     editItem,
+    formatDate,
     submitEdit
     }
 },
@@ -158,6 +221,7 @@ setup() {
 <style>
 .customize-table {
   --easy-table-border: 1px solid #445269;
+  --easy-table-border-radius: 16px;
   --easy-table-row-border: 1px solid #445269;
 
   --easy-table-header-font-size: 14px;

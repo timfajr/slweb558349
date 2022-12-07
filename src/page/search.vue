@@ -20,11 +20,12 @@
     <script>
 
     // Components
-    import SearchBar from "/src/components/SearchBar.vue";
-    import VideoDetail from "/src/components/VideoDetail.vue";
-    import VideoList from "/src/components/VideoList.vue";
     import Navbar from "/src/components/Navbar.vue";
-    import YoutubeURL from "/src/components/YoutubeURL.vue";
+
+    import SearchBar from "/src/components/youtube/SearchBar.vue";
+    import VideoDetail from "/src/components/youtube/VideoDetail.vue";
+    import VideoList from "/src/components/youtube/VideoList.vue";
+    import YoutubeURL from "/src/components/youtube/YoutubeURL.vue";
 
     // Cookies
     import { useCookies } from "vue3-cookies";

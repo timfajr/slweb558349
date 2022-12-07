@@ -1,0 +1,160 @@
+<template>
+    <div class="bg-mainblue min-h-screen h-full overflow-x-hidden">
+      <Navbar />
+      <div class="flex flex-col justify-center self-center mb-20">
+        <div class="flex flex-col justify-center self-center h-full w-9/12 ">
+              <div class="flex flex-row justify-center w-full self-center items-center pt-10">
+                <div class="bg-white bg-opacity-10 w-full h-full rounded-xl flex text-white"> 
+                <div class="flex flex-col w-full justify-start self-start p-10">
+                    <div class="flex flex-row">
+                        <img :src="this.video.imgurl" class="w-2/12 rounded" />
+                        <div class="flex flex-col space-y-3 p-2 w-full">
+                            <div class="flex justify-start text-xl font-semibold text-white bg-white bg-opacity-10 p-2 px-4 rounded"> {{this.video.title}} </div>
+                            <div class="flex justify-start text-sm text-white bg-white bg-opacity-10 p-4 rounded h-full max-h-80 text-ellipsis"> {{this.video.description}} </div>
+                        </div>
+                        <div class="flex flex-col space-y-3 p-2 justify-between">
+                            <button @click="back" class="hover:animate-pulse font-semibold p-2 w-10 bg-white bg-opacity-20 rounded-full self-end text-white text-center"> <font-awesome-icon icon="fa-solid fa-arrow-left-long" /> </button>
+                            <div class="flex flex-col space-y-3 p-2 justify-between">
+                            <button @click="watchmovie" class="hover:animate-pulse font-semibold py-1 px-8 bg-mainyellow rounded-lg text-mainblue text-center">Watch</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-start text-xl font-semibold text-white p-2 pt-8 border-b-2"> Similar Movies </div>
+                    <carousel :items-to-show="4" class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+                        <slide v-for="slide in list" :key="slide" class="p-2">
+                            <VideoListItem
+                            :video="slide"
+                            :key="slide.id"
+                            @slideSelect="onSlideSelect"
+                            ></VideoListItem>
+                        </slide>
+                      </carousel>
+                </div>
+                </div>
+            </div>
+      </div>
+      </div>
+    </div>
+
+</template>
+
+<script>
+// Cookies
+import { useCookies } from "vue3-cookies"
+const { cookies } = useCookies()
+
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide } from 'vue3-carousel'
+import axios from "axios";
+
+import VideoListItem from "/src/components/store/carouselitem.vue";
+
+import Navbar from "/src/components/Navbar.vue";
+export default {
+        name: 'App',
+        data() {
+            return {
+            user: '',
+            ready: 'no',
+            page: '',
+            host: '',
+            status: 'Stopped',
+            currentime: '0',
+            videotime:'0',
+            totaluser:'0',
+            list:[],
+            video:[],
+            selectedvideo: []
+            }
+        },
+        components : {
+            Navbar, Carousel, Slide, VideoListItem
+    },
+    watch:{
+        page: function () {
+            if ( cookies.get("page") != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+            this.$router.push( { path: cookies.get("page") } )
+            console.log( "hit" )
+            }
+        }
+    },
+    mounted(){
+    this.Setupctx()
+    this.onStartup()
+    },
+    methods:{
+    back(){
+        this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/store/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+        })
+    },
+    watchmovie(){
+        this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/watch/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ this.video._id
+        })
+    },
+    onSlideSelect(slide){
+        this.selectedvideo = slide
+        localStorage.setItem('selectedvideo', JSON.stringify(slide))
+        this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ slide.title
+        })
+    },
+    Setupctx(){
+            if (this.ready === "no")
+            {
+                this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                    })
+                this.$cookies.set('access_token',this.$route.params.token );
+                this.$cookies.set('roomid',this.$route.params.roomid );
+                this.video = JSON.parse(localStorage.getItem('selectedvideo'))
+                setInterval(() => {
+
+                if (this.ready === "no"){
+                this.$router.go(0)
+                }
+            }, 5000)
+        }
+    },
+    onStartup () {
+        const api = "http://localhost:3000/movie/getgenre?genre=" + this.video.genre
+        axios
+            .get(api, {
+                headers: {
+                'Content-Type': 'application/json',
+                'access_token': this.$route.params.token
+                 }
+            })
+            .then(response => {
+                console.log(response)
+                this.list = response.data.data
+            })
+        },
+    },
+    sockets: {
+            connect() {
+                console.log('connected')
+            },
+            disconnect() {
+                console.log('disconnected')
+            },
+
+            // Event Controller
+            page(data) {
+                if (data){
+                this.ready = "yes"
+                this.page = data
+                cookies.set("page", data)
+                }
+            },
+            usercount(data) {
+                this.totaluser = data
+            },
+        },
+}
+</script>
