@@ -148,6 +148,12 @@ export default {
     }
     },
     methods:{
+    addbalance(){
+    this.$socket.emit('topup', {
+            roomid : this.$route.params.roomid,
+            topup  : 'active'
+        })
+    },
     checkout() {
     const api = "https://api.bluebox.website/user/30daysub"
     const request = {

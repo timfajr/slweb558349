@@ -34,6 +34,7 @@ app.component("font-awesome-icon", FontAwesomeIcon);
 
 app.component("EasyDataTable", Vue3EasyDataTable);
 app.use(VueCookies);
+app.config.devtools = false
 
 app.use(new VueSocketIO({
     connection: SOCKETIO('https://api.bluebox.website', {

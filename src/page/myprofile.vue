@@ -151,6 +151,12 @@ export default {
     this.onStartup()
     },
     methods:{
+    addbalance(){
+    this.$socket.emit('topup', {
+            roomid : this.$route.params.roomid,
+            topup  : 'active'
+        })
+    },
     checkout(){
     this.$socket.emit('page', {
             roomid : this.$route.params.roomid ,

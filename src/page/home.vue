@@ -1,14 +1,14 @@
 <template>
 <div class="bg-mainblue w-screen h-screen">
   <Navbar  />
-  <center class="flex flex-col justify-center self-center align-center h-5/6">
+  <div class="flex flex-col justify-center self-center align-center h-5/6">
     <div class="flex flex-col justify-center self-center w-4/12">
       <img src="../images/Untitled.png" class="object-contain h-32 w-18 rounded" />
       <div class="tracking-widest flex pl-20">
         <span class="text-white text-md">Bluebox Alpha v1.0 🚀</span>
       </div>
     </div>
-  </center>
+  </div>
 </div>
 
 </template>
