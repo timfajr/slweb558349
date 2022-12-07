@@ -85,12 +85,11 @@ const { cookies } = useCookies();
               this.$cookies.set('access_token',this.$route.params.token );
               this.$cookies.set('roomid',this.$route.params.roomid );
               setInterval(() => {
-
               if (this.ready === "no"){
                 console.log("HIT")
                 this.$router.go(0)
               }
-            }, 5000)
+            }, 10000)
             }
           },
           async Updateuser() {
