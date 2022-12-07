@@ -71,7 +71,7 @@ export default {
                 console.log("HIT")
                 this.$router.go(0)
               }
-            }, 5000)
+            }, 10000)
             }
           },
   },

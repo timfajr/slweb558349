@@ -4,7 +4,7 @@
       <div class="flex flex-col justify-center self-center mb-20">
         <div class="flex flex-col justify-center self-center h-full w-11/12 ">
               <div class="flex flex-row justify-center w-full self-center items-center pt-10">
-                <div class="bg-white bg-opacity-10 w-full h-full rounded-xl flex text-white text-sm"> 
+                <div class="bg-white bg-opacity-10 w-full h-full rounded-xl flex text-white"> 
                 <div class="flex flex-col w-full justify-start self-start p-10">
                     <div class="flex flex-row justify-between">
                         <div class="flex flex-row space-x-3 pl-4 justify-center self-start">

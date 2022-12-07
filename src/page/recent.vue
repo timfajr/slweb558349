@@ -81,6 +81,20 @@ export default {
   },
   methods: {
     Setupctx(){
+          if (this.ready === "no")
+          {
+            this.$socket.emit('page', {
+                  roomid : this.$route.params.roomid ,
+                  page : "/recent/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                  })
+            this.$cookies.set('access_token',this.$route.params.token );
+            this.$cookies.set('roomid',this.$route.params.roomid );
+            setInterval(() => {
+            if (this.ready === "no"){
+              this.$router.go(0)
+            }
+          }, 1000)
+          }
           axios.get('https://api.bluebox.website/user/me', {
               headers: {
                 'access_token' : this.$route.params.token
