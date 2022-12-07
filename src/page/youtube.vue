@@ -89,7 +89,7 @@ const { cookies } = useCookies();
                 console.log("HIT")
                 this.$router.go(0)
               }
-            }, 10000)
+            }, 500)
             }
           },
           async Updateuser() {
@@ -138,7 +138,6 @@ const { cookies } = useCookies();
                         roomid : this.$route.params.roomid ,
                         ytstatus : "Ended"
                         })
-                        
                 socket.emit('page', {
                 roomid : this.$route.params.roomid ,
                 page : "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid
