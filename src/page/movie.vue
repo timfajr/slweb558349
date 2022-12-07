@@ -19,8 +19,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-start text-xl font-semibold text-white p-2 pt-8 border-b-2"> Similar Movies </div>
-                    <carousel :items-to-show="4" class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+                    <div class="flex justify-start text-xl font-semibold text-white p-2 pt-8"> Similar Movies </div>
+                    <carousel :wrap-around="true" :snapAlign="center" :transition="500" :items-to-show="4" class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
                         <slide v-for="slide in list" :key="slide" class="p-2">
                             <VideoListItem
                             :video="slide"
@@ -46,6 +46,13 @@ const { cookies } = useCookies()
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
 import axios from "axios";
+
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
 
 import VideoListItem from "/src/components/store/carouselitem.vue";
 
@@ -158,3 +165,45 @@ export default {
         },
 }
 </script>
+
+<style scoped>
+.carousel__slide {
+  padding: 5px;
+}
+
+.carousel__viewport {
+  perspective: 2000px;
+}
+
+.carousel__track {
+  transform-style: preserve-3d;
+}
+
+.carousel__slide--sliding {
+  transition: 0.5s;
+}
+
+.carousel__slide {
+  opacity: 0.9;
+  transform: rotateY(-20deg) scale(0.9);
+}
+
+.carousel__slide--active ~ .carousel__slide {
+  transform: rotateY(20deg) scale(0.9);
+}
+
+.carousel__slide--prev {
+  opacity: 1;
+  transform: rotateY(-10deg) scale(0.95);
+}
+
+.carousel__slide--next {
+  opacity: 1;
+  transform: rotateY(10deg) scale(0.95);
+}
+
+.carousel__slide--active {
+  opacity: 1;
+  transform: rotateY(0) scale(1.1);
+}
+</style>

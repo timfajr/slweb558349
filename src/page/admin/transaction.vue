@@ -1,6 +1,6 @@
 
 <template>
-    <div class="bg-mainblue w-screen h-full h-min-screen pb-10">
+    <div class="bg-mainblue w-screen h-full min-h-screen pb-10">
         <NavbarAdmin />
         <div class="flex flex-row justify-center justify-items-center mt-10">
         <div class="w-8/12">
@@ -128,7 +128,6 @@
                     }
                 })
                 .catch(function (error) {
-                    console.log(error);
                     router.push('/admin/login')
                 });
             }

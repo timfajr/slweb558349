@@ -103,132 +103,139 @@
     </div>
     </template>
     
-    <script>
-    // Cookies
-    import { useCookies } from "vue3-cookies"
-    const { cookies } = useCookies()
+<script>
+// Cookies
+import { useCookies } from "vue3-cookies"
+const { cookies } = useCookies()
 
-    // Dep
-    import axios from "axios";
-    import dayjs from "dayjs";
-    
-    import Navbar from "/src/components/Navbar.vue";
-    export default {
-            name: 'App',
-            data() {
-              return {
-                ready: 'no',
-                page: '',
-                status : '',
-                response: [],
-                data:[]
-              }
-            },
-            components : {
-                Navbar
-      },
-      beforeCreate() {
-		this.$store.commit('cart/initialiseStore')
-	  },
-      mounted(){
-        this.onStartup()
-      },
-      watch:{
-      page: function () {
-          if ( cookies.get("page") != "/checkout/" + this.$route.params.token + "/" + this.$route.params.roomid ){
-            this.$router.push( { path: cookies.get("page") } )
-          }
-      }
-	  },
-      methods:{
-        checkout() {
-        const api = "http://localhost:3000/user/30daysub"
-        const request = {
-                "ownerid": "uuuu",
-                "item": this.$store.state.cart.items[0].item,
-                "qty" : this.$store.state.cart.items[0].qty,
-                }
-        axios
-            .post(api,request
-                ,{
-                headers: {
-                'Content-Type': 'application/json',
-                'access_token': this.$route.params.token
-                }
-                }
-                )
-            .then(response => {
-                this.response = response.data
-                this.status = response.status
-                if (response.status = 200){
-                    this.$store.dispatch('cart/CheckoutCart')
-                }
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
 
-            })
+// Dep
+import axios from "axios";
+import dayjs from "dayjs";
+
+import Navbar from "/src/components/Navbar.vue";
+export default {
+        name: 'App',
+        data() {
+            return {
+            ready: 'no',
+            page: '',
+            status : '',
+            response: [],
+            data:[]
+            }
         },
-        increaseValue(item) {
-        this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty + 1 , price: 300 })
-        },
-        decreaseValue(item) {
-        this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty - 1 , price: 300 })
-        },
-        onTopupSelect() {
-        this.$socket.emit('topup', {
-                        roomid : this.$route.params.roomid ,
-                        topup : "active"
+        components : {
+            Navbar
+    },
+    beforeCreate() {
+    this.$store.commit('cart/initialiseStore')
+    },
+    mounted(){
+    this.onStartup()
+    },
+    watch:{
+    page: function () {
+        if ( cookies.get("page") != "/checkout/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+        this.$router.push( { path: cookies.get("page") } )
+        }
+    }
+    },
+    methods:{
+    checkout() {
+    const api = "http://localhost:3000/user/30daysub"
+    const request = {
+            "ownerid": "uuuu",
+            "item": this.$store.state.cart.items[0].item,
+            "qty" : this.$store.state.cart.items[0].qty,
+            }
+    axios
+        .post(api,request
+            ,{
+            headers: {
+            'Content-Type': 'application/json',
+            'access_token': this.$route.params.token
+            }
+            }
+            )
+        .then(response => {
+            this.response = response.data
+            this.status = response.status
+            if (response.status = 200){
+                this.$store.dispatch('cart/CheckoutCart')
+            }
+
         })
-        },
-        formatDate(date) {
-            return dayjs(date).format('DD-MM-YYYY');
-        },
-        onStartup () {
-        const api = "http://localhost:3000/user/me"
-        axios
-            .get(api, {
-                headers: {
-                'Content-Type': 'application/json',
-                'access_token': this.$route.params.token
-                 }
-            })
-            .then(response => {
-                this.data = response.data.message
-                this.transaction = response.data.message.transaction
-                this.total_transaction = response.data.totaltransaction
-            });
-        },
-        Setupctx(){
-                if (this.ready === "no")
-                {
-                  this.$socket.emit('page', {
-                        roomid : this.$route.params.roomid ,
-                        page : "/myprofile/"+ this.$route.params.token + "/"+ this.$route.params.roomid
-                        })
-                  this.$cookies.set('access_token',this.$route.params.token );
-                  this.$cookies.set('roomid',this.$route.params.roomid );
-                  setInterval(() => {
-                  if (this.ready === "no"){
-                    console.log("HIT")
-                    this.$router.go(0)
-                  }
-                }, 5000)
+    },
+    increaseValue(item) {
+    this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty + 1 , price: 300 })
+    },
+    decreaseValue(item) {
+    this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty - 1 , price: 300 })
+    },
+    onTopupSelect() {
+    this.$socket.emit('topup', {
+                    roomid : this.$route.params.roomid ,
+                    topup : "active"
+    })
+    },
+    formatDate(date) {
+        return dayjs(date).format('DD-MM-YYYY');
+    },
+    onStartup () {
+    const api = "http://localhost:3000/user/me"
+    axios
+        .get(api, {
+            headers: {
+            'Content-Type': 'application/json',
+            'access_token': this.$route.params.token
                 }
-              },
-        },
-        sockets: {
-                connect() {
-                  console.log('connected')
-                },
-                disconnect() {
-                  console.log('disconnected')
-                },
-                // Event Controller
-                page( data ) {
-                  if ( data ){
-                    this.ready = "yes"
-                    this.page = data
-                    cookies.set("page", data)
-                  }
+        })
+        .then(response => {
+            this.data = response.data.message
+            this.transaction = response.data.message.transaction
+            this.total_transaction = response.data.totaltransaction
+        });
+    },
+    Setupctx(){
+            if (this.ready === "no")
+            {
+                this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/myprofile/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                    })
+                this.$cookies.set('access_token',this.$route.params.token );
+                this.$cookies.set('roomid',this.$route.params.roomid );
+                setInterval(() => {
+                if (this.ready === "no"){
+                console.log("HIT")
+                this.$router.go(0)
+                }
+            }, 5000)
+            }
+            },
+    },
+    sockets: {
+            connect() {
+                console.log('connected')
+            },
+            disconnect() {
+                console.log('disconnected')
+            },
+            // Event Controller
+            page( data ) {
+                if ( data ){
+                this.ready = "yes"
+                this.page = data
+                cookies.set("page", data)
                 }
             }
-    }
-    </script>
+        }
+}
+</script>

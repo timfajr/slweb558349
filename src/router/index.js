@@ -19,6 +19,13 @@ import AdminUpload from '/src/page/admin/upload.vue'
 import AdminMovies from '/src/page/admin/movie.vue'
 import AdminTransaction from '/src/page/admin/transaction.vue'
 
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
+
 const routes = [
 
     // User

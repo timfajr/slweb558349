@@ -1,6 +1,6 @@
 
 <template>
-    <div class="bg-mainblue w-screen h-screen pb-10">
+    <div class="bg-mainblue w-screen h-full min-h-screen pb-10">
         <NavbarAdmin />
         <div class="flex flex-row justify-center justify-items-center mt-10">
         <div class="w-8/12">
@@ -81,20 +81,20 @@
         rowsPerPage: 5,
         })
         
-        var api = `http://localhost:3000/movie/getAll?page=${1}&limit=${5}`
+        var api = `http://localhost:3000/admin/getAll?page=${1}&limit=${5}`
         const restApiUrl = computed(() => {
         const { page, rowsPerPage, sortBy, sortType } = serverOptions.value;
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                api = `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
-                return `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                api = `http://localhost:3000/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                return `http://localhost:3000/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
-            api = `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
-            return `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            api = `http://localhost:3000/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            return `http://localhost:3000/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
         } else {
-            api = `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}`
-            return `http://localhost:3000/movie/getAll?page=${page}&limit=${rowsPerPage}`
+            api = `http://localhost:3000/admin/getAll?page=${page}&limit=${rowsPerPage}`
+            return `http://localhost:3000/admin/getAll?page=${page}&limit=${rowsPerPage}`
         }
         })
         
@@ -135,7 +135,6 @@
                     }
                 })
                 .catch(function (error) {
-                    console.log(error);
                     router.push('/admin/login')
                 });
             }

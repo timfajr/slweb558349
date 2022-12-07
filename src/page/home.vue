@@ -10,6 +10,13 @@
 import { useCookies } from "vue3-cookies"
 const { cookies } = useCookies()
 
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
+
 import Navbar from "/src/components/Navbar.vue";
 export default {
         name: 'App',

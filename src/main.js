@@ -7,6 +7,13 @@ import VueCookies from "vue3-cookies";
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
+
 // WS Connection
 import VueSocketIO from 'vue-3-socket.io';
 import SOCKETIO from 'socket.io-client'

@@ -1,6 +1,6 @@
 
 <template>
-<div class="bg-mainblue w-screen h-full min-h-screen">
+<div class="bg-mainblue w-screen h-full min-h-screen pb-10">
     <NavbarAdmin />
     <div class="flex flex-row justify-center justify-items-center mt-10">
     <div class="w-8/12">
@@ -85,7 +85,6 @@
     </template>
 
     </EasyDataTable>
-    {{ restApiUrl }}
     </div>
     </div>
 </div>
@@ -180,12 +179,12 @@ setup() {
                   serverItemsLength.value = response.data.totalitem
                   loading.value = false;
                 }
-                else{
+                else {
                   router.push("/admin/login")
                 }
             })
             .catch(function (error) {
-                console.log(error);
+                router.push("/admin/login")
             });
         }
 

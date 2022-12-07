@@ -16,135 +16,142 @@
           </div>    
     </body>
     </template>
-    
-    <script>
 
-    // Components
-    import Navbar from "/src/components/Navbar.vue";
+<script>
 
-    import SearchBar from "/src/components/youtube/SearchBar.vue";
-    import VideoDetail from "/src/components/youtube/VideoDetail.vue";
-    import VideoList from "/src/components/youtube/VideoList.vue";
-    import YoutubeURL from "/src/components/youtube/YoutubeURL.vue";
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
 
-    // Cookies
-    import { useCookies } from "vue3-cookies";
-    const { cookies } = useCookies();
-    import axios from "axios";
-    const API_KEY = "AIzaSyBv_3uZWHSrsjZGrfgLvxtW2uFN2_Bmt0c";
+// Components
+import Navbar from "/src/components/Navbar.vue";
 
-    export default {
-    
-    name: 'App',
-    data() {
-        return {
-        user: '',
-        page: '',
-        ready: 'no',
-        host: '',
-        videos: [],
-        selectedVideo: null,
-        selectedvideoid: '',
-        totaluser:'0'   
-        }
-    },
+import SearchBar from "/src/components/youtube/SearchBar.vue";
+import VideoDetail from "/src/components/youtube/VideoDetail.vue";
+import VideoList from "/src/components/youtube/VideoList.vue";
+import YoutubeURL from "/src/components/youtube/YoutubeURL.vue";
 
-    components : {
-        Navbar,
-        SearchBar,
-        VideoList,
-        VideoDetail,
-        YoutubeURL
-    },
+// Cookies
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
+import axios from "axios";
+const API_KEY = "AIzaSyBv_3uZWHSrsjZGrfgLvxtW2uFN2_Bmt0c";
 
-    methods: {
-    onTermChange: function (searchTerm) {
-      axios
-        .get("https://www.googleapis.com/youtube/v3/search", {
-          params: {
-            key: API_KEY,
-            type: "video",
-            maxResults: "10",
-            part: "snippet",
-            q: searchTerm,
-          },
+export default {
+
+name: 'App',
+data() {
+    return {
+    user: '',
+    page: '',
+    ready: 'no',
+    host: '',
+    videos: [],
+    selectedVideo: null,
+    selectedvideoid: '',
+    totaluser:'0'   
+    }
+},
+
+components : {
+    Navbar,
+    SearchBar,
+    VideoList,
+    VideoDetail,
+    YoutubeURL
+},
+
+methods: {
+onTermChange: function (searchTerm) {
+    axios
+    .get("https://www.googleapis.com/youtube/v3/search", {
+        params: {
+        key: API_KEY,
+        type: "video",
+        maxResults: "10",
+        part: "snippet",
+        q: searchTerm,
+        },
+    })
+    .then(({ data }) => (this.videos = data.items));
+},
+Youtube: function (url) {
+var youtube = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((?:\w|-){11})(?:&list=(\S+))?/,
+    yt = url.match(youtube);
+
+if (yt) {
+    console.log(yt[1]);
+    this.$socket.emit('ytsrc', {
+            roomid : this.$route.params.roomid ,
+            ytsrc : yt[1]
         })
-        .then(({ data }) => (this.videos = data.items));
-    },
-    Youtube: function (url) {
-    var youtube = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((?:\w|-){11})(?:&list=(\S+))?/,
-        yt = url.match(youtube);
+        this.$socket.emit('page', {
+            roomid : this.$route.params.roomid ,
+            page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + yt[1]
+        })
+}
+},
+onVideoSelect: function (video) {
+    console.log(video)
+    console.log('hit')
+    this.selectedVideo = video;
+    cookies.set('ytsrc' , video.id.videoId)
 
-    if (yt) {
-        console.log(yt[1]);
-        this.$socket.emit('ytsrc', {
-                roomid : this.$route.params.roomid ,
-                ytsrc : yt[1]
-            })
-            this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + yt[1]
-            })
+    this.$socket.emit('ytsrc', {
+            roomid : this.$route.params.roomid ,
+            ytsrc : video.id.videoId
+        })
+
+    this.$socket.emit('page', {
+            roomid : this.$route.params.roomid ,
+            page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + video.id.videoId
+        })
     }
-    },
-    onVideoSelect: function (video) {
-      console.log(video)
-      console.log('hit')
-      this.selectedVideo = video;
-      cookies.set('ytsrc' , video.id.videoId)
+},
 
-      this.$socket.emit('ytsrc', {
-                roomid : this.$route.params.roomid ,
-                ytsrc : video.id.videoId
-            })
+watch:{
+    page: function () {
 
-      this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + video.id.videoId
-            })
-        }
-    },
-
-    watch:{
-        page: function () {
-
-            if ( this.$cookies.get("page") != "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid ){
-            this.$router.push( { path: cookies.get("page") } )
-            console.log( "hit" )
-            }
-        }
-    },
-
-    sockets: {
-
-            connect() {
-                console.log('connected')
-            },
-
-            disconnect() {
-                console.log('disconnected')
-            },
-
-            // Event Controller
-            page(data) {
-                if (data){
-                this.page = data
-                cookies.set("page", data)
-                }
-            },
-
-            ytsrc(data) {
-                if (data){
-                this.selectedvideoid = data
-                cookies.set("ytsrc", data)
-                }
-            },
-            
-            usercount(data) {
-                this.totaluser = data
-            }
-
+        if ( this.$cookies.get("page") != "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid ){
+        this.$router.push( { path: cookies.get("page") } )
+        console.log( "hit" )
         }
     }
+},
 
-    </script>
+sockets: {
+
+        connect() {
+            console.log('connected')
+        },
+
+        disconnect() {
+            console.log('disconnected')
+        },
+
+        // Event Controller
+        page(data) {
+            if (data){
+            this.page = data
+            cookies.set("page", data)
+            }
+        },
+
+        ytsrc(data) {
+            if (data){
+            this.selectedvideoid = data
+            cookies.set("ytsrc", data)
+            }
+        },
+        
+        usercount(data) {
+            this.totaluser = data
+        }
+
+    }
+}
+
+</script>

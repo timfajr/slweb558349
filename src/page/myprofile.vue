@@ -103,119 +103,126 @@
     
     </template>
     
-    <script>
-    // Cookies
-    import { useCookies } from "vue3-cookies"
-    const { cookies } = useCookies()
+<script>
+// Cookies
+import { useCookies } from "vue3-cookies"
+const { cookies } = useCookies()
 
-    // Dep
-    import axios from "axios";
-    import dayjs from "dayjs";
-    
-    import Navbar from "/src/components/Navbar.vue";
-    export default {
-            name: 'App',
-            data() {
-              return {
-                ready: 'no',
-                page: '',
-                data:[],
-                ready: 'no',
-                active: 'no',
-                transaction:[],
-                total_transaction: 0
-              }
-            },
-            components : {
-                Navbar
-      },
-      watch:{
-      page: function () {
-          if ( cookies.get("page") != "/myprofile/" + this.$route.params.token + "/" + this.$route.params.roomid ){
-            this.$router.push( { path: cookies.get("page") } )
-            console.log( "hit" )
-          }
-      }
-	  },
-      beforeCreate() {
-		this.$store.commit('cart/initialiseStore')
-	  },
-      mounted(){
-        this.onStartup()
-      },
-      methods:{
-        checkout(){
-        this.$socket.emit('page', {
-                roomid : this.$route.params.roomid ,
-                page : "/checkout/" + this.$route.params.token + "/" + this.$route.params.roomid
-            })
+// Dep
+import axios from "axios";
+import dayjs from "dayjs";
+
+'     ______       __                        '
+'    / ____/___   / /_ ____  _      __ ____  '
+'   / / __ / _ \ / __// __ \| | /| / // __ \ '
+'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
+'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
+'                                            '
+
+import Navbar from "/src/components/Navbar.vue";
+export default {
+        name: 'App',
+        data() {
+            return {
+            ready: 'no',
+            page: '',
+            data:[],
+            ready: 'no',
+            active: 'no',
+            transaction:[],
+            total_transaction: 0
+            }
         },
-        addtime() {
-        this.$store.dispatch('cart/addProductToCart', { item : 'subs30' , id : '1' , status: "standart" , qty: 1 , price: 300 })
-        },
-        onTopupSelect() {
-        this.$socket.emit('topup', {
-                        roomid : this.$route.params.roomid ,
-                        topup : "active"
-        })
-        },
-        formatDate(date) {
-            return dayjs(date).format('DD-MM-YYYY');
-        },
-        onStartup () {
-        const api = "http://localhost:3000/user/me"
-        axios
-            .get(api, {
-                headers: {
-                'Content-Type': 'application/json',
-                'access_token': this.$route.params.token
-                 }
-            })
-            .then(response => {
-                console.log(response)
-                this.data = response.data.message
-                this.transaction = response.data.transaction
-                this.total_transaction = response.data.totaltransaction
-            })
-        },
-        Setupctx(){
-                if (this.ready === "no")
-                {
-                  this.$socket.emit('page', {
-                        roomid : this.$route.params.roomid ,
-                        page : "/myprofile/"+ this.$route.params.token + "/"+ this.$route.params.roomid
-                        })
-                  this.$cookies.set('access_token',this.$route.params.token );
-                  this.$cookies.set('roomid',this.$route.params.roomid );
-                  setInterval(() => {
-                  if (this.ready === "no"){
-                    console.log("HIT")
-                    this.$router.go(0)
-                  }
-                }, 5000)
-                }
-              },
+        components : {
+            Navbar
     },
-    sockets: {
-        connect() {
-            console.log('connected')
-        },
-        disconnect() {
-            console.log('disconnected')
-        },
-        // Event Controller
-        page( data ) {
-            if ( data ){
-            this.ready = "yes"
-            this.page = data
-            cookies.set("page", data)
+    watch:{
+    page: function () {
+        if ( cookies.get("page") != "/myprofile/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+        this.$router.push( { path: cookies.get("page") } )
+        console.log( "hit" )
+        }
+    }
+    },
+    beforeCreate() {
+    this.$store.commit('cart/initialiseStore')
+    },
+    mounted(){
+    this.onStartup()
+    },
+    methods:{
+    checkout(){
+    this.$socket.emit('page', {
+            roomid : this.$route.params.roomid ,
+            page : "/checkout/" + this.$route.params.token + "/" + this.$route.params.roomid
+        })
+    },
+    addtime() {
+    this.$store.dispatch('cart/addProductToCart', { item : 'subs30' , id : '1' , status: "standart" , qty: 1 , price: 300 })
+    },
+    onTopupSelect() {
+    this.$socket.emit('topup', {
+                    roomid : this.$route.params.roomid ,
+                    topup : "active"
+    })
+    },
+    formatDate(date) {
+        return dayjs(date).format('DD-MM-YYYY');
+    },
+    onStartup () {
+    const api = "http://localhost:3000/user/me"
+    axios
+        .get(api, {
+            headers: {
+            'Content-Type': 'application/json',
+            'access_token': this.$route.params.token
+                }
+        })
+        .then(response => {
+            console.log(response)
+            this.data = response.data.message
+            this.transaction = response.data.transaction
+            this.total_transaction = response.data.totaltransaction
+        })
+    },
+    Setupctx(){
+            if (this.ready === "no")
+            {
+                this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/myprofile/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                    })
+                this.$cookies.set('access_token',this.$route.params.token );
+                this.$cookies.set('roomid',this.$route.params.roomid );
+                setInterval(() => {
+                if (this.ready === "no"){
+                console.log("HIT")
+                this.$router.go(0)
+                }
+            }, 5000)
             }
-        },
-        topup( data ){
-            if ( data ){
-            this.active = data
-            }
+            },
+},
+sockets: {
+    connect() {
+        console.log('connected')
+    },
+    disconnect() {
+        console.log('disconnected')
+    },
+    // Event Controller
+    page( data ) {
+        if ( data ){
+        this.ready = "yes"
+        this.page = data
+        cookies.set("page", data)
         }
     },
+    topup( data ){
+        if ( data ){
+        this.active = data
+        }
+    }
+},
 }
 </script>
