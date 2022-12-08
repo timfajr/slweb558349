@@ -57,15 +57,11 @@ export default {
   status: function () {
     const video = document.querySelector('video');
     if(this.status == "Paused"){
-      if(this.host != this.user){
-        video.currentTime = this.videotime
-      }
+      video.currentTime = this.videotime
       video.pause()
     }
     if(this.status == "Playing"){
-      if(this.host != this.user){
-        video.currentTime = this.videotime
-      }
+      video.currentTime = this.videotime
       video.play()
     }
     if(this.status == "Stopped"){
@@ -188,10 +184,6 @@ export default {
     video.onpause = (event) => { 
       video.currentTime = this.videotime
       console.log("paused")
-      this.$socket.emit('page', {
-          roomid : this.$route.params.roomid ,
-          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/" +  this.$route.params.id
-      })
       this.$socket.emit('status',{ roomid: this.$route.params.roomid, status : "Paused" })}
     },
     click(){
@@ -200,10 +192,6 @@ export default {
         this.$socket.emit('host', {
           roomid : this.$route.params.roomid ,
           host   : this.user
-      })
-        this.$socket.emit('page', {
-          roomid : this.$route.params.roomid ,
-          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/" +  this.$route.params.id
       })
         if ( video.paused === false ) {
           this.$socket.emit('status', 
@@ -232,10 +220,6 @@ export default {
               videotime : video.currentime
       })
       }
-      this.$socket.emit('page', {
-          roomid : this.$route.params.roomid ,
-          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/" +  this.$route.params.id
-      })
       this.$socket.emit('status', 
       {
           roomid : this.$route.params.roomid ,

@@ -104,6 +104,10 @@ export default {
                     roomid : this.$route.params.roomid ,
                     page : "/watch/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ this.video._id
         })
+        this.$socket.emit('videotime', {
+                    roomid : this.$route.params.roomid ,
+                    videotime : 0
+        })
     },
     onSlideSelect(slide){
         this.selectedvideo = slide

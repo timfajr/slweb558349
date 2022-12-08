@@ -32,9 +32,10 @@
 				</label>
 				<br>
 				<progress max="100" :value.prop="uploadPercentage"></progress>
-				<p v-if="uploadPercentage" class="text-white text-md"> Upload Progress : {{this.uploadPercentage}} %</p>
+				<p v-if="(uploadPercentage && uploadPercentage <= 99)" class="text-white text-md"> Upload Progress : {{this.uploadPercentage}} %</p>
+				<p v-if="(uploadPercentage === 100)" class="text-white text-md"> Upload Progress : Completed</p>
 				<br>
-				<button v-if="file && !videourl" v-on:click="submitFile()" class="text-md text-white border-2 rounded-xl p-2">Submit</button>
+				<button v-if="file && !videourl && !hide" v-on:click="submitFile()" class="text-md text-white border-2 rounded-xl p-2">Submit</button>
 				</div>
 			</div>
 			<div>
@@ -46,7 +47,8 @@
 				</label>
 				<br>
 				<progress max="100" :value.prop="imageuploadPercentage"></progress>
-				<p v-if="imageuploadPercentage" class="text-white text-md"> Upload Progress : {{this.imageuploadPercentage}} %</p>
+				<p v-if="(imageuploadPercentage && imageuploadPercentage <= 99)" class="text-white text-md"> Upload Progress : {{this.imageuploadPercentage}} %</p>
+				<p v-if="(imageuploadPercentage === 100)"> Upload Progress : Completed</p>
 				<br>
 				<button v-if="image && !imageurl" v-on:click="submitImage()" class="text-md text-white border-2 rounded-xl p-2">Submit</button>
 				</div>
@@ -75,6 +77,7 @@
 				status : "false",
 				imagestatus : "false",
 				form : "false",
+				hide : "",
 
 				// Form Data
 				videourl : '',
@@ -98,6 +101,7 @@
 			},
 			submitFile(){
 				let formData = new FormData()
+				this.hide = true
 				formData.append('myVideo', this.file)
 				axios.post( 'https://api.bluebox.website/upload',
 					formData,
@@ -108,7 +112,6 @@
 						},
 						onUploadProgress: function( progressEvent ) {
 							this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ) );
-							console.log(this.uploadPercentage)
 						}.bind(this)
 					}
 				).then((response) => (this.status = 'true', this.videourl=response.data.data.url))
