@@ -90,15 +90,12 @@
             Navbaradmin
         },
 		methods: {
-
 			handleFileUpload( event ){
 				this.file = event.target.files[0]
 			},
-
 			handleImageUpload( event ){
 				this.image = event.target.files[0]
 			},
-			
 			submitFile(){
 				let formData = new FormData()
 				formData.append('myVideo', this.file)
@@ -111,6 +108,7 @@
 						},
 						onUploadProgress: function( progressEvent ) {
 							this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ) );
+							console.log(this.uploadPercentage)
 						}.bind(this)
 					}
 				).then((response) => (this.status = 'true', this.videourl=response.data.data.url))
