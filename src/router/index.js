@@ -57,7 +57,7 @@ const routes = [
       props: true
     },
     {
-        path: '/watch/:token/:roomid/:id',
+        path: '/watch/:token/:roomid/:vid',
         name: 'Watch',
         component: Watch,
         props: true

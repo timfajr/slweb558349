@@ -180,11 +180,9 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
 	  },
     methods: {
       onSlideSelect(slide){
-        this.selectedvideo = slide
-        localStorage.setItem('selectedvideo', JSON.stringify(slide))
         this.$socket.emit('page', {
                     roomid : this.$route.params.roomid ,
-                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ slide.title
+                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + slide._id
         })
       },
       Latest(){

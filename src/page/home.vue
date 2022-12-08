@@ -46,7 +46,7 @@ export default {
   },
   watch:{
       page: function () {
-          if ( cookies.get("page") != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+          if ( this.page != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
             console.log( "hit" )
           }
@@ -59,14 +59,9 @@ export default {
     Setupctx(){
             if (this.ready === "no")
             {
-              this.$socket.emit('page', {
-                    roomid : this.$route.params.roomid ,
-                    page : "/"+ this.$route.params.token + "/"+ this.$route.params.roomid
-                    })
               this.$cookies.set('access_token',this.$route.params.token );
               this.$cookies.set('roomid',this.$route.params.roomid );
               setInterval(() => {
-
               if (this.ready === "no"){
                 console.log("HIT")
                 this.$router.go(0)

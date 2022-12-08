@@ -82,7 +82,7 @@ export default {
     },
     watch:{
         page: function () {
-            if ( cookies.get("page") != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+            if ( this.page != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
             console.log( "hit" )
             }
@@ -102,7 +102,7 @@ export default {
     watchmovie(){
         this.$socket.emit('page', {
                     roomid : this.$route.params.roomid ,
-                    page : "/watch/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ this.video._id
+                    page : "/watch/" + this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ this.video._id
         })
         this.$socket.emit('videotime', {
                     roomid : this.$route.params.roomid ,
@@ -110,11 +110,9 @@ export default {
         })
     },
     onSlideSelect(slide){
-        this.selectedvideo = slide
-        localStorage.setItem('selectedvideo', JSON.stringify(slide))
         this.$socket.emit('page', {
                     roomid : this.$route.params.roomid ,
-                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ slide.title
+                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ slide._id
         })
     },
     Setupctx(){
@@ -122,11 +120,10 @@ export default {
             {
                 this.$socket.emit('page', {
                     roomid : this.$route.params.roomid ,
-                    page : "/"+ this.$route.params.token + "/"+ this.$route.params.roomid
+                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + this.$route.params.id
                     })
                 this.$cookies.set('access_token',this.$route.params.token );
                 this.$cookies.set('roomid',this.$route.params.roomid );
-                this.video = JSON.parse(localStorage.getItem('selectedvideo'))
                 setInterval(() => {
 
                 if (this.ready === "no"){
@@ -136,18 +133,29 @@ export default {
         }
     },
     onStartup () {
-        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.video.genre
+        const api2 = "https://api.bluebox.website/movie/getid?id=" + this.$route.params.id
         axios
-            .get(api, {
+            .get(api2, {
                 headers: {
                 'Content-Type': 'application/json',
                 'access_token': this.$route.params.token
                  }
             })
             .then(response => {
-                console.log(response)
-                this.list = response.data.data
-            })
+                this.video = response.data.data
+                const api = "https://api.bluebox.website/movie/getgenre?genre=" + response.data.data.genre
+                axios
+                    .get(api, {
+                        headers: {
+                        'Content-Type': 'application/json',
+                        'access_token': this.$route.params.token
+                        }
+                    })
+                    .then(response => {
+                        console.log(response)
+                        this.list = response.data.data
+                    })
+        })
         },
     },
     sockets: {

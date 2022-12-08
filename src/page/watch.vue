@@ -70,7 +70,7 @@ export default {
     }
   },
   page: function (){
-    if ( this.page != "/watch/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + this.$route.params.id ){
+    if ( this.page != "/watch/" + this.$route.params.token + "/"+ this.$route.params.roomid + "/" + this.$route.params.id ){
       this.$router.push( { path: this.$cookies.get("page") } )
     }
   }
