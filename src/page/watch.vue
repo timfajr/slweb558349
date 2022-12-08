@@ -156,52 +156,42 @@ export default {
     async Updateuser() {
       this.user = "user" + parseInt(99999*Math.random())
     },
-    Moviebutton(selectedItem) {
-      const video = document.querySelector('video');
-      this.$socket.emit('host', {
-          roomid : this.$route.params.roomid ,
-          host : this.user
-      })
-      this.$socket.emit('status', {
-          roomid : this.$route.params.roomid ,
-          status : "Playing"
-      })
-      this.$socket.emit('videosrc', {
-          roomid : this.$route.params.roomid ,
-          videosrc : selectedItem.url
-      })
-      this.$socket.emit('videotime', {
-          roomid : this.$route.params.roomid ,
-          videotime : "0"
-      })
-      this.$socket.emit('page', {
-          roomid : this.$route.params.roomid ,
-          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
-      })
-      video.play()
-    },
     pause(){
     const video = document.querySelector('video');
     video.onpause = (event) => { 
+      console.log("paused")
       this.$socket.emit('host', {
           roomid : this.$route.params.roomid ,
           host   : this.user
       })
       this.$socket.emit('status',{ roomid: this.$route.params.roomid, status : "Paused" })}
+      if(this.host == this.user)
+      {
+        this.$socket.emit('videotime', {
+              roomid : this.$route.params.roomid ,
+              videotime : video.currentTime
+          })
+      }
     },
     click(){
       const video = document.querySelector('video');
       video.onclick = (event) =>{
         this.$socket.emit('page', {
           roomid : this.$route.params.roomid ,
-          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/play"
+          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/" +  this.$route.params.id
       })
         if (video.paused === false) {
-          console.log('paused')
+          this.$socket.emit('videotime', {
+              roomid : this.$route.params.roomid ,
+              videotime : video.currentTime
+          })
           video.pause();
       } else {
+          this.$socket.emit('videotime', {
+              roomid : this.$route.params.roomid ,
+              videotime : video.currentTime
+          })
           video.play();
-          console.log('playing')
       }
       }
     },
@@ -209,17 +199,20 @@ export default {
       const video = document.querySelector('video');
       video.onplay = (event) => 
       {
+      console.log("played")
       video.currentTime = this.videotime
-        this.$socket.emit('host', {
-          roomid : this.$route.params.roomid ,
-          host   : this.user
-      })
-
       this.$socket.emit('status', 
       {
           roomid : this.$route.params.roomid ,
           status : "Playing"
       })
+      if(this.host == this.user)
+      {
+        this.$socket.emit('videotime', {
+              roomid : this.$route.params.roomid ,
+              videotime : video.currentTime
+          })
+      }
       video.play()
       }
     },
@@ -236,25 +229,5 @@ export default {
       }}
     }
   },
-  sockets: {
-      connect() {
-        console.log('connected')
-      },
-      disconnect() {
-        console.log('disconnected')
-      },
-
-      // Event Controller
-      page(data) {
-        if (data){
-          this.ready = "yes"
-          this.page = data
-          cookies.set("page", data)
-        }
-      },
-      usercount(data) {
-        this.totaluser = data
-      },
-  }
 }
 </script>
