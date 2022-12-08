@@ -70,7 +70,7 @@ export default {
     }
   },
   page: function (){
-    if ( this.page != "/watch/" + this.$route.params.token + "/"+ this.$route.params.roomid + "/" + this.$route.params.id ){
+    if ( this.page != "/watch/" + this.$route.params.token + "/"+ this.$route.params.roomid + "/" + this.$route.params.vid ){
       this.$router.push( { path: this.$cookies.get("page") } )
     }
   }
@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     onStartup () {
-        const api = "https://api.bluebox.website/movie/getid?id=" + this.$route.params.id
+        const api = "https://api.bluebox.website/movie/getid?id=" + this.$route.params.vid
         axios
             .get(api, {
                 headers: {
