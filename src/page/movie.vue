@@ -2,32 +2,35 @@
     <div class="bg-mainblue min-h-screen h-full overflow-x-hidden">
       <Navbar />
       <div class="flex flex-col justify-center self-center mb-20">
-        <div class="flex flex-col justify-center self-center h-full w-9/12 ">
+        <div class="flex flex-col justify-center self-center h-full w-11/12 ">
               <div class="flex flex-row justify-center w-full self-center items-center pt-10">
                 <div class="bg-white bg-opacity-10 w-full h-full rounded-xl flex text-white"> 
                 <div class="flex flex-col w-full justify-start self-start p-10">
                     <div class="flex flex-row">
-                        <img :src="this.video.imgurl" class="w-2/12 rounded" />
+                        <img :src="this.video.imgurl" class="w-4/12 rounded object-contain" />
                         <div class="flex flex-col space-y-3 p-2 w-full">
                             <div class="flex justify-start text-xl font-semibold text-white bg-white bg-opacity-10 p-2 px-4 rounded"> {{this.video.title}} </div>
-                            <div class="flex justify-start text-sm text-white bg-white bg-opacity-10 p-4 rounded h-full max-h-80 text-ellipsis"> {{this.video.description}} </div>
+                            <div class="flex justify-start text-sm text-white bg-white bg-opacity-10 p-4 rounded h-full max-h-80 text-ellipsis overflow-hidden"> {{this.video.description}} </div>
                         </div>
                         <div class="flex flex-col space-y-3 p-2 justify-between">
                             <button @click="back" class="hover:animate-pulse font-semibold p-2 w-10 bg-white bg-opacity-20 rounded-full self-end text-white text-center"> <font-awesome-icon icon="fa-solid fa-arrow-left-long" /> </button>
                             <div class="flex flex-col space-y-3 p-2 justify-between">
-                            <button @click="watchmovie" class="hover:animate-pulse font-semibold py-1 px-8 bg-mainyellow rounded-lg text-mainblue text-center">Watch</button>
+                            <button @click="watchmovie" class="hover:animate-pulse font-semibold py-1 px-6 bg-mainyellow rounded-lg text-mainblue text-center">Play</button>
                             </div>
                         </div>
                     </div>
                     <div class="flex justify-start text-xl font-semibold text-white p-2 pt-8"> Similar Movies </div>
-                    <carousel :wrap-around="true" :snapAlign="center" :transition="500" :items-to-show="4" class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
-                        <slide v-for="slide in list" :key="slide" class="p-2">
+                    <carousel :wrap-around="true" :snapAlign="center" :transition="500" :items-to-show="3.2" class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+                        <slide v-for="slide in list" :key="slide" >
                             <VideoListItem
                             :video="slide"
                             :key="slide.id"
                             @slideSelect="onSlideSelect"
                             ></VideoListItem>
                         </slide>
+                        <template #addons>
+                            <Navigation />
+                          </template>
                       </carousel>
                 </div>
                 </div>
@@ -44,7 +47,7 @@ import { useCookies } from "vue3-cookies"
 const { cookies } = useCookies()
 
 import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide } from 'vue3-carousel'
+import { Carousel, Slide,Navigation } from 'vue3-carousel'
 import axios from "axios";
 
 '     ______       __                        '
@@ -75,7 +78,7 @@ export default {
             }
         },
         components : {
-            Navbar, Carousel, Slide, VideoListItem
+            Navbar, Carousel, Slide, VideoListItem, Navigation
     },
     watch:{
         page: function () {

@@ -5,13 +5,13 @@
           <!--
           Wrapper
           -->
-          <div class="w-8/12 self-center items-center">
+          <div class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Latest Movie </div>>
             </div>
-            <carousel :itemsToShow="3.92" :wrap-around="true" :snapAlign="center" :transition="500"
-            class="mt-5 p-6 bg-white bg-opacity-10 rounded-2xl">
-                <slide v-for="slide in latest" :key="slide" class="p-2">
+            <carousel :itemsToShow="3.2" :wrap-around="true" :snapAlign="center" :transition="500"
+            class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+                <slide v-for="slide in latest" :key="slide">
                     <VideoListItem
                     :video="slide"
                     :key="slide.id"
@@ -26,13 +26,13 @@
             <!--
           Wrapper
           -->
-          <div class="w-8/12 self-center items-center">
+          <div v-if="topick" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>>
             </div>
-            <carousel :itemsToShow="3.92" :wrap-around="true" :snapAlign="center" :transition="500"
-            class="mt-5 p-6 bg-white bg-opacity-10 rounded-2xl">
-                <slide v-for="slide in topicks" :key="slide" class="p-2">
+            <carousel :itemsToShow="3.2" :wrap-around="true" :snapAlign="center" :transition="500"
+            class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+                <slide v-for="slide in topicks" :key="slide" >
                     <VideoListItem
                     :video="slide"
                     :key="slide.id"
@@ -47,7 +47,7 @@
           <!--
           Wrapper
           -->
-          <div class="w-8/12 self-center items-center">
+          <div class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Movie By Genre </div>
               <select v-model="selectedgenre" id="genre" class="p-2 rounded-xl">
@@ -57,9 +57,9 @@
                 </option>
             </select>
             </div>
-            <carousel :itemsToShow="3.92" :wrap-around="true" :snapAlign="center" :transition="500"
-            class="mt-5 p-6 bg-white bg-opacity-10 rounded-2xl">
-                <slide v-for="slide in genre" :key="slide" class="p-2">
+            <carousel :itemsToShow="3.2" :wrap-around="true" :snapAlign="center" :transition="500"
+            class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+                <slide v-for="slide in genre" :key="slide">
                     <VideoListItem
                     :video="slide"
                     :key="slide.id"
@@ -74,11 +74,11 @@
           <!--
           Wrapper
           -->
-            <div class="flex flex-row justify-end w-8/12 self-center items-center">
-                <SearchBar @termChange="onTermChange" class='p-4 mb-4 w-1/3 '/>
+            <div class="flex flex-row justify-end w-10/12 self-center items-center mt-4">
+                <SearchBar @termChange="onTermChange" class='p-4 mb-4 w-2/4 '/>
             </div>
-            <div class="border-2 rounded-xl bg-backgroundblue w-8/12 flex flex-col justify-center self-center items-center bg-opacity-50 border-white shadow-xl">
-                <div class="h-10 bg-backgroundblue" />
+            <div class="bg-white bg-opacity-10 rounded-xl w-10/12 flex flex-col justify-center self-center items-center border-white shadow-xl">
+                <div class="h-10" />
                 <VideoList :videos="videos" @videoSelect="onVideoSelect" class="mb-8 "/>
                 <div id="pagination">
                     <Pagination2

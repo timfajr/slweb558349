@@ -7,10 +7,10 @@
       </div>
       <div class="absolute top-0 left-0 w-full h-full flex justify-center items-center opacity-0 hover:opacity-100">
         <div class="flex-row text-center w-11/12">
-          <h1 class="text-gray-50 font-bold text-lg capitalize text-elipsis max-h-12 ">{{ video.title }}</h1>
-          <button class="text-xs font-light text-gray-300 capitalize text-elipsis overflow-hidden max-h-16 ">{{ video.description }} </button>
+          <h1 class="text-gray-50 font-bold text-sm capitalize text-elipsis max-h-12 ">{{ video.title }} </h1>
+          <button class="text-[11px] font-light text-gray-300 capitalize text-elipsis overflow-hidden max-h-16 ">{{ video.description }} </button>
           <div class="flex flex-row space-x-4 justify-center my-4"> 
-            <button @click="onVideoSelect" class="hover:animate-pulse font-semibold py-1 px-4 bg-mainyellow rounded-lg text-black text-center">View</button>
+            <button @click="onVideoSelect" class="text-sm hover:animate-pulse font-semibold py-1 px-4 bg-mainyellow rounded-lg text-black text-center">View</button>
         </div>
         </div>
       </div>

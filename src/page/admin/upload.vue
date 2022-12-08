@@ -115,7 +115,7 @@
 					}
 				).then((response) => (this.status = 'true', this.videourl=response.data.data.url))
 				.catch((error) => {
-				router.push("/admin/login")
+				this.$router.push("/admin/login")
 				this.status = error.response.status
             })
 			},
@@ -135,7 +135,7 @@
 					}
 				).then((response) => (this.imagestatus = 'true', this.imageurl=response.data.data.url))
 				.catch((error) => {
-				router.push("/admin/login")
+				this.$router.push("/admin/login")
 				this.imagestatus = error.response.status
             })
 			},
@@ -173,7 +173,7 @@
 				}
 					)
 				.catch((error) => {
-				router.push("/admin/login")
+				this.$router.push("/admin/login")
 				this.status = error.response.status
 				
             })

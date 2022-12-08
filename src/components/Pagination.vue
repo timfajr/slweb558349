@@ -1,6 +1,6 @@
 <template>
-    <ul class="pagination flex flex-row space-x-3 mb-5 text-center self-center justify-center">
-      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-2xl text-white">
+    <ul class="pagination flex flex-row space-x-3 mb-5 text-center self-center justify-center text-sm">
+      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-xl text-white">
         <button
           type="button"
           @click="onClickFirstPage"
@@ -10,7 +10,7 @@
         </button>
       </li>
   
-      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-2xl text-white">
+      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-xl text-white">
         <button
           type="button"
           @click="onClickPreviousPage"
@@ -25,10 +25,10 @@
       <li
       v-for="page in pages"
       :key="page.name"
-      class="p-2 text-white"
+      class="p-2 px-4 text-white"
       >
       <div
-        type="p-2 text-white"
+        type="p-2 px-4 text-white"
         :disabled="page.isDisabled"
         :class="{ active: isPageActive(page.name) }"
       >
@@ -38,7 +38,7 @@
   
       <!-- Visible Buttons End -->
   
-      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-2xl text-white">
+      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-xl text-white">
         <button
           type="button"
           @click="onClickNextPage"
@@ -48,7 +48,7 @@
         </button>
       </li>
   
-      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-2xl text-white">
+      <li class="p-2 px-4 bg-white bg-opacity-10 rounded-xl text-white">
         <button
           type="button"
           @click="onClickLastPage"
