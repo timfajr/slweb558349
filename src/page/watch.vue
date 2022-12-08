@@ -150,6 +150,7 @@ export default {
       }
       const video = document.querySelector('video');
       video.onload = function() {
+      video.currentTime = this.videotime
       video.play()
     }
     },
@@ -160,6 +161,10 @@ export default {
     const video = document.querySelector('video');
     video.onpause = (event) => { 
       console.log("paused")
+      this.$socket.emit('page', {
+          roomid : this.$route.params.roomid ,
+          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/" +  this.$route.params.id
+      })
       this.$socket.emit('host', {
           roomid : this.$route.params.roomid ,
           host   : this.user
@@ -201,6 +206,10 @@ export default {
       {
       console.log("played")
       video.currentTime = this.videotime
+      this.$socket.emit('page', {
+          roomid : this.$route.params.roomid ,
+          page : "/watch/" + this.$route.params.token + "/" + this.$route.params.roomid + "/" +  this.$route.params.id
+      })
       this.$socket.emit('status', 
       {
           roomid : this.$route.params.roomid ,
