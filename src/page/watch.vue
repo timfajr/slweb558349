@@ -143,7 +143,7 @@ export default {
           console.log("HIT")
           this.$router.go(0)
         }
-      }, 2500)
+      }, 5000)
       }
       else {
         this.$router.push({ path: this.page })
