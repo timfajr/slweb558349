@@ -97,7 +97,6 @@ sockets: {
         this.status = data
       }
       if(data == "Playing" && Math.abs(video.currentTime - this.videotime - 1) < 5){
-        this.ready = 'yes'
               this.$socket.emit('host', {
                         roomid : this.$route.params.roomid ,
                         host : this.user
@@ -116,6 +115,7 @@ sockets: {
     },
     videotime(data) {
       if (data){
+        this.ready = 'yes'
         this.videotime = data
       }
     },
