@@ -172,6 +172,7 @@ methods: {
     video.onloadstart= (event) => {
     const video = document.querySelector('video');
     video.currentTime = this.videotime
+    video.muted = !video.muted
       if (this.status == "Playing") {
         video.play()
       }
