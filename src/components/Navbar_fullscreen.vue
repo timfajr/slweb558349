@@ -1,15 +1,15 @@
 <template>
     <nav class="bg-mainblue space-x-3 border-b-2 shadow-lg shadow-stone-800 border-gray-300 text-white p-2 pt-6 text-lg font-semibold flex flex-row justify-center justify-items-center w-screen rounded-b-full opacity-0 hover:opacity-80">
-      <router-link @click="home" :to="{ name: 'Home', params: { token: this.$cookies.get('access_token') , roomid: this.$cookies.get('roomid')} }">
+      <router-link @click="home" :to="{ name: 'Home', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
         Home
     </router-link>
-    <router-link @click="store" :to="{ name: 'Store', params: { token: this.$cookies.get('access_token') , roomid: this.$cookies.get('roomid')} }">
+    <router-link @click="store" :to="{ name: 'Store', params: { token: this.$route.params.token , roomid: this.$route.params.roomid } }">
       Movies
     </router-link>
-    <router-link @click="recent" :to="{ name: 'RecentlyAdded', params: { token: this.$cookies.get('access_token') , roomid: this.$cookies.get('roomid')} }">
+    <router-link @click="recent" :to="{ name: 'RecentlyAdded', params: { token: this.$route.params.token , roomid: this.$route.params.roomid } }">
       Recently Added
     </router-link>
-    <router-link @click="search" :to="{ name: 'search', params: { token: this.$cookies.get('access_token') , roomid: this.$cookies.get('roomid')} }">
+    <router-link @click="search" :to="{ name: 'search', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
       Youtube
     </router-link>
       <!-- Disabled Temporary
@@ -54,25 +54,25 @@ export default {
       search(){
         this.$socket.emit('page', {
                 roomid : cookies.get("roomid") ,
-                page : "/search/" + cookies.get("access_token") + "/" + cookies.get("roomid")
+                page : "/search/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
       home(){
         this.$socket.emit('page', {
                 roomid : cookies.get("roomid") ,
-                page : "/" + cookies.get("access_token") + "/" + cookies.get("roomid")
+                page : "/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
       store(){
         this.$socket.emit('page', {
                 roomid : cookies.get("roomid") ,
-                page : "/store/" + cookies.get("access_token") + "/" + cookies.get("roomid")
+                page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
       recent(){
         this.$socket.emit('page', {
                 roomid : cookies.get("roomid") ,
-                page : "/recent/" + cookies.get("access_token") + "/" + cookies.get("roomid")
+                page : "/recent/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
     }

@@ -41,11 +41,11 @@ const { cookies } = useCookies();
             return {
         videoTitle: '',
         duration: '',
-        videoId: cookies.get("ytsrc") || 'dQw4w9WgXcQ',
+        videoId: cookies.get("ytsrc"),
         user: '',
         host: '',
         ready: 'no',
-        ready2: 'false',
+        ready2: 'no',
         page: '',
         status: 'Stopped',
         currentime: '0',
@@ -63,7 +63,7 @@ const { cookies } = useCookies();
       },
     watch:{
       page: function () {
-          if ( cookies.get("page") != "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + cookies.get('ytsrc') ){
+          if ( this.page != "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + cookies.get('ytsrc') ){
             this.$router.push( { path: cookies.get("page") } )
             console.log( "hit" )
           }
@@ -71,33 +71,25 @@ const { cookies } = useCookies();
     },
     methods: {
             Setupctx() {
-            if ( this.$route.params.src === "play" ){
-              this.room = this.$route.params.roomid
-              this.$cookies.set('access_token',this.$route.params.token );
-              this.$cookies.set('roomid',this.$route.params.roomid );
-            }
-
+            this.$cookies.set('ytsrc',this.$route.params.src);
+            this.$cookies.set('access_token',this.$route.params.token);
             if (this.ready === "no")
             {
-              this.$socket.emit('page', {
-                    roomid : this.$route.params.roomid ,
-                    page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + cookies.get('ytsrc')
-                    })
               this.$cookies.set('access_token',this.$route.params.token );
-              this.$cookies.set('roomid',this.$route.params.roomid );
+              this.$cookies.set('roomid',this.$route.params.roomid )
               setInterval(() => {
-              if (this.ready === "no" / this.ready2 === "no"){
+              if (this.ready === "no"){
                 this.$router.go(0)
+              }
+              if (this.ready2 === "no")
+              {
+              this.$router.go(0)
               }
             }, 5000)
             }
           },
           async Updateuser() {
             this.user = "user" + parseInt(99999*Math.random())
-            if (this.ready === "no")
-            {
-              this.$route.reload()
-            }
           },
 
           // Youtubeee ////
@@ -119,7 +111,7 @@ const { cookies } = useCookies();
               height: window.innerHeight,
               width: window.innerWidth,
               allowfullscreen: "false",
-              playerVars: { 'controls': 1 , 'rel': 0, 'showinfo': 0 },
+              playerVars: { autoplay: 1, controls: 1 , rel: 0, showinfo: 0 },
               videoId: this.videoId,
               events: {
                 'onReady': window.onPlayerReady,
@@ -129,9 +121,8 @@ const { cookies } = useCookies();
           }
 
           window.onPlayerReady = (event) => {
-            this.ready = "yes";
             player.seekTo(this.videotime,true)
-            event.target.playVideo();
+            player.playVideo();
           }
           window.onPlayerStateChange = (event) => {
             if (event.data == YT.PlayerState.ENDED) {
@@ -150,7 +141,7 @@ const { cookies } = useCookies();
             }
 
             if (event.data == YT.PlayerState.PLAYING) {
-                this.ready = "yes"
+                this.ready2 = "yes"
                 socket.emit('ytstatus', {
                         roomid : this.$route.params.roomid ,
                         ytstatus : "Playing"
@@ -162,12 +153,12 @@ const { cookies } = useCookies();
                           yttime : event.target.getCurrentTime()
                           })
                   }
+                event.target.playVideo();
             }
 
             if (event.data == YT.PlayerState.PAUSED) {
-                this.ready = "yes";
+                this.ready2 = "yes";
                 player.seekTo(this.videotime,true)
-                console.log("paused")
                 socket.emit('host', {
                         roomid : this.$route.params.roomid ,
                         host : this.user
@@ -178,31 +169,20 @@ const { cookies } = useCookies();
                         })
                 if(this.host == this.user)
                         {
-                          socket.emit('yttime', {
-                                  roomid : this.$route.params.roomid ,
-                                  yttime : event.target.getCurrentTime()
-                                  })
-                        }
+                socket.emit('yttime', {
+                        roomid : this.$route.params.roomid ,
+                        yttime : event.target.getCurrentTime()
+                        })
+                }
             }
 
             if (event.data == YT.PlayerState.UNSTARTED) {
               player.seekTo(this.videotime,true)
                 if (this.videotime != player.getCurrentTime()){
-                  this.ready = "yes";
                   player.seekTo(this.videotime,true)
                 }
             }
 
-          // update time per 0.5 sec
-          setInterval(() => {
-
-            if (this.host == this.user){
-              socket.emit('yttime', {
-                      roomid : this.$route.params.roomid ,
-                      yttime : player.getCurrentTime()
-                      })
-            }
-            }, 500)
           }
 
           socket.on('connect', function () {
@@ -214,6 +194,7 @@ const { cookies } = useCookies();
           if(data){
             this.page = data
             cookies.set("page", data)
+            this.ready= "yes"
           }
           })
 
@@ -221,7 +202,7 @@ const { cookies } = useCookies();
 
             if(data){
               this.videotime = data
-              this.ready2= "true"
+              this.ready= "yes"
             }
           })
 
@@ -243,12 +224,22 @@ const { cookies } = useCookies();
               player.pauseVideo()
             }
 
-            if(data == "Playing" && Math.abs(player.getCurrentTime() - this.videotime - 1) > 5){
-              console.log("ghit")
-              this.currentime = player.getCurrentTime()
-              player.seekTo(this.videotime,true)
-              player.playVideo();
+            if(data == "Playing" && Math.abs(player.getCurrentTime() - this.videotime - 1) < 20){
+              socket.emit('host', {
+                        roomid : this.$route.params.roomid ,
+                        host : this.user
+              })
+              socket.emit('yttime', {
+                      roomid : this.$route.params.roomid ,
+                      yttime : player.getCurrentTime()
+              })
+              player.playVideo()
             }
+
+            if(data == "Playing" && Math.abs(player.getCurrentTime() - this.videotime - 1) > 20){
+              player.seekTo(this.videotime,true)
+            }
+
           })
 
           socket.on('host', (data) => {

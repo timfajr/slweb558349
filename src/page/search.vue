@@ -61,8 +61,22 @@ components : {
     VideoList,
     YoutubeURL
 },
-
+mounted(){
+    this.setupctx()
+},
 methods: {
+setupctx () {
+    if (this.ready === "no")
+          {
+            this.$cookies.set('access_token',this.$route.params.token );
+            this.$cookies.set('roomid',this.$route.params.roomid );
+            setInterval(() => {
+            if (this.ready === "no"){
+              this.$router.go(0)
+            }
+        }, 1000)
+    }
+},
 onTermChange: function (searchTerm) {
     axios
     .get("https://www.googleapis.com/youtube/v3/search", {
@@ -86,15 +100,17 @@ if (yt) {
             roomid : this.$route.params.roomid ,
             ytsrc : yt[1]
         })
-        this.$socket.emit('page', {
-            roomid : this.$route.params.roomid ,
-            page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + yt[1]
-        })
+    this.$socket.emit('page', {
+        roomid : this.$route.params.roomid ,
+        page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + yt[1]
+    })
+    this.$socket.emit('yttime', {
+        roomid : this.$route.params.roomid ,
+        yttime : 0
+    })
 }
 },
 onVideoSelect: function (video) {
-    console.log(video)
-    console.log('hit')
     this.selectedVideo = video;
     cookies.set('ytsrc' , video.id.videoId)
 
@@ -102,7 +118,10 @@ onVideoSelect: function (video) {
             roomid : this.$route.params.roomid ,
             ytsrc : video.id.videoId
         })
-
+    this.$socket.emit('yttime', {
+            roomid : this.$route.params.roomid ,
+            yttime : 0
+        })
     this.$socket.emit('page', {
             roomid : this.$route.params.roomid ,
             page : "/youtube/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + video.id.videoId
@@ -112,7 +131,6 @@ onVideoSelect: function (video) {
 
 watch:{
     page: function () {
-
         if ( this.$cookies.get("page") != "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid ){
         this.$router.push( { path: cookies.get("page") } )
         console.log( "hit" )
@@ -133,6 +151,7 @@ sockets: {
         // Event Controller
         page(data) {
             if (data){
+            this.ready = "yes"
             this.page = data
             cookies.set("page", data)
             }

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // Page
 import Home from '/src/page/home.vue'
 import Youtube from '/src/page/youtube.vue'
-import Watch from '/src/page/watch.vue'
+import Watchmovie from '/src/page/watch.vue'
 import NotFound from '/src/page/notfound.vue'
 import Search from '/src/page/search.vue'
 import Store from '/src/page/store.vue'
@@ -32,8 +32,7 @@ const routes = [
     {
       path: '/:token/:roomid/',
       name: 'Home',
-      component: Home,
-      props: true
+      component: Home
     },
     
     {
@@ -58,8 +57,8 @@ const routes = [
     },
     {
         path: '/watch/:token/:roomid/:vid',
-        name: 'Watch',
-        component: Watch,
+        name: 'Watch_Movie',
+        component: Watchmovie,
         props: true
     },
 

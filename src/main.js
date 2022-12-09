@@ -37,7 +37,7 @@ app.use(VueCookies);
 app.config.devtools = false
 
 app.use(new VueSocketIO({
-    connection: SOCKETIO('https://api.bluebox.website', {
+    connection: SOCKETIO('https://api.bluebox.website',{
         extraHeaders: {
           "access_token": cookies.get('access_token')
         }

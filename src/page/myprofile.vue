@@ -197,10 +197,6 @@ export default {
     Setupctx(){
             if (this.ready === "no")
             {
-                this.$socket.emit('page', {
-                    roomid : this.$route.params.roomid ,
-                    page : "/myprofile/"+ this.$route.params.token + "/"+ this.$route.params.roomid
-                    })
                 this.$cookies.set('access_token',this.$route.params.token );
                 this.$cookies.set('roomid',this.$route.params.roomid );
                 setInterval(() => {
