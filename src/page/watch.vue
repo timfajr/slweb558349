@@ -154,7 +154,7 @@ methods: {
         console.log("Reload")
         this.$router.go(0)
       }
-    }, 5000)
+    }, 15000)
     }
     else {
       this.$router.push({ path: this.page })
