@@ -97,6 +97,7 @@ sockets: {
         this.status = data
       }
       if(data == "Playing" && Math.abs(video.currentTime - this.videotime - 1) < 5){
+        this.ready = 'yes'
               this.$socket.emit('host', {
                         roomid : this.$route.params.roomid ,
                         host : this.user
@@ -115,7 +116,6 @@ sockets: {
     },
     videotime(data) {
       if (data){
-        this.ready = 'yes'
         this.videotime = data
       }
     },
@@ -154,12 +154,13 @@ methods: {
         console.log("Reload")
         this.$router.go(0)
       }
-    }, 15000)
+    }, 5000)
     }
     else {
       this.$router.push({ path: this.page })
     }
     video.onload= (event) => {
+      const video = document.querySelector('video');
       video.currentTime = this.videotime
       if (this.status == "Playing") {
         video.play()
