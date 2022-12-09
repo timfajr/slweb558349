@@ -145,6 +145,7 @@ methods: {
           })
   },
   Setupctx(){
+    const video = document.querySelector('video');
     this.$cookies.set('access_token',this.$route.params.token);
     if (this.ready == "no")
     {
@@ -159,7 +160,6 @@ methods: {
       this.$router.push({ path: this.page })
     }
     video.onload= (event) => {
-      const video = document.querySelector('video');
       video.currentTime = this.videotime
       if (this.status == "Playing") {
         video.play()
