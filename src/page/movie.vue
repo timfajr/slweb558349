@@ -1,5 +1,6 @@
 <template>
-    <div class="bg-mainblue min-h-screen h-full overflow-x-hidden">
+    <div class="bg-mainblue min-h-screen h-full overflow-x-hidden relative">
+      <Loadingspinner v-if="this.loading == 'true' " />
       <Navbar />
       <div class="flex flex-col justify-center self-center mb-20">
         <div class="flex flex-col justify-center self-center h-full w-11/12 ">
@@ -49,6 +50,8 @@ import axios from "axios";
 
 import VideoListItem from "/src/components/store/carouselitem.vue";
 import Navbar from "/src/components/Navbar.vue";
+import Loadingspinner from "/src/components/loading.vue";
+
 export default {
         name: 'App',
         data() {
@@ -63,17 +66,18 @@ export default {
             totaluser:'0',
             list:[],
             video:[],
-            selectedvideo: []
+            selectedvideo: [],
+            loading: 'true'
             }
         },
         components : {
-            Navbar, Carousel, Slide, VideoListItem, Navigation
+            Navbar, Carousel, Slide, VideoListItem, Navigation , Loadingspinner
     },
     watch:{
         page: function () {
             if ( this.page != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
-            console.log( "hit" )
+            console.log( "page hit" )
             }
         }
     },
@@ -115,7 +119,7 @@ export default {
                 if (this.ready === "no"){
                 this.$router.go(0)
                 }
-            }, 5000)
+            }, 7500)
         }
     },
     onStartup () {
@@ -146,6 +150,7 @@ export default {
     },
     sockets: {
             connect() {
+                console.log('connected')
                 this.ready = "yes"
             },
             disconnect() {

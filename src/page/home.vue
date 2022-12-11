@@ -1,5 +1,6 @@
 <template>
-<div class="bg-mainblue min-h-screen h-full overflow-x-hidden">
+<div class="bg-mainblue min-h-screen h-full overflow-x-hidden relative">
+  <Loadingspinner v-if="this.loading == 'true' " />
   <Navbar  />
   <div class="flex flex-col h-full pb-20">
     <!--
@@ -7,7 +8,7 @@
     -->
     <div class="w-10/12 self-center items-center">
       <div class="flex flex-row justify-between mt-5">
-      <div class="text-xl font-semibold text-white p-2 "> New Releases </div>>
+      <div class="text-xl font-semibold text-white p-2 "> New Releases </div>
       </div>
       <Splide :options="{ rewind: true, perPage:3 }"
       class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
@@ -27,7 +28,7 @@
     -->
     <div v-if="topicks" class="w-10/12 self-center items-center">
       <div class="flex flex-row justify-between mt-5">
-      <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>>
+      <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>
       </div>
       <Splide :options="{ rewind: true, perPage:3 }"
       class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
@@ -79,6 +80,7 @@ const { cookies } = useCookies()
 
 import Navbar from "/src/components/Navbar.vue";
 import VideoListItem from "/src/components/store/carouselitem.vue";
+import Loadingspinner from "/src/components/loading.vue";
 
 // Dep
 import axios from "axios";
@@ -101,18 +103,20 @@ export default {
             topicks:[],
             latest:[],
             genrelist:[],
-            selectedvideo: []
+            selectedvideo: [],
+            loading: 'true'
           }
         },
         components : {
             Navbar,
-            VideoListItem
+            VideoListItem,
+            Loadingspinner
   },
   watch:{
       page: function () {
           if ( this.page != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
-            console.log( "hit" )
+            console.log( "page hit" )
           }
       }
 	},
@@ -139,12 +143,11 @@ export default {
               this.$cookies.set('roomid',this.$route.params.roomid );
               setInterval(() => {
               if (this.ready === "no"){
-                console.log("HIT")
                 this.$router.go(0)
               }
-            }, 10000)
-            }
-          },
+            }, 7500)
+        }
+    },
     Latest(){
         const api = `https://api.bluebox.website/movie/getAll?sortBy=-created_at`
         axios
@@ -156,6 +159,7 @@ export default {
             })
             .then(response => {
                 this.latest = response.data.data
+                this.loading = "false"
             })
       },
     topPicks(){
@@ -216,6 +220,7 @@ export default {
 
 	sockets: {
             connect() {
+              console.log('connected')
               this.ready = "yes"
             },
             disconnect() {
@@ -224,6 +229,7 @@ export default {
             // Event Controller
             page(data) {
               if (data){
+                this.ready = "yes"
                 this.page = data
                 cookies.set("page", data)
               }

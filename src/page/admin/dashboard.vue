@@ -126,19 +126,15 @@ setup() {
     rowsPerPage: 25,
     })
 
-    var api = `https://api.bluebox.website/admin/getdevices?page=${1}&limit=${25}`
     const restApiUrl = computed(() => {
     const { page, rowsPerPage, sortBy, sortType } = serverOptions.value;
     if (sortBy && sortType) {
         if (sortType == "asc")
         {
-            api = `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
         }
-        api = `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
         return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
     } else {
-        api = `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}`
         return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}`
     }
     })
@@ -162,6 +158,7 @@ setup() {
     };
 
     const getListings = async () => {
+        var api = restApiUrl.value
         loading.value=true;
             const config: AxiosRequestConfig =  {
                 method: 'get',

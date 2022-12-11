@@ -1,5 +1,6 @@
 <template>
-    <div class="bg-mainblue min-h-screen h-full overflow-x-hidden">
+    <div class="bg-mainblue min-h-screen h-full overflow-x-hidden relative">
+      <Loadingspinner v-if="this.loading == 'true' " />
         <Navbar />
         <div class="flex flex-col h-full mb-20">
           <!--
@@ -7,7 +8,7 @@
           -->
           <div class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
-            <div class="text-xl font-semibold text-white p-2 "> Latest Movie </div>>
+            <div class="text-xl font-semibold text-white p-2 "> Latest Movie </div>
             </div>
             <Splide :options="{ rewind: true, perPage:3 }"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
@@ -27,7 +28,7 @@
           -->
           <div v-if="topicks" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
-            <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>>
+            <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>
             </div>
             <Splide :options="{ rewind: true, perPage:3 }"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
@@ -102,6 +103,7 @@ import WalletButton from "/src/components/store/WalletButton.vue"
 import SearchBar from "/src/components/store/SearchBar.vue";
 import VideoList from "/src/components/store/VideoList.vue";
 import VideoListItem from "/src/components/store/carouselitem.vue";
+import Loadingspinner from "/src/components/loading.vue";
 
 export default {
     name: 'App',
@@ -111,7 +113,8 @@ export default {
       SearchBar,
       WalletButton,
       VideoList,
-      VideoListItem
+      VideoListItem,
+      Loadingspinner
     },
     data () {
       return {
@@ -129,7 +132,8 @@ export default {
         topicks:[],
         latest:[],
         genrelist:[],
-        selectedgenre: ''
+        selectedgenre: '',
+        loading : 'true'
       };
     },
     mounted(){
@@ -245,7 +249,7 @@ export default {
               if (this.ready === "no"){
                 this.$router.go(0)
               }
-            }, 5000)
+            }, 7500)
             }
             axios.get('https://api.bluebox.website/user/me', {
                 headers: {
@@ -289,6 +293,7 @@ export default {
         .then(response => {
             this.videos = response.data.data
             this.totalPages = response.data.totalPages
+            this.loading = 'false'
         });
     },
     onTermChange: function (searchTerm) {
@@ -302,7 +307,6 @@ export default {
         })
         .then(response => {
           this.videos = response.data.data
-          console.log(response.data.data)
         });
     },
     onVideoSelect(video)

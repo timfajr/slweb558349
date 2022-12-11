@@ -68,7 +68,7 @@ setupctx () {
             if (this.ready === "no"){
               this.$router.go(0)
             }
-        }, 2500)
+        }, 7500)
     }
 },
 onTermChange: function (searchTerm) {
@@ -125,7 +125,7 @@ onVideoSelect: function (video) {
 
 watch:{
     page: function () {
-        if ( this.$cookies.get("page") != "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid ){
+        if ( this.page != "/search/"+ this.$route.params.token + "/"+ this.$route.params.roomid ){
         this.$router.push( { path: cookies.get("page") } )
         console.log( "hit" )
         }
@@ -135,7 +135,7 @@ watch:{
 sockets: {
 
         connect() {
-            this.ready = "yes"
+            console.log('connected')
         },
 
         disconnect() {
@@ -146,6 +146,7 @@ sockets: {
         page(data) {
             if (data){
             this.page = data
+            this.ready = "yes"
             cookies.set("page", data)
             }
         },

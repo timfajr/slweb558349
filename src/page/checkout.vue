@@ -138,7 +138,7 @@ export default {
     },
     watch:{
     page: function () {
-        if ( cookies.get("page") != "/checkout/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+        if ( this.page != "/checkout/" + this.$route.params.token + "/" + this.$route.params.roomid ){
         this.$router.push( { path: cookies.get("page") } )
         }
     }
@@ -219,7 +219,7 @@ export default {
                 console.log("HIT")
                 this.$router.go(0)
                 }
-            }, 5000)
+            }, 7500)
             }
             },
     },

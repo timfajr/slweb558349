@@ -4,26 +4,30 @@
       <div class="flex flex-row p-2">
           <img src="../images/Untitled.png" class="object-contain h-10 w-18 rounded" />
       </div>
-      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="home" :to="{ name: 'Home', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+      <button :class="{ 'link-active': activate === 'Home'}"
+       class="router-link-exact-active router-link-active hover:animate-pulse rounded flex justify-center self-center active:bg-mainyellow" @click="home" :to="{ name: 'Home', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
         <div class="flex flex-row p-2 ">
           <font-awesome-icon icon="fa-solid fa-house-chimney" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Home
         </div>
-      </router-link>
-      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="store" :to="{ name: 'Store', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+      </button>
+      <button :class="{ 'link-active': activate === 'Store'}"
+      class="hover:animate-pulse rounded flex justify-center self-center" @click="store" :to="{ name: 'Store', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
         <div class="flex flex-row p-2">
           <font-awesome-icon icon="fa-solid fa-video" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Movies
         </div>
-      </router-link>
-      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="recent" :to="{ name: 'RecentlyAdded', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+      </button>
+      <button :class="{ 'link-active': activate === 'RecentlyAdded'}"
+      class="hover:animate-pulse rounded flex justify-center self-center" @click="recent" :to="{ name: 'RecentlyAdded', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
         <div class="flex flex-row p-2">
           <font-awesome-icon icon="fa-solid fa-calendar-check" class="bg-mainyellow p-1 w-5 h-5  rounded mr-2" />  Recently Added
         </div>
-      </router-link>
-      <router-link active-class="link-active" class="hover:animate-pulse rounded flex justify-center self-center" @click="search" :to="{ name: 'search', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+      </button>
+      <button :class="{ 'link-active': activate === 'search'}"
+      class="hover:animate-pulse rounded flex justify-center self-center" @click="search" :to="{ name: 'search', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
         <div class="flex flex-row p-2">
           <font-awesome-icon icon="fa-brands fa-youtube" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Youtube
         </div>
-      </router-link>
+      </button>
       </div>
       <div class="space-x-4 flex flex-row rounded-2xl bg-white bg-opacity-10 p-2 justify-center self-center px-4">
         <button class="hover:animate-pulse p-2 m-2 rounded bg-mainyellow text-mainblue px-4"> <font-awesome-icon icon="bell" /> </button>
@@ -32,14 +36,14 @@
     </nav>
   </template>
 
-<script>
+<script lang="js">
 
 export default {
     name: 'App',
     data() {
       return {
         page: '',
-        activate : 'home'
+        activate : this.$route.name
       }
     },
     methods: {

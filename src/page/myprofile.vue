@@ -134,7 +134,7 @@ export default {
     },
     watch:{
     page: function () {
-        if ( cookies.get("page") != "/myprofile/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+        if ( this.page != "/myprofile/" + this.$route.params.token + "/" + this.$route.params.roomid ){
         this.$router.push( { path: cookies.get("page") } )
         console.log( "hit" )
         }
@@ -198,12 +198,13 @@ export default {
                 console.log("HIT")
                 this.$router.go(0)
                 }
-            }, 5000)
+            }, 7500)
             }
             },
 },
 sockets: {
     connect() {
+        console.log('connected')
         this.ready = "yes"
     },
     disconnect() {

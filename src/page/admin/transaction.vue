@@ -67,22 +67,18 @@
         const serverItemsLength = ref(0)
         const serverOptions = ref<ServerOptions>({
         page: 1,
-        rowsPerPage: 25,
+        rowsPerPage: 2,
         })
         
-        var api = `https://api.bluebox.website/admin/gettransaction?page=${1}&limit=${25}`
         const restApiUrl = computed(() => {
         const { page, rowsPerPage, sortBy, sortType } = serverOptions.value;
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                api = `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
                 return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
-            api = `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
             return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
         } else {
-            api = `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
             return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
         }
         })
@@ -106,6 +102,7 @@
         };
         
         const getListings = async () => {
+            var api = restApiUrl.value
             loading.value=true;
                 const config: AxiosRequestConfig =  {
                     method: 'get',

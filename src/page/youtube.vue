@@ -22,7 +22,6 @@
 <script>
 import io from 'socket.io-client'
 import Navbar from "/src/components/Navbar_fullscreen.vue"
-import axios from 'axios'
 
 // Cookies
 import { useCookies } from "vue3-cookies";

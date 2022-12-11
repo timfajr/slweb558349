@@ -49,12 +49,11 @@
     import { Header, ServerOptions, Item } from "vue3-easy-data-table";
     import axios, { AxiosRequestConfig} from 'axios';
     import NavbarAdmin from "../../components/Navbaradmin.vue"
+    import router from "../../router";
 
     // Cookies
     import { useCookies } from "vue3-cookies"
     const { cookies } = useCookies()
-    
-    import router from "../../router";
 
     export default defineComponent({
     
@@ -81,23 +80,21 @@
         rowsPerPage: 5,
         })
         
-        var api = `https://api.bluebox.website/admin/getAll?page=${1}&limit=${5}`
         const restApiUrl = computed(() => {
         const { page, rowsPerPage, sortBy, sortType } = serverOptions.value;
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                api = `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
                 return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
-            api = `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
-            return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            if ( page )
+            {
+              return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            }
         } else {
-            api = `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}`
             return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}`
         }
         })
-        
         const loading = ref(false);
         
         const deleteItem = (val: Item) => {
@@ -113,10 +110,11 @@
         };
         
         const getListings = async () => {
+            var api = restApiUrl.value
             loading.value=true;
                 const config: AxiosRequestConfig =  {
                     method: 'get',
-                    url: api,
+                    url: `${api}`,
                     headers: {
                         'Accept': 'application/json',
                         'access_token': cookies.get("atoken")
@@ -131,11 +129,11 @@
                       loading.value = false;
                     }
                     else{
-                      router.push("/admin/login")
+                      router.push('/admin/login')
                     }
                 })
                 .catch(function (error) {
-                    router.push('/admin/login')
+                  router.push('/admin/login')
                 });
             }
         
