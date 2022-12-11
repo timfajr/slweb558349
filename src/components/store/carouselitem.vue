@@ -1,5 +1,5 @@
 <template>
-    <li class="bg-gray-300 bg-opacity-5 rounded-xl m-4 shadow-xl">
+    <li class="bg-gray-300 bg-opacity-5 rounded-xl m-4 shadow-xl aspect-[2/3]">
       <div class="relative group">
         <img class="mr-3 aspect-[2/3] container rounded-xl object-cover object-center shadow-xl hover:shadow-2xl" :src="thumbnailUrl" alt="pic" />
         <div

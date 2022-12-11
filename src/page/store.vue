@@ -11,13 +11,15 @@
             </div>
             <carousel :itemsToShow="3.2" :wrap-around="true" :snapAlign="center" :transition="500"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
-                <slide v-for="slide in latest" :key="slide">
-                    <VideoListItem
-                    :video="slide"
-                    :key="slide.id"
-                    @slideSelect="onSlideSelect"
-                    ></VideoListItem>
-                </slide>
+                <Slide v-for="slide in latest" :key="slide">
+                  <div class="carousel__item ">
+                  <VideoListItem
+                  :video="slide"
+                  :key="slide"
+                  @slideSelect="onSlideSelect"
+                  />
+                  </div>
+                </Slide>
                 <template #addons>
                   <Navigation />
                 </template>
@@ -98,7 +100,8 @@
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide , Navigation } from 'vue3-carousel'
+import { Carousel, Navigation, Slide } from 'vue3-carousel'
+import { defineComponent } from 'vue'
 
 // Dep
 import axios from "axios";
@@ -119,8 +122,8 @@ import SearchBar from "/src/components/store/SearchBar.vue";
 import VideoList from "/src/components/store/VideoList.vue";
 import VideoListItem from "/src/components/store/carouselitem.vue";
 
-  export default {
-    name: 'App',
+export default defineComponent ({
+    name: 'WrapAround',
     components: {
       Pagination2,
       Navbar,
@@ -128,7 +131,9 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
       WalletButton,
       VideoList,
       VideoListItem,
-      Carousel, Slide , Navigation
+      Carousel,
+      Slide,
+      Navigation,
     },
     data () {
       return {
@@ -146,7 +151,11 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
         topicks:[],
         latest:[],
         genrelist:[],
-        selectedgenre: ''
+        selectedgenre: '',
+        settings: {
+          itemsToShow: 3.2,
+          snapAlign: 'center',
+        },
       };
     },
     mounted(){
@@ -353,10 +362,10 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
             },
         },
     
-  }
+  })
 </script>
 
-<style scoped>
+<style>
 .carousel__slide {
   padding: 5px;
 }
