@@ -9,9 +9,9 @@
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Latest Movie </div>>
             </div>
-            <carousel :itemsToShow="3.2" :wrap-around="true" :snapAlign="center" :transition="500"
+            <Splide :options="{ rewind: true, perPage:3 }"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
-                <Slide v-for="slide in latest" :key="slide">
+                <SplideSlide v-for="slide in latest" :key="slide" class="p-4">
                   <div class="carousel__item ">
                   <VideoListItem
                   :video="slide"
@@ -19,32 +19,26 @@
                   @slideSelect="onSlideSelect"
                   />
                   </div>
-                </Slide>
-                <template #addons>
-                  <Navigation />
-                </template>
-            </carousel>
+                </SplideSlide>
+            </Splide>
             </div>
             <!--
           Wrapper
           -->
-          <div v-if="topick" class="w-10/12 self-center items-center">
+          <div v-if="topicks" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>>
             </div>
-            <carousel :itemsToShow="3.2" :wrap-around="true" :snapAlign="center" :transition="500"
+            <Splide :options="{ rewind: true, perPage:3 }"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
-                <slide v-for="slide in topicks" :key="slide" >
+                <SplideSlide v-for="slide in topicks" :key="slide" >
                     <VideoListItem
                     :video="slide"
                     :key="slide.id"
                     @slideSelect="onSlideSelect"
                     ></VideoListItem>
-                </slide>
-                <template #addons>
-                  <Navigation />
-                </template>
-            </carousel>
+                </SplideSlide>
+            </Splide>
             </div>
           <!--
           Wrapper
@@ -59,19 +53,16 @@
                 </option>
             </select>
             </div>
-            <carousel :itemsToShow="3.2" :wrap-around="true" :snapAlign="center" :transition="500"
+            <Splide :options="{ rewind: true, perPage:3 }"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
-                <slide v-for="slide in genre" :key="slide">
+                <SplideSlide v-for="slide in genre" :key="slide">
                     <VideoListItem
                     :video="slide"
                     :key="slide.id"
                     @slideSelect="onSlideSelect"
                     ></VideoListItem>
-                </slide>
-                <template #addons>
-                  <Navigation />
-                </template>
-            </carousel>
+                </SplideSlide>
+            </Splide>
             </div>
           <!--
           Wrapper
@@ -99,20 +90,10 @@
 // Cookies
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
-import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Navigation, Slide } from 'vue3-carousel'
-import { defineComponent } from 'vue'
+import '@splidejs/vue-splide/css';
 
 // Dep
 import axios from "axios";
-
-'     ______       __                        '
-'    / ____/___   / /_ ____  _      __ ____  '
-'   / / __ / _ \ / __// __ \| | /| / // __ \ '
-'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
-'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
-'                                            '
-
 // Component
 import Navbar from "/src/components/Navbar.vue";
 import Pagination2 from '/src/components/Pagination.vue'
@@ -122,24 +103,21 @@ import SearchBar from "/src/components/store/SearchBar.vue";
 import VideoList from "/src/components/store/VideoList.vue";
 import VideoListItem from "/src/components/store/carouselitem.vue";
 
-export default defineComponent ({
-    name: 'WrapAround',
+export default {
+    name: 'App',
     components: {
       Pagination2,
       Navbar,
       SearchBar,
       WalletButton,
       VideoList,
-      VideoListItem,
-      Carousel,
-      Slide,
-      Navigation,
+      VideoListItem
     },
     data () {
       return {
         currentPage: 1,
         totalPages: 0,
-        rowsPerPage : 24,
+        rowsPerPage : 6,
         page: '',
         ready: 'no',
         host: '',
@@ -151,11 +129,7 @@ export default defineComponent ({
         topicks:[],
         latest:[],
         genrelist:[],
-        selectedgenre: '',
-        settings: {
-          itemsToShow: 3.2,
-          snapAlign: 'center',
-        },
+        selectedgenre: ''
       };
     },
     mounted(){
@@ -362,7 +336,7 @@ export default defineComponent ({
             },
         },
     
-  })
+  }
 </script>
 
 <style>

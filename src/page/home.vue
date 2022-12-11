@@ -1,14 +1,73 @@
 <template>
-<div class="bg-mainblue w-screen h-screen">
+<div class="bg-mainblue min-h-screen h-full overflow-x-hidden">
   <Navbar  />
-  <div class="flex flex-col justify-center self-center align-center h-5/6">
-    <div class="flex flex-col justify-center self-center w-4/12">
-      <img src="../images/Untitled.png" class="object-contain h-32 w-18 rounded" />
-      <div class="tracking-widest flex pl-20">
-        <span class="text-white text-md">Bluebox Alpha v1.0 🚀</span>
+  <div class="flex flex-col h-full pb-20">
+    <!--
+    Wrapper
+    -->
+    <div class="w-10/12 self-center items-center">
+      <div class="flex flex-row justify-between mt-5">
+      <div class="text-xl font-semibold text-white p-2 "> New Releases </div>>
       </div>
+      <Splide :options="{ rewind: true, perPage:3 }"
+      class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+          <SplideSlide v-for="slide in latest" :key="slide" class="p-4">
+            <div class="carousel__item ">
+            <VideoListItem
+            :video="slide"
+            :key="slide"
+            @slideSelect="onSlideSelect"
+            />
+            </div>
+          </SplideSlide>
+      </Splide>
+      </div>
+      <!--
+    Wrapper
+    -->
+    <div v-if="topicks" class="w-10/12 self-center items-center">
+      <div class="flex flex-row justify-between mt-5">
+      <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>>
+      </div>
+      <Splide :options="{ rewind: true, perPage:3 }"
+      class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+          <SplideSlide v-for="slide in topicks" :key="slide" class="p-4">
+              <VideoListItem
+              :video="slide"
+              :key="slide.id"
+              @slideSelect="onSlideSelect"
+              ></VideoListItem>
+          </SplideSlide>
+      </Splide>
+      </div>
+    <!--
+    Wrapper
+    -->
+    <div class="w-10/12 self-center items-center">
+      <div class="flex flex-row justify-between mt-5">
+      <div class="text-xl font-semibold text-white p-2 "> Movie By Genre </div>
+        <select v-model="selectedgenre" id="genre" class="p-2 rounded-xl">
+          <option hidden disabled selected value>Genre List</option>
+          <option v-for="i in genrelist" :key="i">
+              {{ i }}
+          </option>
+      </select>
+      </div>
+      <Splide :options="{ rewind: true, perPage:3 }"
+      class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+          <SplideSlide v-for="slide in genre" :key="slide" class="p-4">
+              <VideoListItem
+              :video="slide"
+              :key="slide.id"
+              @slideSelect="onSlideSelect"
+              ></VideoListItem>
+          </SplideSlide>
+      </Splide>
+      </div>
+    <!--
+    Wrapper
+    -->
     </div>
-  </div>
 </div>
 
 </template>
@@ -18,14 +77,13 @@
 import { useCookies } from "vue3-cookies"
 const { cookies } = useCookies()
 
-'     ______       __                        '
-'    / ____/___   / /_ ____  _      __ ____  '
-'   / / __ / _ \ / __// __ \| | /| / // __ \ '
-'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
-'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
-'                                            '
-
 import Navbar from "/src/components/Navbar.vue";
+import VideoListItem from "/src/components/store/carouselitem.vue";
+
+// Dep
+import axios from "axios";
+import '@splidejs/vue-splide/css';
+
 export default {
         name: 'App',
         data() {
@@ -38,11 +96,17 @@ export default {
             currentime: '0',
             videotime:'0',
             totaluser:'0',
-            list:[]
+            selectedgenre: '',
+            genre:[],
+            topicks:[],
+            latest:[],
+            genrelist:[],
+            selectedvideo: []
           }
         },
         components : {
-            Navbar
+            Navbar,
+            VideoListItem
   },
   watch:{
       page: function () {
@@ -53,10 +117,20 @@ export default {
       }
 	},
   mounted(){
-    this.Setupctx()
+    this.Setupctx(),
+    this.topPicks(),
+    this.genreList(),
+    this.genreStartup(),
+    this.Latest()
   },
 
   methods:{
+    onSlideSelect(slide){
+        this.$socket.emit('page', {
+                    roomid : this.$route.params.roomid ,
+                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + slide._id
+        })
+    },
     Setupctx(){
             this.$cookies.set('access_token',this.$route.params.token );
             if (this.ready === "no")
@@ -71,6 +145,73 @@ export default {
             }, 10000)
             }
           },
+    Latest(){
+        const api = `https://api.bluebox.website/movie/getAll?sortBy=-created_at`
+        axios
+            .get(api, {
+                headers: {
+                'Content-Type': 'application/json',
+                'access_token': this.$route.params.token
+                 }
+            })
+            .then(response => {
+                this.latest = response.data.data
+            })
+      },
+    topPicks(){
+        const api = `https://api.bluebox.website/movie/getTop?sortBy=-created_at`
+        axios
+            .get(api, {
+                headers: {
+                'Content-Type': 'application/json',
+                'access_token': this.$route.params.token
+                 }
+            })
+            .then(response => {
+                this.topicks = response.data.data
+            })
+      },
+    genreList(){
+        const api = "https://api.bluebox.website/genre"
+        axios
+            .get(api, {
+                headers: {
+                'Content-Type': 'application/json',
+                'access_token': this.$route.params.token
+                 }
+            })
+            .then(response => {
+                this.genrelist = response.data.data
+            })
+      },
+    genreStartup(){
+        const api = "https://api.bluebox.website/movie/getgenre?genre=" + "biography"
+        axios
+            .get(api, {
+                headers: {
+                'Content-Type': 'application/json',
+                'access_token': this.$route.params.token
+                 }
+            })
+            .then(response => {
+                console.log(response)
+                this.genre = response.data.data
+            })
+      },
+    selectedGenre(){
+        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
+        axios
+            .get(api, {
+                headers: {
+                'Content-Type': 'application/json',
+                'access_token': this.$route.params.token
+                 }
+            })
+            .then(response => {
+                console.log(response)
+                this.genre = response.data.data
+            })
+      },
   },
 
 	sockets: {

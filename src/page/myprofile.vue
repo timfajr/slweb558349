@@ -115,13 +115,6 @@ const { cookies } = useCookies()
 import axios from "axios";
 import dayjs from "dayjs";
 
-'     ______       __                        '
-'    / ____/___   / /_ ____  _      __ ____  '
-'   / / __ / _ \ / __// __ \| | /| / // __ \ '
-'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
-'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
-'                                            '
-
 import Navbar from "/src/components/Navbar.vue";
 export default {
         name: 'App',

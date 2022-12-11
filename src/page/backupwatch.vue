@@ -16,14 +16,6 @@ import Navbar from "/src/components/Navbar_fullscreen.vue";
 import axios from 'axios'
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
-
-'     ______       __                        '
-'    / ____/___   / /_ ____  _      __ ____  '
-'   / / __ / _ \ / __// __ \| | /| / // __ \ '
-'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
-'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
-'                                            '
-
 export default {
   name: 'App',
   data() {

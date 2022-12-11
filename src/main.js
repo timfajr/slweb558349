@@ -7,13 +7,6 @@ import VueCookies from "vue3-cookies";
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 
-'     ______       __                        '
-'    / ____/___   / /_ ____  _      __ ____  '
-'   / / __ / _ \ / __// __ \| | /| / // __ \ '
-'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
-'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
-'                                            '
-
 // WS Connection
 import VueSocketIO from 'vue-3-socket.io';
 import SOCKETIO from 'socket.io-client'
@@ -28,6 +21,9 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 // Data Table 
 import Vue3EasyDataTable from "vue3-easy-data-table";
 import "vue3-easy-data-table/dist/style.css";
+
+// Slider
+import VueSplide from '@splidejs/vue-splide';
 
 library.add(fas, fab);
 app.component("font-awesome-icon", FontAwesomeIcon);
@@ -45,6 +41,7 @@ app.use(new VueSocketIO({
   })
 )
 
+app.use(VueSplide)
 app.use(store)
 app.use(router)
 app.mount('#app')

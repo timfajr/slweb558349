@@ -22,19 +22,10 @@
   
       <!-- Visible Buttons Start -->
   
-      <li
-      v-for="page in pages"
-      :key="page.name"
-      class="p-2 px-4 text-white"
-      >
       <div
-        type="p-2 px-4 text-white"
-        :disabled="page.isDisabled"
-        :class="{ active: isPageActive(page.name) }"
-      >
-        {{ page.name }}
+        class="px-3 text-center p-2 bg-mainyellow text-mainblue rounded-xl font-bold">
+        {{ this.currentPage }}
       </div>
-    </li>
   
       <!-- Visible Buttons End -->
   
@@ -66,7 +57,7 @@
       maxVisibleButtons: {
         type: Number,
         required: false,
-        default: 3
+        default: 1
       },    
       totalPages: {
         type: Number,
@@ -104,7 +95,6 @@
     },
     pages() {
       const range = [];
-
       for (
         let i = this.startPage;
         i <= Math.min(this.startPage + this.maxVisibleButtons - 1, this.totalPages);
@@ -114,8 +104,8 @@
           name: i,
           isDisabled: i === this.currentPage
         });
+        
       }
-
       return range;
     }
   },
@@ -148,7 +138,6 @@
   color: #234899;
   font-weight: 700;
   border-radius : 10px;
-  padding: 2px;
   padding-left: 10px;
   padding-right: 10px;
 }

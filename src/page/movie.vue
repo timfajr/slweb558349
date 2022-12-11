@@ -20,18 +20,16 @@
                         </div>
                     </div>
                     <div class="flex justify-start text-xl font-semibold text-white p-2 pt-8"> Similar Movies </div>
-                    <carousel :wrap-around="true" :snapAlign="center" :transition="500" :items-to-show="3.2" class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
-                        <slide v-for="slide in list" :key="slide" >
+                    <Splide :options="{ rewind: true, perPage:4 }"
+                    class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
+                        <SplideSlide v-for="slide in list" :key="slide" >
                             <VideoListItem
                             :video="slide"
                             :key="slide.id"
                             @slideSelect="onSlideSelect"
                             ></VideoListItem>
-                        </slide>
-                        <template #addons>
-                            <Navigation />
-                          </template>
-                      </carousel>
+                        </SplideSlide>
+                    </Splide>
                 </div>
                 </div>
             </div>
@@ -46,19 +44,10 @@
 import { useCookies } from "vue3-cookies"
 const { cookies } = useCookies()
 
-import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide,Navigation } from 'vue3-carousel'
 import axios from "axios";
 
-'     ______       __                        '
-'    / ____/___   / /_ ____  _      __ ____  '
-'   / / __ / _ \ / __// __ \| | /| / // __ \ '
-'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
-'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
-'                                            '
-
 import VideoListItem from "/src/components/store/carouselitem.vue";
-
 import Navbar from "/src/components/Navbar.vue";
 export default {
         name: 'App',
@@ -176,45 +165,3 @@ export default {
         },
 }
 </script>
-
-<style scoped>
-.carousel__slide {
-  padding: 5px;
-}
-
-.carousel__viewport {
-  perspective: 2000px;
-}
-
-.carousel__track {
-  transform-style: preserve-3d;
-}
-
-.carousel__slide--sliding {
-  transition: 0.5s;
-}
-
-.carousel__slide {
-  opacity: 0.9;
-  transform: rotateY(-20deg) scale(0.9);
-}
-
-.carousel__slide--active ~ .carousel__slide {
-  transform: rotateY(20deg) scale(0.9);
-}
-
-.carousel__slide--prev {
-  opacity: 1;
-  transform: rotateY(-10deg) scale(0.95);
-}
-
-.carousel__slide--next {
-  opacity: 1;
-  transform: rotateY(10deg) scale(0.95);
-}
-
-.carousel__slide--active {
-  opacity: 1;
-  transform: rotateY(0) scale(1.1);
-}
-</style>

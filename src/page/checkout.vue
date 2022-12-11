@@ -111,13 +111,6 @@
 import { useCookies } from "vue3-cookies"
 const { cookies } = useCookies()
 
-'     ______       __                        '
-'    / ____/___   / /_ ____  _      __ ____  '
-'   / / __ / _ \ / __// __ \| | /| / // __ \ '
-'  / /_/ //  __// /_ / /_/ /| |/ |/ // / / / '
-'  \____/ \___/ \__/ \____/ |__/|__//_/ /_/  '
-'                                            '
-
 // Dep
 import axios from "axios";
 import dayjs from "dayjs";
