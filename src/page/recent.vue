@@ -81,6 +81,7 @@ export default {
   },
   methods: {
     Setupctx(){
+          this.$cookies.set('access_token',this.$route.params.token );
           if (this.ready === "no")
           {
             this.$cookies.set('access_token',this.$route.params.token );
@@ -89,19 +90,8 @@ export default {
             if (this.ready === "no"){
               this.$router.go(0)
             }
-          }, 1000)
+          }, 2500)
           }
-          axios.get('https://api.bluebox.website/user/me', {
-              headers: {
-                'access_token' : this.$route.params.token
-              }
-          }).then(response => {
-              if ( response.data.message === "success" ){
-                  this.response = 'OK'
-              }
-          }).catch(error => {
-              this.response = error
-          })
     },
     onPageChange(page) {
       this.currentPage = page;
@@ -157,16 +147,14 @@ export default {
   },
   sockets: {
           connect() {
-            console.log('connected')
+            this.ready = "yes"
           },
           disconnect() {
             console.log('disconnected')
           },
-
           // Event Controller
           page(data) {
-            if (data){
-              this.ready = "yes"
+            if ( data ){
               this.page = data
               cookies.set("page", data)
             }

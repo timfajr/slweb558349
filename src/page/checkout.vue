@@ -232,10 +232,10 @@ export default {
     },
     sockets: {
             connect() {
-                console.log('connected')
+            console.log('connected')
             },
             disconnect() {
-                console.log('disconnected')
+            console.log('disconnected')
             },
             // Event Controller
             page( data ) {

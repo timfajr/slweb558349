@@ -55,8 +55,10 @@ export default {
   mounted(){
     this.Setupctx()
   },
+
   methods:{
     Setupctx(){
+            this.$cookies.set('access_token',this.$route.params.token );
             if (this.ready === "no")
             {
               this.$cookies.set('access_token',this.$route.params.token );
@@ -73,19 +75,23 @@ export default {
 
 	sockets: {
             connect() {
-              console.log('connected')
+              this.ready = "yes"
             },
             disconnect() {
               console.log('disconnected')
             },
-
             // Event Controller
             page(data) {
               if (data){
-                this.ready = "yes"
                 this.page = data
                 cookies.set("page", data)
               }
+              if ( !data ){
+              this.$socket.emit('page', {
+                  roomid : this.$route.params.roomid ,
+                  page : "/" + this.$route.params.token + "/" + this.$route.params.roomid
+              })
+             }
             },
             usercount(data) {
               this.totaluser = data

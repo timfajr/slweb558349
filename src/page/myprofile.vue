@@ -195,6 +195,7 @@ export default {
         })
     },
     Setupctx(){
+            this.$cookies.set('access_token',this.$route.params.token );
             if (this.ready === "no")
             {
                 this.$cookies.set('access_token',this.$route.params.token );
@@ -210,7 +211,7 @@ export default {
 },
 sockets: {
     connect() {
-        console.log('connected')
+        this.ready = "yes"
     },
     disconnect() {
         console.log('disconnected')
@@ -218,7 +219,6 @@ sockets: {
     // Event Controller
     page( data ) {
         if ( data ){
-        this.ready = "yes"
         this.page = data
         cookies.set("page", data)
         }

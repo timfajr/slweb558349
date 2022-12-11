@@ -66,6 +66,7 @@ mounted(){
 },
 methods: {
 setupctx () {
+    this.$cookies.set('access_token',this.$route.params.token);
     if (this.ready === "no")
           {
             this.$cookies.set('access_token',this.$route.params.token );
@@ -74,7 +75,7 @@ setupctx () {
             if (this.ready === "no"){
               this.$router.go(0)
             }
-        }, 1000)
+        }, 2500)
     }
 },
 onTermChange: function (searchTerm) {
@@ -141,7 +142,7 @@ watch:{
 sockets: {
 
         connect() {
-            console.log('connected')
+            this.ready = "yes"
         },
 
         disconnect() {
@@ -151,7 +152,6 @@ sockets: {
         // Event Controller
         page(data) {
             if (data){
-            this.ready = "yes"
             this.page = data
             cookies.set("page", data)
             }
