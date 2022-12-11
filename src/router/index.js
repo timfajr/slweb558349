@@ -18,6 +18,7 @@ import AdminDashboard from '/src/page/admin/dashboard.vue'
 import AdminUpload from '/src/page/admin/upload.vue'
 import AdminMovies from '/src/page/admin/movie.vue'
 import AdminTransaction from '/src/page/admin/transaction.vue'
+import icon from '../images/bluebox.png'
 
 '     ______       __                        '
 '    / ____/___   / /_ ____  _      __ ____  '
@@ -32,100 +33,159 @@ const routes = [
     {
       path: '/:token/:roomid/',
       name: 'Home',
-      component: Home
+      component: async () => await Home,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
     
     {
       path: '/youtube/:token/:roomid/:src',
       name: 'Youtube',
-      component: Youtube,
-      props: true
+      component: async () => await Youtube,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     {
       path: '/search/:token/:roomid/',
       name: 'search',
-      component: Search,
-      props: true
+      component: async () => await Search,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     {
       path: '/movie/:token/:roomid/:id',
       name: 'Movie',
-      component: Movie,
-      props: true
+      component: async () => await Movie,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
     {
         path: '/watch/:token/:roomid/:vid',
         name: 'Watch_Movie',
-        component: Watchmovie,
-        props: true
+        component: async () => await Watchmovie,
+        props: true,
+        meta: {
+          title: "Bluebox",
+          icon: icon
+        }
     },
 
     // User Profile
     {
       path: '/myprofile/:token/:roomid',
       name: 'MyProfile',
-      component: MyProfile,
-      props: true
+      component: async () => await MyProfile,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     // User Profile
     {
       path: '/checkout/:token/:roomid',
       name: 'Checkout',
-      component: Checkout,
-      props: true
+      component: async () => await Checkout,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     // Store
     {
       path: '/store/:token/:roomid',
       name: 'Store',
-      component: Store,
-      props: true
+      component: async () => await Store,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     {
       path: '/recent/:token/:roomid',
       name: 'RecentlyAdded',
-      component: RecentlyAdded,
-      props: true
+      component: async () => await RecentlyAdded,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     // Admin
     {
       path: '/admin/login/',
       name: 'AdminLogin',
-      component: AdminLogin
+      component: async () => await AdminLogin,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
     {
       path: '/admin/dashboard/',
       name: 'AdminDashboard',
-      component: AdminDashboard
+      component: async () => await AdminDashboard,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
     {
       path: '/admin/movies/',
       name: 'AdminMovies',
-      component: AdminMovies
+      component: async () => await AdminMovies,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
     {
       path: '/admin/transaction/',
       name: 'AdminTransaction',
-      component: AdminTransaction
+      component: async () => await AdminTransaction,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
     {
       path: '/admin/upload/',
       name: 'AdminUpload',
-      component: AdminUpload
+      component: async () => await AdminUpload,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     // Not Found Handler
     { path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: NotFound
+    component: async () => await NotFound,
+    meta: {
+      title: "Bluebox",
+      icon: icon
+    }
     },
-    
   ]
 
   const router = createRouter({
@@ -134,5 +194,11 @@ const routes = [
     linkActiveClass: "active"
   });
 
+  router.beforeEach((to, from, next) => {
+    document.title = to.meta.title
+    const link = document.querySelector("[rel='icon']")
+    link.setAttribute('href',to.meta.icon)
+    next()
+  });
 
 export default router;
