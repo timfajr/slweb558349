@@ -67,7 +67,7 @@
         const serverItemsLength = ref(0)
         const serverOptions = ref<ServerOptions>({
         page: 1,
-        rowsPerPage: 2,
+        rowsPerPage: 5,
         })
         
         const restApiUrl = computed(() => {
@@ -77,7 +77,9 @@
             {
                 return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
-            return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            else {
+                return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+            }
         } else {
             return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
         }

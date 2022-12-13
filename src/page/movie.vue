@@ -145,6 +145,7 @@ export default {
                         console.log(response)
                         this.list = response.data.data
                     })
+                    this.loading = 'false'
         })
         },
     },

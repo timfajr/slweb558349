@@ -73,7 +73,6 @@
         { text: "Operation", value: "operation" , width: 100}
         ];
         const items = ref<Item[]>([])
-
         const serverItemsLength = ref(0)
         const serverOptions = ref<ServerOptions>({
         page: 1,
@@ -87,9 +86,9 @@
             {
                 return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
-            if ( page )
+            else
             {
-              return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+              return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}`
             }
         } else {
             return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}`
