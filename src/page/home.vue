@@ -98,12 +98,12 @@ export default {
             currentime: '0',
             videotime:'0',
             totaluser:'0',
-            selectedgenre: '',
             genre:[],
             topicks:[],
             latest:[],
             genrelist:[],
             selectedvideo: [],
+            selectedgenre: '',
             loading: 'true'
           }
         },
@@ -118,6 +118,20 @@ export default {
             this.$router.push( { path: cookies.get("page") } )
             console.log( "page hit" )
           }
+      },
+      selectedgenre: function (){
+        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
+        axios
+            .get(api, {
+                headers: {
+                'Content-Type': 'application/json',
+                'access_token': this.$route.params.token
+                 }
+            })
+            .then(response => {
+                console.log('changed')
+                this.genre = response.data.data
+            })
       }
 	},
   mounted(){
