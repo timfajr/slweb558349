@@ -90,7 +90,7 @@ sockets: {
       if(data == "Playing" && Math.abs(video.currentTime - this.videotime - 1) < 5){
         this.ready = 'yes'
         if(this.host == this.user){
-          this.$socket.emit('host', {
+        this.$socket.emit('host', {
                   roomid : this.$route.params.roomid ,
                   host : this.user
         })
@@ -161,6 +161,14 @@ methods: {
     }
     video.onseeking = (event) => {
       this.seeking = "active"
+      this.$socket.emit('host', {
+                  roomid : this.$route.params.roomid ,
+                  host : this.user
+        })
+        this.$socket.emit('videotime', {
+                roomid : this.$route.params.roomid ,
+                videotime : video.currentTime
+        })
     }
     video.onseeked = (event) => {
       this.seeking = "active"
