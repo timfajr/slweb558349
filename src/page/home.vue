@@ -252,6 +252,7 @@ export default {
                   roomid : this.$route.params.roomid ,
                   page : "/" + this.$route.params.token + "/" + this.$route.params.roomid
               })
+              this.$router.go(0)
              }
             },
             usercount(data) {
