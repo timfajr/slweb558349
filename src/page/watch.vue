@@ -246,13 +246,13 @@ methods: {
                 roomid : this.$route.params.roomid ,
                 videotime : video.currentime
         })
-        video.play()
     }
     this.$socket.emit('status', {
                   roomid : this.$route.params.roomid ,
                   status : "Playing"
     })
     }
+    video.play()
   },
   duration(){
     const video = document.querySelector('video');
