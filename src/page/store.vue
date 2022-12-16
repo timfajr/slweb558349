@@ -316,7 +316,7 @@ export default {
       localStorage.setItem('selectedvideo', JSON.stringify(video))
       this.$socket.emit('page', {
                     roomid : this.$route.params.roomid ,
-                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ video.title
+                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ video._id
       })
     }
     },
