@@ -89,21 +89,24 @@ sockets: {
       }
       if(data == "Playing" && Math.abs(video.currentTime - this.videotime - 1) < 5){
         this.ready = 'yes'
+        if(this.host == this.user){
+          this.$socket.emit('host', {
+                  roomid : this.$route.params.roomid ,
+                  host : this.user
+        })
+        this.$socket.emit('videotime', {
+                roomid : this.$route.params.roomid ,
+                videotime : video.currentTime
+        })
         this.seeking = "unactive";
-              this.$socket.emit('host', {
-                        roomid : this.$route.params.roomid ,
-                        host : this.user
-              })
-              this.$socket.emit('yttime', {
-                      roomid : this.$route.params.roomid ,
-                      yttime : video.currentTime
-              })
-              video.play()
+        video.play()
+        }
       }
-      if(this.seeking == "unactive" && Math.abs(video.currentTime - this.videotime - 1) > 20){
+      if( Math.abs(video.currentTime - this.videotime - 1) > 20 && this.seeking == "unactive" ){
         video.currentTime = this.videotime
         console.log("Hit Time")
       }
+      console.log(this.videotime)
     },
     videosrc(data) {
       if (data){
@@ -156,21 +159,31 @@ methods: {
     else {
       this.$router.push({ path: this.page })
     }
+    video.onseeking = (event) => {
+      this.seeking = "active"
+    }
+    video.onseeked = (event) => {
+      this.seeking = "active"
+    }
     video.onload= (event) => {
       const video = document.querySelector('video');
       if (this.status == "Playing") {
+        video.currentTime = this.videotime
         video.play()
       }
       if (this.status == "Paused") {
+        video.currentTime = this.videotime
         video.paused()
       }
     }
     video.onloadstart= (event) => {
     const video = document.querySelector('video');
       if (this.status == "Playing") {
+        video.currentTime = this.videotime
         video.play()
       }
       if (this.status == "Paused") {
+        video.currentTime = this.videotime
         video.paused()
       }
     }
@@ -187,11 +200,6 @@ methods: {
   pause(){
   const video = document.querySelector('video');
   video.onpause = (event) => { 
-    this.seeking = "active";
-    this.$socket.emit('videotime', {
-        roomid : this.$route.params.roomid ,
-        videotime : video.currentTime
-    })
     this.$socket.emit('status',{ roomid: this.$route.params.roomid, status : "Paused" })}
   },
   click(){
@@ -222,16 +230,6 @@ methods: {
     video.onplay = (event) => 
     {
     console.log("played")
-    if(this.host == this.user && Math.abs(video.currentime - this.videotime- 1) < 20){
-      this.$socket.emit('host', {
-                  roomid : this.$route.params.roomid ,
-                  host : this.user
-        })
-        this.$socket.emit('videotime', {
-                roomid : this.$route.params.roomid ,
-                videotime : video.currentime
-        })
-    }
     this.$socket.emit('status', {
                   roomid : this.$route.params.roomid ,
                   status : "Playing"
@@ -245,6 +243,23 @@ methods: {
     this.currentime = this.videotime
     if (video.muted == true){
       video.muted = !video.muted;
+    }
+    if (this.seeking == "active")
+    {
+       this.$socket.emit('videotime', {
+        roomid : this.$route.params.roomid ,
+        videotime : video.currentTime
+    })
+    if(this.host == this.user && Math.abs(video.currentime - this.videotime- 1) < 20){
+      this.$socket.emit('host', {
+                  roomid : this.$route.params.roomid ,
+                  host : this.user
+        })
+        this.$socket.emit('videotime', {
+                roomid : this.$route.params.roomid ,
+                videotime : video.currentime
+        })
+    }
     }
     if( this.host == this.user )
     {
