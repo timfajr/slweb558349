@@ -10,8 +10,8 @@
                     <div class="flex flex-row">
                         <img :src="this.video.imgurl" class="w-4/12 rounded object-contain" />
                         <div class="flex flex-col space-y-3 p-2 w-full">
-                            <div class="flex justify-start text-xl font-semibold text-white bg-white bg-opacity-10 p-2 px-4 rounded"> {{this.video.title}} </div>
-                            <div class="flex justify-start text-sm text-white bg-white bg-opacity-10 p-4 rounded h-full max-h-80 text-ellipsis overflow-hidden"> {{this.video.description}} </div>
+                            <div class="flex justify-start text-xl font-semibold text-white bg-white bg-opacity-10 p-2 px-4 rounded capitalize"> {{this.video.title}} </div>
+                            <div class="flex justify-start text-sm text-white bg-white bg-opacity-10 p-4 rounded h-full max-h-80  text-ellipsis overflow-hidden"> {{this.video.description}} </div>
                         </div>
                         <div class="flex flex-col space-y-3 p-2 justify-between">
                             <button @click="back" class="hover:animate-pulse font-semibold p-2 w-10 bg-white bg-opacity-20 rounded-full self-end text-white text-center"> <font-awesome-icon icon="fa-solid fa-arrow-left-long" /> </button>

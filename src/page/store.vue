@@ -47,9 +47,9 @@
           <div class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Movie By Genre </div>
-              <select v-model="selectedgenre" id="genre" class="p-2 rounded-xl">
+              <select v-model="selectedgenre" id="genre" class="p-2 rounded-xl capitalize">
                 <option hidden disabled selected value>Genre List</option>
-                <option v-for="i in genrelist" :key="i">
+                <option v-for="i in genrelist" :key="i" class="capitalize">
                     {{ i }}
                 </option>
             </select>

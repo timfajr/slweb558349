@@ -101,6 +101,10 @@ sockets: {
               })
               video.play()
       }
+      if(Math.abs(video.currentTime - this.videotime - 1) > 20){
+        video.currentTime = this.videotime
+        console.log("Hit Time")
+      }
     },
     videosrc(data) {
       if (data){
@@ -156,20 +160,26 @@ methods: {
       const video = document.querySelector('video');
       video.currentTime = this.videotime
       if (this.status == "Playing") {
+        video.currentTime = this.videotime
         video.play()
       }
       if (this.status == "Paused") {
+        video.currentTime = this.videotime
         video.paused()
       }
+    }
+    video.onready = ( event ) => {
+      video.currentTime = this.videotime
     }
     video.onloadstart= (event) => {
     const video = document.querySelector('video');
     video.currentTime = this.videotime
-    video.muted = !video.muted
       if (this.status == "Playing") {
+        video.currentTime = this.videotime
         video.play()
       }
       if (this.status == "Paused") {
+        video.currentTime = this.videotime
         video.paused()
       }
     }
@@ -227,20 +237,20 @@ methods: {
     video.onplay = (event) => 
     {
     console.log("played")
-    this.$socket.emit('host', {
-        roomid : this.$route.params.roomid ,
-        host   : this.user
-      })
-    if (this.host == this.user){
-      this.$socket.emit('videotime', {
-            roomid : this.$route.params.roomid ,
-            videotime : video.currentime
-    })
+    if(this.host == this.user && Math.abs(video.currentime - this.videotime- 1) < 20){
+      this.$socket.emit('host', {
+                  roomid : this.$route.params.roomid ,
+                  host : this.user
+        })
+        this.$socket.emit('videotime', {
+                roomid : this.$route.params.roomid ,
+                videotime : video.currentime
+        })
+        video.play()
     }
-    this.$socket.emit('status', 
-    {
-        roomid : this.$route.params.roomid ,
-        status : "Playing"
+    this.$socket.emit('status', {
+                  roomid : this.$route.params.roomid ,
+                  status : "Playing"
     })
     }
   },
@@ -248,6 +258,9 @@ methods: {
     const video = document.querySelector('video');
     video.ontimeupdate = (event) => {
     this.currentime = this.videotime
+    if (video.muted == true){
+      video.muted = !video.muted;
+    }
     if( this.host == this.user )
     {
       this.currentime = video.currentTime
