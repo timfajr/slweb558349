@@ -151,6 +151,7 @@ export default {
     },
     Setupctx(){
             this.$cookies.set('access_token',this.$route.params.token );
+            this.$cookies.set('roomid',this.$route.params.roomid );
             if (this.ready === "no")
             {
               this.$cookies.set('access_token',this.$route.params.token );
@@ -253,6 +254,7 @@ export default {
                   page : "/" + this.$route.params.token + "/" + this.$route.params.roomid
               })
               this.$router.go(0)
+              this.ready = "yes"
              }
             },
             usercount(data) {

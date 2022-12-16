@@ -33,6 +33,7 @@ data() {
     ytstatus: 'Stopped',
     currentime: '0',
     totaluser:'0',
+    seeking:'unactive',
     list:[]
   }
 },
@@ -52,15 +53,12 @@ watch: {
 status: function () {
   const video = document.querySelector('video');
   if(this.status == "Paused"){
-    video.currentTime = this.videotime
     video.pause()
   }
   if(this.status == "Playing"){
-    video.currentTime = this.videotime
     video.play()
   }
   if(this.status == "Stopped"){
-    video.currentTime = this.videotime
     video.play()
   }
 },
@@ -91,6 +89,7 @@ sockets: {
       }
       if(data == "Playing" && Math.abs(video.currentTime - this.videotime - 1) < 5){
         this.ready = 'yes'
+        this.seeking = "unactive";
               this.$socket.emit('host', {
                         roomid : this.$route.params.roomid ,
                         host : this.user
@@ -101,7 +100,7 @@ sockets: {
               })
               video.play()
       }
-      if(Math.abs(video.currentTime - this.videotime - 1) > 20){
+      if(this.seeking == "unactive" && Math.abs(video.currentTime - this.videotime - 1) > 20){
         video.currentTime = this.videotime
         console.log("Hit Time")
       }
@@ -143,7 +142,8 @@ methods: {
   },
   Setupctx(){
     const video = document.querySelector('video');
-    this.$cookies.set('access_token',this.$route.params.token);
+    this.$cookies.set('access_token',this.$route.params.token );
+    this.$cookies.set('roomid',this.$route.params.roomid );
     if (this.ready == "no")
     {
       setInterval(() => {
@@ -158,28 +158,19 @@ methods: {
     }
     video.onload= (event) => {
       const video = document.querySelector('video');
-      video.currentTime = this.videotime
       if (this.status == "Playing") {
-        video.currentTime = this.videotime
         video.play()
       }
       if (this.status == "Paused") {
-        video.currentTime = this.videotime
         video.paused()
       }
     }
-    video.onready = ( event ) => {
-      video.currentTime = this.videotime
-    }
     video.onloadstart= (event) => {
     const video = document.querySelector('video');
-    video.currentTime = this.videotime
       if (this.status == "Playing") {
-        video.currentTime = this.videotime
         video.play()
       }
       if (this.status == "Paused") {
-        video.currentTime = this.videotime
         video.paused()
       }
     }
@@ -195,18 +186,12 @@ methods: {
   },
   pause(){
   const video = document.querySelector('video');
-  video.onseeking = (event)=> {
-    if( this.host == this.user )
-    {
-      this.currenttime = video.currentTime
-      this.$socket.emit('videotime', {
+  video.onpause = (event) => { 
+    this.seeking = "active";
+    this.$socket.emit('videotime', {
         roomid : this.$route.params.roomid ,
         videotime : video.currentTime
     })
-    }
-  }
-  video.onpause = (event) => { 
-    video.currentTime = this.videotime
     this.$socket.emit('status',{ roomid: this.$route.params.roomid, status : "Paused" })}
   },
   click(){

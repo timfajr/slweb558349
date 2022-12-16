@@ -240,7 +240,8 @@ export default {
             })
       },
       Setupctx(){
-        this.$cookies.set('access_token',this.$route.params.token);
+        this.$cookies.set('access_token',this.$route.params.token );
+        this.$cookies.set('roomid',this.$route.params.roomid );
             if (this.ready === "no")
             {
               this.$cookies.set('access_token',this.$route.params.token );
