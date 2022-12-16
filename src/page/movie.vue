@@ -119,7 +119,7 @@ export default {
                 if (this.ready === "no"){
                 this.$router.go(0)
                 }
-            }, 7500)
+            }, 10000)
         }
     },
     onStartup () {
