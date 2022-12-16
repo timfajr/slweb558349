@@ -71,6 +71,7 @@ page: function (){
 sockets: {
     connect() {
       console.log('connected')
+      this.ready = "yes"
     },
     disconnect() {
       console.log('disconnected')
