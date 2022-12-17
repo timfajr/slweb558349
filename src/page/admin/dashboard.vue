@@ -113,7 +113,7 @@ setup() {
     { text: "_id", value: "_id" , width: 200},
     { text: "deviceid", value: "devices", sortable: true , width: 300 },
     { text: "ownerid", value: "ownerid", sortable: true , width: 300},
-    { text: "subscription", value: "subscription" },
+    { text: "subscription", value: "subscription", sortable: true },
     { text: "timeleft", value: "timeleft" },
     { text: "balance", value: "balance" },
     { text: "Operation", value: "operation" , width: 100}

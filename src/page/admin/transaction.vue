@@ -67,7 +67,7 @@
         const serverItemsLength = ref(0)
         const serverOptions = ref<ServerOptions>({
         page: 1,
-        rowsPerPage: 5,
+        rowsPerPage: 25,
         })
         
         const restApiUrl = computed(() => {
@@ -75,13 +75,13 @@
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
-            }
-            else {
                 return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
             }
+            else {
+                return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+            }
         } else {
-            return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}`
+            return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
         }
         })
         

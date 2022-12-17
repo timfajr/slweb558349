@@ -32,6 +32,10 @@
               />
             </div>
         </template>
+
+        <template #item-created_at="created_at">
+          <p>{{formatDate(created_at.created_at)}}</p>
+      </template>
     
         <template #pagination="{ prevPage, nextPage, isFirstPage, isLastPage }">
             <button :disabled="isFirstPage" @click="prevPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">prev page</button>
@@ -50,6 +54,7 @@
     import axios, { AxiosRequestConfig} from 'axios';
     import NavbarAdmin from "../../components/Navbaradmin.vue"
     import router from "../../router";
+    import dayjs from "dayjs";
 
     // Cookies
     import { useCookies } from "vue3-cookies"
@@ -76,7 +81,7 @@
         const serverItemsLength = ref(0)
         const serverOptions = ref<ServerOptions>({
         page: 1,
-        rowsPerPage: 5,
+        rowsPerPage: 25,
         })
         
         const restApiUrl = computed(() => {
@@ -84,14 +89,14 @@
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
             }
             else
             {
-              return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}`
+              return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
         } else {
-            return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}`
+            return `https://api.bluebox.website/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
         }
         })
         const loading = ref(false);
@@ -106,6 +111,10 @@
         
         const submitEdit = (val: Item) => {
           console.log(val)
+        };
+
+        const formatDate = (date) => {
+            return dayjs(date).format('DD-MM-YYYY');
         };
         
         const getListings = async () => {
@@ -156,7 +165,8 @@
         loading,
         deleteItem,
         editItem,
-        submitEdit
+        submitEdit,
+        formatDate
         }
     },
     }
