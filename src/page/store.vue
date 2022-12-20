@@ -249,6 +249,7 @@ export default {
               this.$cookies.set('roomid',this.$route.params.roomid );
               setInterval(() => {
               if (this.ready === "no"){
+                console.log("hit ready")
                 this.$router.go(0)
               }
             }, 7500)
@@ -336,6 +337,7 @@ export default {
               const check = this.$route.params.token
               const check2 = (data.split('/'))
               if (data && check2[2] != check){
+                this.ready="yes"
                 this.$socket.emit('page', {
                   roomid : this.$route.params.roomid ,
                   page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
@@ -343,12 +345,14 @@ export default {
               }
               if (data && check2[2] == check)
                 {
+                  this.ready="yes"
                   this.page = data
                   cookies.set("page", data)
               }
 
               // check if data exist
               if ( !data ){
+              this.ready="yes"
               this.$socket.emit('page', {
                   roomid : this.$route.params.roomid ,
                   page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
