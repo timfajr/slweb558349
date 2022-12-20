@@ -107,7 +107,6 @@ export default {
                         })
                         this.loading = 'false'
                  })
-              this.$router.push( { path: cookies.get("page")})
             }
         },
         selectedvideo: function() {
