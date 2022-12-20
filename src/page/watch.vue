@@ -82,14 +82,21 @@ sockets: {
       if (data){
         this.host = data
       }
+      if (!data){
+        this.$socket.emit('host', {
+                  roomid : this.$route.params.roomid ,
+                  host : this.user
+        })
+      }
     },
     status(data) {
       const video = document.querySelector('video');
       if (data){
         this.status = data
       }
-      if(data == "Playing" && Math.abs(video.currentTime - this.videotime - 1) < 5){
+      if(data == "Playing" && Math.abs(video.currentTime - this.videotime - 1) <= 5){
         this.ready = 'yes'
+        console.log(this.host == this.user)
         if(this.host == this.user){
         this.$socket.emit('host', {
                   roomid : this.$route.params.roomid ,
@@ -115,7 +122,7 @@ sockets: {
       }
     },
     videotime(data) {
-      if (data){
+      if (data) {
         this.videotime = data
       }
     },
@@ -238,10 +245,13 @@ methods: {
     const video = document.querySelector('video');
     video.onplay = (event) => 
     {
-    console.log("played")
     this.$socket.emit('status', {
                   roomid : this.$route.params.roomid ,
                   status : "Playing"
+    })
+    this.$socket.emit('host', {
+                    roomid : this.$route.params.roomid ,
+                    status : this.user
     })
     }
     video.play()

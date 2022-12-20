@@ -133,6 +133,14 @@ export default {
                     roomid : this.$route.params.roomid ,
                     videotime : 0
         })
+        this.$socket.emit('status', {
+                    roomid : this.$route.params.roomid ,
+                    status : "Playing"
+        })
+        this.$socket.emit('host', {
+                    roomid : this.$route.params.roomid ,
+                    status : ""
+        })
     },
     onSlideSelect(slide){
         this.$socket.emit('page', {
