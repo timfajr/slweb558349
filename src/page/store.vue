@@ -335,36 +335,10 @@ export default {
 
         // Event Controller
         page(data) {
-          // check new token
-          const check = this.$route.params.token
-          const check2 = (data.split('/'))
-          if (data && check2[2] != check)
-          {
-            this.ready="yes"
-            this.$socket.emit('page', {
-              roomid : this.$route.params.roomid ,
-              page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
-            })
-            this.$cookies.set("page", "/store/" + this.$route.params.token + "/" + this.$route.params.roomid)
+          if (data){
+            this.page = data
+            cookies.set("page", data)
           }
-
-          if (data && check2[2] == check)
-          {
-              this.ready="yes"
-              this.page = data
-              this.$cookies.set("page", data)
-          }
-
-          // check if data exist
-          if ( !data ){
-          this.ready="yes"
-          this.$socket.emit('page', {
-              roomid : this.$route.params.roomid ,
-              page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
-          })
-          this.$cookies.set("page", "/store/" + this.$route.params.token + "/" + this.$route.params.roomid)
-          }
-
         },
         usercount(data) {
           this.totaluser = data
