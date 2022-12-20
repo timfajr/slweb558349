@@ -248,11 +248,11 @@ export default {
       const check2 = (data.split('/'))
       
       if (data && check2[2] != check){
+        console.log("bug")
         this.$socket.emit('page', {
           roomid : this.$route.params.roomid ,
           page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
         })
-        this.$cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
       }
 
       if (data && check2[2] == check)
@@ -263,11 +263,11 @@ export default {
 
       // check if data exist
       if ( !data ){
+      console.log("bug")
       this.$socket.emit('page', {
           roomid : this.$route.params.roomid ,
           page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
       })
-      this.$cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
       }
     },
     usercount(data) {
