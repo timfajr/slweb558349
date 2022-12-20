@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
+import VueJwtDecode from "vue-jwt-decode";
 
 // Page
 import Home from '/src/page/home.vue'
@@ -11,6 +14,7 @@ import MyProfile from '/src/page/myprofile.vue'
 import Checkout from '/src/page/checkout.vue'
 import Movie from '/src/page/movie.vue'
 import RecentlyAdded from '/src/page/recent.vue'
+import Expired from '/src/page/subscriptionend.vue'
 
 // Admin
 import AdminLogin from '/src/page/admin/adminlogin.vue'
@@ -31,13 +35,13 @@ const routes = [
 
     // User
     {
-      path: '/:token/:roomid/',
+      path: '/home/:token/:roomid/',
       name: 'Home',
       component: async () => await Home,
       meta: {
         title: "Bluebox",
         icon: icon
-      }
+      },
     },
     
     {
@@ -178,7 +182,8 @@ const routes = [
     },
 
     // Not Found Handler
-    { path: '/:pathMatch(.*)*',
+    {
+    path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: async () => await NotFound,
     meta: {
@@ -186,8 +191,24 @@ const routes = [
       icon: icon
     }
     },
-  ]
 
+    // Expired Page Handler
+    {
+    path: '/expired/:token/:roomid/',
+    name: 'Expired',
+    component: async () => await Expired,
+    meta: {
+      title: "Bluebox",
+      icon: icon
+    }
+    },
+  ]
+  function subcheck(token) {
+    if (token){
+      let decoded = VueJwtDecode.decode(token);
+      return (decoded.device.timeleft);
+    }
+  }
   const router = createRouter({
     history: createWebHistory(),
     routes,
@@ -198,7 +219,22 @@ const routes = [
     document.title = to.meta.title
     const link = document.querySelector("[rel='icon']")
     link.setAttribute('href',to.meta.icon)
-    next()
+    const datacheck = subcheck(from.params.token)
+    if (
+    // To Page Check
+    to.name !== 'Expired' && to.name !== 'Home' && to.name !== 'MyProfile' && to.name !== 'Checkout'
+
+    // Admin Ignore
+    && to.name !== 'AdminLogin' &&  to.name !== 'AdminDashboard' &&  to.name !== 'AdminMovies' &&  to.name !== 'AdminTransaction'
+    && to.name !== 'AdminUpload'
+
+    // Logic Start here
+    && datacheck <= 0
+    )
+    {
+      next({ path: '/expired/' + from.params.token + "/" + from.params.roomid })
+    }
+    else next()
   });
 
 export default router;

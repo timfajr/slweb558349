@@ -141,7 +141,6 @@ export default {
     this.genreStartup(),
     this.Latest()
   },
-
   methods:{
     onSlideSelect(slide){
         this.$socket.emit('page', {
@@ -176,7 +175,7 @@ export default {
                 this.latest = response.data.data
                 this.loading = "false"
             })
-      },
+    },
     topPicks(){
         const api = `https://api.bluebox.website/movie/getTop?sortBy=-created_at`
         axios
@@ -189,7 +188,7 @@ export default {
             .then(response => {
                 this.topicks = response.data.data
             })
-      },
+    },
     genreList(){
         const api = "https://api.bluebox.website/genre"
         axios
@@ -202,7 +201,7 @@ export default {
             .then(response => {
                 this.genrelist = response.data.data
             })
-      },
+    },
     genreStartup(){
         const api = "https://api.bluebox.website/movie/getgenre?genre=" + "biography"
         axios
@@ -216,7 +215,7 @@ export default {
                 console.log(response)
                 this.genre = response.data.data
             })
-      },
+    },
     selectedGenre(){
         const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
         axios
@@ -232,34 +231,44 @@ export default {
             })
       },
   },
-
 	sockets: {
-            connect() {
-              console.log('connected')
-              this.ready = "yes"
-            },
-            disconnect() {
-              console.log('disconnected')
-            },
-            // Event Controller
-            page(data) {
-              if (data){
-                this.ready = "yes"
-                this.page = data
-                cookies.set("page", data)
-              }
-              if ( !data ){
-              this.$socket.emit('page', {
-                  roomid : this.$route.params.roomid ,
-                  page : "/" + this.$route.params.token + "/" + this.$route.params.roomid
-              })
-              this.$router.go(0)
-              this.ready = "yes"
-             }
-            },
-            usercount(data) {
-              this.totaluser = data
-            },
-        },
+    connect() {
+      console.log('connected')
+      this.ready = "yes"
+    },
+    disconnect() {
+      console.log('disconnected')
+    },
+    // Event Controller
+    page(data) {
+      this.ready = "yes"
+      // check new token
+      const check = this.$route.params.token
+      const check2 = (data.split('/'))
+      if (data && check2[2] != check){
+        this.$socket.emit('page', {
+          roomid : this.$route.params.roomid ,
+          page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
+        })
+      }
+      if (data && check2[2] == check)
+        {
+          this.page = data
+          cookies.set("page", data)
+      }
+      // check if data exist
+      if ( !data ){
+      this.$socket.emit('page', {
+          roomid : this.$route.params.roomid ,
+          page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
+      })
+      this.$router.go(0)
+      this.ready = "yes"
+      }
+    },
+    usercount(data) {
+      this.totaluser = data
+    },
+},
 }
 </script>

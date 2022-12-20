@@ -53,32 +53,65 @@ import Navbar from "/src/components/Navbar.vue";
 import Loadingspinner from "/src/components/loading.vue";
 
 export default {
-        name: 'App',
-        data() {
-            return {
-            user: '',
-            ready: 'no',
-            page: '',
-            host: '',
-            status: 'Stopped',
-            currentime: '0',
-            videotime:'0',
-            totaluser:'0',
-            list:[],
-            video:[],
-            selectedvideo: [],
-            loading: 'true'
-            }
-        },
-        components : {
-            Navbar, Carousel, Slide, VideoListItem, Navigation , Loadingspinner
+    name: 'App',
+    data() {
+        return {
+        user: '',
+        ready: 'no',
+        page: '',
+        host: '',
+        status: 'Stopped',
+        currentime: '0',
+        videotime:'0',
+        totaluser:'0',
+        list:[],
+        video:[],
+        selectedvideo:'',
+        loading: 'true'
+        }
+    },
+    components : {
+        Navbar, Carousel, Slide, VideoListItem, Navigation , Loadingspinner
     },
     watch:{
         page: function () {
-            if ( this.page != "/" + this.$route.params.token + "/" + this.$route.params.roomid ){
-            this.$router.push( { path: cookies.get("page") } )
-            console.log( "page hit" )
+        const check = (this.page.split('/'))
+        if ( check[1] != "movie" ){
+        this.$router.push( { path: cookies.get("page")})
+        console.log("hit")
+        }
+        if( check[1] == "movie" )
+        {
+            console.log("refreshed")
+            const api2 = "https://api.bluebox.website/movie/getid?id=" + check[4]
+            axios
+                .get(api2, {
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'access_token': this.$route.params.token
+                    }
+                })
+                .then(response => {
+                    this.video = response.data.data
+                    const api = "https://api.bluebox.website/movie/getgenre?genre=" + response.data.data.genre
+                    axios
+                        .get(api, {
+                            headers: {
+                            'Content-Type': 'application/json',
+                            'access_token': this.$route.params.token
+                            }
+                        })
+                        .then(response => {
+                            console.log(response)
+                            this.list = response.data.data
+                        })
+                        this.loading = 'false'
+                 })
+              this.$router.push( { path: cookies.get("page")})
             }
+        },
+        selectedvideo: function() {
+
         }
     },
     mounted(){
@@ -107,19 +140,20 @@ export default {
                     roomid : this.$route.params.roomid ,
                     page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ slide._id
         })
+        this.selectedvideo = slide._id
     },
     Setupctx(){
+        this.$cookies.set('access_token',this.$route.params.token );
+        if (this.ready === "no")
+        {
             this.$cookies.set('access_token',this.$route.params.token );
-            if (this.ready === "no")
-            {
-                this.$cookies.set('access_token',this.$route.params.token );
-                this.$cookies.set('roomid',this.$route.params.roomid );
-                setInterval(() => {
+            this.$cookies.set('roomid',this.$route.params.roomid );
+            setInterval(() => {
 
-                if (this.ready === "no"){
-                this.$router.go(0)
-                }
-            }, 10000)
+            if (this.ready === "no"){
+            this.$router.go(0)
+            }
+        }, 10000)
         }
     },
     onStartup () {
@@ -150,24 +184,25 @@ export default {
         },
     },
     sockets: {
-            connect() {
-                console.log('connected')
-                this.ready = "yes"
-            },
-            disconnect() {
-                console.log('disconnected')
-            },
+        connect() {
+            console.log('connected')
+            this.ready = "yes"
+        },
+        disconnect() {
+            console.log('disconnected')
+        },
 
-            // Event Controller
-            page(data, slide) {
-                if (data){
-                this.page = data
-                cookies.set("page", data)
-                }
-            },
-            usercount(data) {
-                this.totaluser = data
-            },
+        // Event Controller
+        page(data) {
+            if ( data ){
+            this.ready = "yes"
+            cookies.set("page", data)
+            this.page = data
+        }
+        },
+        usercount(data) {
+            this.totaluser = data
+        },
         },
 }
 </script>

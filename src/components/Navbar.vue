@@ -56,7 +56,7 @@ export default {
       home(){
         this.$socket.emit('page', {
                 roomid : this.$route.params.roomid ,
-                page : "/" + this.$route.params.token + "/" + this.$route.params.roomid
+                page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
       store(){
