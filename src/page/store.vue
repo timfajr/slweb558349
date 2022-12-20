@@ -146,8 +146,9 @@ export default {
     },
     watch:{
       page: function () {
-          if ( cookies.get("page") != "/store/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+          if ( this.page != "/store/" + this.$route.params.token + "/" + this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
+            console.log("hit")
           }
       },
       selectedgenre: function (){
@@ -323,6 +324,7 @@ export default {
     sockets: {
             connect() {
               console.log('connected')
+              this.ready="yes"
             },
             disconnect() {
               console.log('disconnected')
