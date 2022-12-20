@@ -336,7 +336,7 @@ export default {
               if (data && check2[2] != check){
                 this.$socket.emit('page', {
                   roomid : this.$route.params.roomid ,
-                  page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
+                  page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
                 })
               }
               if (data && check2[2] == check)
@@ -349,7 +349,7 @@ export default {
               if ( !data ){
               this.$socket.emit('page', {
                   roomid : this.$route.params.roomid ,
-                  page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
+                  page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
               })
               }
             },
