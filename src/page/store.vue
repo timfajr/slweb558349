@@ -342,14 +342,14 @@ export default {
                   roomid : this.$route.params.roomid ,
                   page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
                 })
-                cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
+                this.$cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
               }
-              
+
               if (data && check2[2] == check)
                 {
                   this.ready="yes"
                   this.page = data
-                  cookies.set("page", data)
+                  this.$cookies.set("page", data)
               }
 
               // check if data exist
@@ -359,7 +359,7 @@ export default {
                   roomid : this.$route.params.roomid ,
                   page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
               })
-              cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
+              this.$cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
               }
 
             },
