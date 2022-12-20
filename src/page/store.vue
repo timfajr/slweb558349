@@ -330,10 +330,27 @@ export default {
 
             // Event Controller
             page(data) {
-              if (data){
-                this.ready = "yes"
-                this.page = data
-                cookies.set("page", data)
+              // check new token
+              const check = this.$route.params.token
+              const check2 = (data.split('/'))
+              if (data && check2[2] != check){
+                this.$socket.emit('page', {
+                  roomid : this.$route.params.roomid ,
+                  page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
+                })
+              }
+              if (data && check2[2] == check)
+                {
+                  this.page = data
+                  cookies.set("page", data)
+              }
+
+              // check if data exist
+              if ( !data ){
+              this.$socket.emit('page', {
+                  roomid : this.$route.params.roomid ,
+                  page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
+              })
               }
             },
             usercount(data) {

@@ -23,7 +23,7 @@
           </SplideSlide>
       </Splide>
       </div>
-      <!--
+    <!--
     Wrapper
     -->
     <div v-if="topicks" class="w-10/12 self-center items-center">
@@ -242,6 +242,7 @@ export default {
     // Event Controller
     page(data) {
       this.ready = "yes"
+
       // check new token
       const check = this.$route.params.token
       const check2 = (data.split('/'))
@@ -256,14 +257,13 @@ export default {
           this.page = data
           cookies.set("page", data)
       }
+
       // check if data exist
       if ( !data ){
       this.$socket.emit('page', {
           roomid : this.$route.params.roomid ,
           page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
       })
-      this.$router.go(0)
-      this.ready = "yes"
       }
     },
     usercount(data) {
