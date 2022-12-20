@@ -252,6 +252,7 @@ export default {
           roomid : this.$route.params.roomid ,
           page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
         })
+        cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
       }
 
       if (data && check2[2] == check)
@@ -266,6 +267,7 @@ export default {
           roomid : this.$route.params.roomid ,
           page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
       })
+      cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
       }
     },
     usercount(data) {
