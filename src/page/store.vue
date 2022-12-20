@@ -340,9 +340,11 @@ export default {
                 this.ready="yes"
                 this.$socket.emit('page', {
                   roomid : this.$route.params.roomid ,
-                  page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
+                  page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
                 })
+                cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
               }
+              
               if (data && check2[2] == check)
                 {
                   this.ready="yes"
@@ -355,9 +357,11 @@ export default {
               this.ready="yes"
               this.$socket.emit('page', {
                   roomid : this.$route.params.roomid ,
-                  page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
+                  page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
               })
+              cookies.set("page", "/home/" + this.$route.params.token + "/" + this.$route.params.roomid)
               }
+
             },
             usercount(data) {
               this.totaluser = data

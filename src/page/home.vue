@@ -246,12 +246,14 @@ export default {
       // check new token
       const check = this.$route.params.token
       const check2 = (data.split('/'))
+      
       if (data && check2[2] != check){
         this.$socket.emit('page', {
           roomid : this.$route.params.roomid ,
           page : "/home/" + this.$route.params.token + "/" + this.$route.params.roomid
         })
       }
+
       if (data && check2[2] == check)
         {
           this.page = data
