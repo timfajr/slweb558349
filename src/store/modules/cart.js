@@ -30,7 +30,7 @@ const actions = {
       if ( subs ) {
       const cartItem = state.items.find( item => item.id === subs.id )
       if (!cartItem) {
-        commit('pushProductToCart', { id: subs.id , price: subs.price , item : subs.item , qty: subs.qty , status: subs.status ,total: subs.qty * subs.price })
+        commit('pushProductToCart', { id: subs.id , price: subs.price , item : subs.item , qty: subs.qty , status: subs.status , total: subs.qty * subs.price })
         } 
       } 
   },

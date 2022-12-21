@@ -176,10 +176,10 @@ export default {
         })
     },
     increaseValue(item) {
-    this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty + 1 , price: 300 })
+    this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty + 1 , price: 700 })
     },
     decreaseValue(item) {
-    this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty - 1 , price: 300 })
+    this.$store.dispatch('cart/updateProductOnCart', { item : 'subs30' , id : '1' , status: "standart" , qty: item.qty - 1 , price: 700 })
     },
     onTopupSelect() {
     this.$socket.emit('topup', {

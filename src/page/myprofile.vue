@@ -160,7 +160,7 @@ export default {
         })
     },
     addtime() {
-    this.$store.dispatch('cart/addProductToCart', { item : 'subs30' , id : '1' , status: "standart" , qty: 1 , price: 300 })
+    this.$store.dispatch('cart/addProductToCart', { item : 'subs30' , id : '1' , status: "standart" , qty: 1 , price: 700 })
     },
     onTopupSelect() {
     this.$socket.emit('topup', {
