@@ -51,7 +51,6 @@ const actions = {
 
 // mutations
 const mutations = {
-
     initialiseStore(state) {
         if(localStorage.getItem('vuex.items')) {
             let items = JSON.parse(localStorage.getItem('vuex.items'));

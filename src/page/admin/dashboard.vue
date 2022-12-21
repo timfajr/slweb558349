@@ -137,7 +137,7 @@ setup() {
           return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
         }
     } else {
-        return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}`
+        return `https://api.bluebox.website/admin/getdevices?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
     }
     })
 
