@@ -78,7 +78,9 @@
         </ul>
     </div>
     </template>
-
+    <template #item-created_at="created_at">
+      <p>{{formatDate(created_at.created_at)}}</p>
+    </template>
     <template #pagination="{ prevPage, nextPage, isFirstPage, isLastPage }">
         <button :disabled="isFirstPage" @click="prevPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">prev page</button>
         <button :disabled="isLastPage" @click="nextPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">next page</button>
@@ -116,6 +118,7 @@ setup() {
     { text: "subscription", value: "subscription", sortable: true },
     { text: "timeleft", value: "timeleft" },
     { text: "balance", value: "balance" },
+    { text: "created at", value: "created_at" , sortable: true },
     { text: "Operation", value: "operation" , width: 100}
     ];
     const items = ref<Item[]>([])
