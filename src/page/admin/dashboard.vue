@@ -18,7 +18,8 @@
         border-cell
         buttons-pagination
     >
-    <template #item-operation="item">
+    
+     <template #item-operation="item">
         <div class="flex flex-row space-x-2 justify-center">
           <img
             src="/src/images/delete.png"
@@ -32,8 +33,9 @@
           />
         </div>
     </template>
-
-  <template #item-devices="devices">
+    <!--
+    
+   <template #item-devices="devices">
       <div class="flex flex-row space-x-2 justify-center border-b-2">
         Device ID
       </div>
@@ -41,7 +43,7 @@
         {{i.deviceid}}
       </div>
   </template>
-
+  -->
   <template #item-timeleft="timeleft">
     <p>{{timeleft.timeleft}} Day</p>
   </template>
@@ -93,6 +95,7 @@
 </template>
 
 <script lang="ts">
+
 import { defineComponent, ref, computed, watch } from "vue";
 import { Header, ServerOptions, Item } from "vue3-easy-data-table";
 import NavbarAdmin from "../../components/Navbaradmin.vue"
