@@ -72,8 +72,6 @@
         { text: "title", value: "title", sortable: true },
         { text: "genre", value: "genre", sortable: true  },
         { text: "topick", value: "topick" , sortable: true },
-        { text: "url", value: "url" , sortable: true },
-        { text: "imgurl", value: "imgurl" , sortable: true },
         { text: "created at", value: "created_at" , sortable: true },
         { text: "Operation", value: "operation" , width: 100}
         ];
