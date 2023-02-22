@@ -116,7 +116,7 @@ components:{
 setup() {
     const headers: Header[] = [
     { text: "_id", value: "_id" , width: 200},
-    { text: "deviceid", value: "devices", sortable: true , width: 300 },
+    /// { text: "deviceid", value: "devices", sortable: true , width: 300 },
     { text: "ownerid", value: "ownerid", sortable: true , width: 300},
     { text: "username", value: "username", sortable: true , width: 300},
     { text: "subscription", value: "subscription", sortable: true },
