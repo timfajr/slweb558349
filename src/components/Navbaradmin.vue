@@ -25,6 +25,12 @@
         >Movies</router-link
         >
         <router-link
+        to="/admin/requestedmovie/"
+        active-class="rounded bg-indigo-500 text-indigo-200"
+        class="p-2"
+        >Requested</router-link
+        >
+        <router-link
         to="/admin/login/"
         active-class="rounded bg-red-500 text-gray-200"
         class="p-2"

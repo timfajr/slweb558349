@@ -22,6 +22,7 @@ import AdminDashboard from '/src/page/admin/dashboard.vue'
 import AdminUpload from '/src/page/admin/upload.vue'
 import AdminMovies from '/src/page/admin/movie.vue'
 import AdminTransaction from '/src/page/admin/transaction.vue'
+import AdminRequestedmovie from '/src/page/admin/requestedmovie.vue'
 import icon from '../images/bluebox.png'
 
 '     ______       __                        '
@@ -166,6 +167,15 @@ const routes = [
       path: '/admin/transaction/',
       name: 'AdminTransaction',
       component: async () => await AdminTransaction,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
+    },
+    {
+      path: '/admin/requestedmovie/',
+      name: 'AdminRequestedmovie',
+      component: async () => await AdminRequestedmovie,
       meta: {
         title: "Bluebox",
         icon: icon

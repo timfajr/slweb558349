@@ -338,7 +338,8 @@ setup() {
                 method: 'post',
                 url: `${domain}/user/inworld/30daysub/`,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'access_token': cookies.get("atoken")
                 },
                 data: JSON.stringify(data, null)
             }
