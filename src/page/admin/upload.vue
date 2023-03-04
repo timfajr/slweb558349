@@ -13,7 +13,7 @@
 			  <div class="flex flex-row space-x-3 w-full">
 					<div class="flex items-center rounded-xl  p-2 w-full bg-opacity-10 bg-white">
 						<input id="Topicks" type="checkbox" v-model="Topicks" value="true" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 ">
-						<label for="Topicks" class="ml-2 text-sm font-medium text-gray-900 dark:text-white">Top picks</label>
+						<label for="Topicks" class="ml-2 text-sm font-medium text-white dark:text-white">Top picks</label>
 					</div>
 					<div class="flex items-center rounded-xl p-2 w-full bg-opacity-10 bg-white">
 						<input id="Published" type="checkbox" v-model="Published" value="true" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
@@ -66,6 +66,9 @@
 	import { useCookies } from "vue3-cookies"
 	const { cookies } = useCookies()
 
+	//const domain = "https://api.bluebox.website";
+	const domain = "http://localhost:3000";
+	
 	export default {
 		data(){
 			return {
@@ -103,7 +106,7 @@
 				let formData = new FormData()
 				this.hide = true
 				formData.append('myVideo', this.file)
-				axios.post( 'https://api.bluebox.website/upload',
+				axios.post( domain + '/upload',
 					formData,
 					{
 						headers: {
@@ -123,7 +126,7 @@
 			submitImage(){
 				let formData = new FormData()
 				formData.append('myImage', this.image)
-				axios.post( 'https://api.bluebox.website/uploadimage',
+				axios.post( domain + '/uploadimage',
 					formData,
 					{
 						headers: {
@@ -155,7 +158,7 @@
 				url: this.videourl,
 				imgurl: this.imageurl
             	}
-				axios.post( 'https://api.bluebox.website/admin/post/movie',
+				axios.post( domain + '/admin/post/movie',
 					formData2,
 					{
 						headers: {

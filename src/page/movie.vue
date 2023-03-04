@@ -52,6 +52,9 @@ import VideoListItem from "/src/components/store/carouselitem.vue";
 import Navbar from "/src/components/Navbar.vue";
 import Loadingspinner from "/src/components/loading.vue";
 
+const domain = "https://api.bluebox.website";
+//const domain = "http://localhost:3000";
+
 export default {
     name: 'App',
     data() {
@@ -83,7 +86,7 @@ export default {
         if( check[1] == "movie" )
         {
             console.log("refreshed")
-            const api2 = "https://api.bluebox.website/movie/getid?id=" + check[4]
+            const api2 = domain + "/movie/getid?id=" + check[4]
             axios
                 .get(api2, {
                     headers: {
@@ -93,7 +96,7 @@ export default {
                 })
                 .then(response => {
                     this.video = response.data.data
-                    const api = "https://api.bluebox.website/movie/getgenre?genre=" + response.data.data.genre
+                    const api = doman + "/movie/getgenre?genre=" + response.data.data.genre
                     axios
                         .get(api, {
                             headers: {
@@ -164,7 +167,7 @@ export default {
         }
     },
     onStartup () {
-        const api2 = "https://api.bluebox.website/movie/getid?id=" + this.$route.params.id
+        const api2 = domain + "/movie/getid?id=" + this.$route.params.id
         axios
             .get(api2, {
                 headers: {
@@ -174,7 +177,7 @@ export default {
             })
             .then(response => {
                 this.video = response.data.data
-                const api = "https://api.bluebox.website/movie/getgenre?genre=" + response.data.data.genre
+                const api = domain + "/movie/getgenre?genre=" + response.data.data.genre
                 axios
                     .get(api, {
                         headers: {

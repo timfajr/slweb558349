@@ -46,6 +46,9 @@
 
     import router from "../../router";
     
+    //const domain = "https://api.bluebox.website";
+    const domain = "http://localhost:3000";
+
     export default defineComponent({
     
     components:{
@@ -54,8 +57,8 @@
     
     setup() {
         const headers: Header[] = [
-        { text: "_id", value: "_id"},
         { text: "ownerid", value: "ownerid", sortable: true },
+        { text: "username", value: "username", sortable: true },
         { text: "item", value: "item", sortable: true  },
         { text: "quantity", value: "quantity" , sortable: true },
         { text: "price", value: "price" },
@@ -75,13 +78,13 @@
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+                return domain + `/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
             }
             else {
-                return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+                return domain + `/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
         } else {
-            return `https://api.bluebox.website/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
+            return domain + `/admin/gettransaction?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
         }
         })
         

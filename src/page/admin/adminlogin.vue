@@ -31,6 +31,9 @@
     import { useCookies } from "vue3-cookies"
     const { cookies } = useCookies()
     
+    //const domain = "https://api.bluebox.website";
+    const domain = "http://localhost:3000";
+
     export default {
             name: 'App',
             data() {
@@ -51,7 +54,7 @@
             cookies.set('atoken', '')
             setInterval(() => {
             console.log('hit')
-            const api = "https://api.bluebox.website/admin/token"
+            const api = domain + "/admin/token"
             axios
             .post(api,{},{ 
               headers: {
@@ -72,7 +75,7 @@
         }, 1000 * 60)
         },
         submitForm() {
-            axios.post('https://api.bluebox.website/admin/login', {
+            axios.post(domain +  '/admin/login', {
                 username: this.username,
                 password: this.password
             }).then(response => {
