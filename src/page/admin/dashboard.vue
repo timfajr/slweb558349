@@ -195,8 +195,8 @@ import NavbarAdmin from "../../components/Navbaradmin.vue"
 import axios, { AxiosRequestConfig} from 'axios';
 import dayjs from "dayjs";
 
-//const domain = "https://api.bluebox.website";
-const domain = "http://localhost:3000";
+const domain = "https://api.bluebox.website";
+//const domain = "http://localhost:3000";
 
 // Cookies
 import { useCookies } from "vue3-cookies"
