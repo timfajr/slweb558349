@@ -84,6 +84,9 @@
                        {{this.selected.message}}
                     </p>
 
+                    <p class="pl-2"> Reply </p>
+                    <input id="Reply" type="text" class="bg-white bg-opacity-10  rounded-xl p-2"  v-model="reply" required />
+
                     <p class="pl-2"> Status </p>
                     <p class="bg-white bg-opacity-10 rounded-xl p-2">
                        {{this.selected.status}}
@@ -165,8 +168,8 @@
     import axios, { AxiosRequestConfig} from 'axios';
     import dayjs from "dayjs";
     
-    //const domain = "https://api.bluebox.website";
-    const domain = "http://localhost:3000";
+    const domain = "https://api.bluebox.website";
+    //const domain = "http://localhost:3000";
     
     // Cookies
     import { useCookies } from "vue3-cookies"
@@ -268,6 +271,7 @@
         const ownerid = ref("") ;
         const uploaded = ref("false");
         const secret = ref("");
+        const reply = ref("");
     
         const deleteItem = async (val: Item) => {
             loading.value=true;
@@ -298,7 +302,8 @@
         const submitEdit = (val: Item) => {
           loading.value=true;
           const data = { 
-            status: uploaded.value
+            status: uploaded.value,
+            reply: reply.value
            }
                 const config: AxiosRequestConfig =  {
                     method: 'PATCH',
@@ -330,6 +335,7 @@
           hidden.value = !hidden.value
           ownerid.value = val.ownerid
           uploaded.value = val.status
+          reply.value = val.reply
           secret.value = val.secret
           selected.value = val
         };
@@ -338,6 +344,7 @@
           writehidden.value = !writehidden.value
           ownerid.value = val.ownerid
           uploaded.value = val.status
+          reply.value = val.reply
           secret.value = val.secret
           selected.value = val
         };
@@ -362,6 +369,7 @@
         // Ref Edit
         ownerid,
         uploaded,
+        reply,
         secret,
         // Update Crud //
         formatDate

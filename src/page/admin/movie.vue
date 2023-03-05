@@ -143,8 +143,8 @@
     const { cookies } = useCookies()
 
     // Update Domain
-    // const domain = "https://api.bluebox.website";
-    const domain = "http://localhost:3000";
+    const domain = "https://api.bluebox.website";
+    //const domain = "http://localhost:3000";
 
     export default defineComponent({
     
