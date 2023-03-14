@@ -6,7 +6,7 @@
           <!--
           Wrapper
           -->
-          <div v-if="latest" class="w-10/12 self-center items-center">
+          <div v-if="latest[0]" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Latest Series </div>
             </div>
@@ -26,7 +26,7 @@
             <!--
           Wrapper
           -->
-          <div v-if="topicks" class="w-10/12 self-center items-center">
+          <div v-if="topicks[0]" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Popular Series </div>
             </div>
@@ -44,7 +44,7 @@
           <!--
           Wrapper
           -->
-          <div v-if="genrelist" class="w-10/12 self-center items-center">
+          <div v-if="genrelist[0]" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
             <div class="text-xl font-semibold text-white p-2 "> Series By Genre </div>
               <select v-model="selectedgenre" id="genre" class="p-2 rounded-xl capitalize">
@@ -68,10 +68,10 @@
           <!--
           Wrapper
           -->
-            <div class="flex flex-row justify-end w-10/12 self-center items-center mt-4">
+            <div v-if="videos" class="flex flex-row justify-end w-10/12 self-center items-center mt-4">
                 <SearchBar @termChange="onTermChange" class='p-4 mb-4 w-2/4 '/>
             </div>
-            <div class="bg-white bg-opacity-10 rounded-xl w-10/12 flex flex-col justify-center self-center items-center border-white shadow-xl">
+            <div v-if="videos" class="bg-white bg-opacity-10 rounded-xl w-10/12 flex flex-col justify-center self-center items-center border-white shadow-xl">
                 <div class="h-10">
                     </div>
                 <VideoList :videos="videos" @videoSelect="onVideoSelect" class="mb-8 "/>

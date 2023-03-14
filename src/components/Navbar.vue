@@ -260,8 +260,9 @@
 
 <script lang="js">
 
-//const domain = "https://api.bluebox.website";
-const domain = "http://localhost:3000";
+const domain = "https://api.bluebox.website";
+//const domain = "http://localhost:3000";
+
 import axios from "axios";
 
 export default {
