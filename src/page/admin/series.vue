@@ -20,15 +20,12 @@
                   Title : {{this.selected.title}}
                 </p>
                 <p>
-                  Genre : {{this.selected.genre}}
+                  Series : {{this.selected.series}}
                 </p>
                 <p>
-                  Topick : {{this.selected.topick}}
+                  Episode : {{this.selected.episode}}
                 </p>
                 <p> Uploaded :  {{formatDate(this.selected.created_at)}}</p>
-                <p class="text-ellipsis overflow-hidden h-12">
-                  Description : {{this.selected.description}}
-                </p>
               </div>
               <button @click="deleteItem(selected)" class="font-semibold text-white bg-red-700 rounded flex flex-col px-4 py-2 mt-4 w-28 place-items-center self-end  bg-mainyellow">
                   Delete
@@ -54,18 +51,11 @@
               </div>
               <div class="bg-white bg-opacity-10 text-white rounded flex flex-col px-4 py-2 mt-4 space-y-2">
                 <p class="pl-2"> Title </p>
-                <input id="Title" type="text" class="bg-white bg-opacity-10 rounded-xl p-2"  v-model="title" required />
-                <p class="pl-2"> Genre </p>
-                <input id="Title" type="text" class="bg-white bg-opacity-10  rounded-xl p-2"  v-model="genre" required />
-                <p class="pl-2"> Description </p>
-                <textarea rows="5" cols="60" class="bg-white bg-opacity-10  rounded-xl p-2 h-32 " 
-			  placeholder="Description" id="description" type="text" v-model="description" required > </textarea>
-        <div class="flex flex-row space-x-3 w-full">
-					<div class="flex items-center rounded-xl  p-2 w-full bg-opacity-10 bg-white">
-						<input id="Topicks" type="checkbox" v-model="topick" class="w-4 h-4">
-            <label for="Topicks" class="ml-2 text-sm font-medium">Top picks</label>
-					</div>
-			  </div>
+                <input id="Title" type="text" class="bg-white bg-opacity-10 rounded-xl p-2" v-model="title" required /> 
+                <p class="pl-2"> Series </p>
+                <input id="Series" type="text" class="bg-white bg-opacity-10  rounded-xl p-2"  v-model="series" required />
+                <p class="pl-2"> Episode </p>
+                <input id="Series" type="text" class="bg-white bg-opacity-10  rounded-xl p-2"  v-model="episode" required />
                 <p> uploaded  {{formatDate(this.selected.created_at)}}</p>
               
               </div>
@@ -155,8 +145,8 @@
     setup() {
         const headers: Header[] = [
         { text: "title", value: "title", sortable: true },
-        { text: "genre", value: "genre", sortable: true  },
-        { text: "topick", value: "topick" , sortable: true },
+        { text: "series", value: "series", sortable: true },
+        { text: "episode", value: "episode", sortable: true },
         { text: "created at", value: "created_at" , sortable: true },
         { text: "Operation", value: "operation" , width: 100}
         ];
@@ -172,14 +162,14 @@
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                return domain + `/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+                return domain + `/admin/gettvseries?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
             }
             else
             {
-              return domain + `/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+              return domain + `/admin/gettvseries?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
         } else {
-            return domain + `/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
+            return domain + `/admin/gettvseries?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
         }
         })
 
@@ -237,15 +227,14 @@
 
         // Edit Crud Ref
         const title = ref("") ;
-        const description = ref("");
-        const genre = ref("");
-        const topick = ref(false);
+        const series = ref("");
+        const episode = ref("");
 
         const deleteItem = async (val: Item) => {
             loading.value=true;
                 const config: AxiosRequestConfig =  {
                     method: 'delete',
-                    url: `${domain}/admin/delete/?id=${val._id}`,
+                    url: `${domain}/admin/deleteseries/?id=${val._id}`,
                     headers: {
                         'access_token': cookies.get("atoken")
                     }
@@ -269,13 +258,13 @@
         
         const submitEdit = (val: Item) => {
           loading.value=true;
-          const data = {title: title.value,
-                      description : description.value,
-                      genre : genre.value,
-                      topick : topick.value}
+          const data = {
+                      title: title.value,
+                      series : series.value,
+                      episode : episode.value}
                 const config: AxiosRequestConfig =  {
                     method: 'patch',
-                    url: `${domain}/admin/update/?id=${val._id}`,
+                    url: `${domain}/admin/updateseries/?id=${val._id}`,
                     headers: {
                         'Content-Type': 'application/json',
                         'access_token': cookies.get("atoken")
@@ -302,18 +291,16 @@
         const hideButton = (val: Item) => {
           hidden.value = !hidden.value
           title.value = val.title
-          description.value = val.description
-          genre.value = val.genre
-          topick.value = val.topick
+          series.value = val.series
+          episode.value = val.episode
           selected.value = val
         };
 
         const writeButton = (val: Item) => {
           writehidden.value = !writehidden.value
           title.value = val.title
-          description.value = val.description
-          genre.value = val.genre
-          topick.value = val.topick
+          series.value = val.series
+          episode.value = val.episode
           selected.value = val
         };
 
@@ -336,9 +323,8 @@
         selected,
         // Ref Edit
         title,
-        description,
-        genre,
-        topick,
+        series,
+        episode,
         // Update Crud //
         formatDate
         }

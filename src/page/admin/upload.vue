@@ -66,8 +66,8 @@
 	import { useCookies } from "vue3-cookies"
 	const { cookies } = useCookies()
 
-	//const domain = "https://api.bluebox.website";
-	const domain = "http://localhost:3000";
+	const domain = "https://api.bluebox.website";
+	//const domain = "http://localhost:3000";
 	
 	export default {
 		data(){
@@ -148,11 +148,6 @@
                 title: this.Title,
                 description: this.Description,
 				genre : this.Genre,
-				price: this.Price,
-				discount: this.Discountprice,
-				rentprice: this.Rentprice,
-				rented: this.Rented,
-				discounted: this.Discounted,
 				topick: this.Topicks,
 				published: this.Published,
 				url: this.videourl,

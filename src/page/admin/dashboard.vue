@@ -1,12 +1,12 @@
 
 <template>
 <div class="bg-mainblue w-screen h-full min-h-screen pb-10">
-    <NavbarAdmin />
+    
             <!-- Update Crud  -->
         <!-- Delete Crud -->
-        <div v-if="hidden == false" class="fixed z-20 w-screen h-full min-h-screen bg-black bg-opacity-50">
+        <div v-if="hidden == false" class="text-xs fixed z-20 w-screen h-full min-h-screen bg-black bg-opacity-50">
           <div class="flex h-screen flex-row place-items-center justify-center">
-            <div class="h-2/5 w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
+            <div class="h-4/12 w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
               <div class="flex self-end p-4">
               <button class="bg-mainyellow w-8 h-8 rounded flex place-items-center justify-center font-semibold text-mainblue" @click="hidden = !hidden">
                 X
@@ -41,9 +41,9 @@
         <!-- Delete Crud -->
 
         <!-- Write Crud -->
-        <div v-if="writehidden == false" class="fixed z-20 w-screen h-full min-h-screen bg-black bg-opacity-50">
+        <div v-if="writehidden == false" class="text-xs fixed z-20 w-screen h-full min-h-screen bg-black bg-opacity-50">
           <div class="flex h-screen flex-row place-items-center justify-center">
-            <div class="h-2/5 w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
+            <div class="h-4/12 w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
               <div class="flex self-end p-4">
               <button class="bg-mainyellow w-8 h-8 rounded flex place-items-center justify-center font-semibold text-mainblue" @click="writehidden = !writehidden">
                 X
@@ -92,7 +92,7 @@
         </div>
         <!-- Write Crud -->
         <!-- Update Crud -->
-
+        <NavbarAdmin />
     <div class="flex flex-row justify-center justify-items-center mt-10">
     <div class="w-8/12">
         <EasyDataTable

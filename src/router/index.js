@@ -15,6 +15,9 @@ import Checkout from '/src/page/checkout.vue'
 import Movie from '/src/page/movie.vue'
 import RecentlyAdded from '/src/page/recent.vue'
 import Expired from '/src/page/subscriptionend.vue'
+import TVSeries from '/src/page/tvseries.vue'
+import Series from '/src/page/series.vue'
+import Watchseries from '/src/page/watchseries.vue'
 
 // Admin
 import AdminLogin from '/src/page/admin/adminlogin.vue'
@@ -23,6 +26,10 @@ import AdminUpload from '/src/page/admin/upload.vue'
 import AdminMovies from '/src/page/admin/movie.vue'
 import AdminTransaction from '/src/page/admin/transaction.vue'
 import AdminRequestedmovie from '/src/page/admin/requestedmovie.vue'
+import AdminUploadTvSeries from '/src/page/admin/uploadseries.vue'
+import AdminSeriesTitle from '/src/page/admin/seriestitle.vue'
+import AdminSeries from '/src/page/admin/series.vue'
+
 import icon from '../images/bluebox.png'
 
 '     ______       __                        '
@@ -57,6 +64,28 @@ const routes = [
     },
 
     {
+      path: '/tvseries/:token/:roomid/',
+      name: 'tvseries',
+      component: async () => await TVSeries,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
+    },
+
+    {
+      path: '/series/:token/:roomid/:id',
+      name: 'series',
+      component: async () => await Series,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
+    },
+
+    {
       path: '/search/:token/:roomid/',
       name: 'search',
       component: async () => await Search,
@@ -77,6 +106,7 @@ const routes = [
         icon: icon
       }
     },
+
     {
         path: '/watch/:token/:roomid/:vid',
         name: 'Watch_Movie',
@@ -86,6 +116,16 @@ const routes = [
           title: "Bluebox",
           icon: icon
         }
+    },
+    {
+      path: '/watchseries/:token/:roomid/:title',
+      name: 'Watch_Series',
+      component: async () => await Watchseries,
+      props: true,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
     },
 
     // User Profile
@@ -164,6 +204,24 @@ const routes = [
       }
     },
     {
+      path: '/admin/seriestitle/',
+      name: 'AdminSeriesTitle',
+      component: async () => await AdminSeriesTitle,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
+    },
+    {
+      path: '/admin/series/',
+      name: 'AdminSeries',
+      component: async () => await AdminSeries,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
+    },
+    {
       path: '/admin/transaction/',
       name: 'AdminTransaction',
       component: async () => await AdminTransaction,
@@ -181,6 +239,17 @@ const routes = [
         icon: icon
       }
     },
+
+    {
+      path: '/admin/uploadtvseries/',
+      name: 'AdminUploadTvSeries',
+      component: async () => await AdminUploadTvSeries,
+      meta: {
+        title: "Bluebox",
+        icon: icon
+      }
+    },
+
     {
       path: '/admin/upload/',
       name: 'AdminUpload',

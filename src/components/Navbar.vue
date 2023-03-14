@@ -215,37 +215,43 @@
 
       <!-- Update Crud Delete Requested  -->
 
-    <nav class="bg-mainblue text-white p-2 text-lg font-semibold flex flex-row justify space-x-12 justify-center w-screen pt-12 ">
-      <div class="space-x-2 flex flex-row justify-center font-normal bg-white bg-opacity-10 rounded-2xl p-2 self-center px-4">
+    <nav class="bg-mainblue text-white p-2 text-lg font-semibold flex flex-row justify space-x-12 justify-center w-screen pt-12 text-xs ">
+      <div class="space-x-2 flex flex-row justify-center font-normal bg-white bg-opacity-10 rounded-2xl p-2 px-4 self-center">
       <div class="flex flex-row p-2">
           <img src="../images/Untitled.png" class="object-contain h-10 w-18 rounded" />
       </div>
       <button :class="{ 'link-active': activate === 'Home'}"
        class="router-link-exact-active router-link-active hover:animate-pulse rounded flex justify-center self-center active:bg-mainyellow" @click="home" :to="{ name: 'Home', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
-        <div class="flex flex-row p-2 ">
-          <font-awesome-icon icon="fa-solid fa-house-chimney" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Home
+        <div class="flex flex-row p-2 place-items-center text-center">
+          <font-awesome-icon icon="fa-solid fa-house-chimney" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2 " />  Home
         </div>
       </button>
       <button :class="{ 'link-active': activate === 'Store'}"
       class="hover:animate-pulse rounded flex justify-center self-center" @click="store" :to="{ name: 'Store', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
-        <div class="flex flex-row p-2">
+        <div class="flex flex-row p-2 place-items-center text-center">
           <font-awesome-icon icon="fa-solid fa-video" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Movies
         </div>
       </button>
       <button :class="{ 'link-active': activate === 'RecentlyAdded'}"
       class="hover:animate-pulse rounded flex justify-center self-center" @click="recent" :to="{ name: 'RecentlyAdded', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
-        <div class="flex flex-row p-2">
+        <div class="flex flex-row p-2 place-items-center text-center">
           <font-awesome-icon icon="fa-solid fa-calendar-check" class="bg-mainyellow p-1 w-5 h-5  rounded mr-2" />  Recently Added
+        </div>
+      </button>
+      <button :class="{ 'link-active': activate === 'tvseries'}"
+      class="hover:animate-pulse rounded flex justify-center self-center" @click="tvseries" :to="{ name: 'tvseries', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
+        <div class="flex flex-row p-2 place-items-center text-center">
+          <font-awesome-icon icon="fa-brands fa-youtube" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Tvseries
         </div>
       </button>
       <button :class="{ 'link-active': activate === 'search'}"
       class="hover:animate-pulse rounded flex justify-center self-center" @click="search" :to="{ name: 'search', params: { token: this.$route.params.token , roomid: this.$route.params.roomid} }">
-        <div class="flex flex-row p-2">
+        <div class="flex flex-row p-2 place-items-center text-center">
           <font-awesome-icon icon="fa-brands fa-youtube" class="bg-mainyellow p-1 w-5 h-5 rounded mr-2" />  Youtube
         </div>
       </button>
       </div>
-      <div class="space-x-4 flex flex-row rounded-2xl bg-white bg-opacity-10 p-2 justify-center self-center px-4">
+      <div class="space-x-4 flex flex-row rounded-2xl bg-white bg-opacity-10 p-3 justify-center self-center text-sm">
         <button @click="hidden = !hidden" class="hover:animate-pulse p-2 m-2 rounded bg-mainyellow text-mainblue px-4"> <font-awesome-icon icon="bell" /> </button>
         <button @click="myprofile" class="hover:animate-pulse p-2 m-2 rounded bg-mainyellow text-mainblue px-4"> <font-awesome-icon icon="user" /> </button>
       </div>
@@ -254,8 +260,8 @@
 
 <script lang="js">
 
-const domain = "https://api.bluebox.website";
-//const domain = "http://localhost:3000";
+//const domain = "https://api.bluebox.website";
+const domain = "http://localhost:3000";
 import axios from "axios";
 
 export default {
@@ -303,6 +309,12 @@ export default {
         this.$socket.emit('page', {
                 roomid : this.$route.params.roomid ,
                 page : "/store/" + this.$route.params.token + "/" + this.$route.params.roomid
+            })
+      },
+      tvseries(){
+        this.$socket.emit('page', {
+                roomid : this.$route.params.roomid ,
+                page : "/tvseries/" + this.$route.params.token + "/" + this.$route.params.roomid
             })
       },
       recent(){

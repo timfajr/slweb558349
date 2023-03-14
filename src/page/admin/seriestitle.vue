@@ -39,50 +39,6 @@
         </div>
         <!-- Delete Crud -->
 
-        <!-- Write Crud -->
-        <div v-if="writehidden == false" class="text-xs fixed z-10 w-screen h-full min-h-screen bg-black bg-opacity-50">
-          <div class="flex h-screen flex-row place-items-center justify-center">
-            <div class="w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
-              <div class="flex self-end p-4">
-              <button class="bg-mainyellow w-8 h-8 rounded flex place-items-center justify-center font-semibold text-mainblue" @click="writehidden = !writehidden">
-                X
-              </button>
-            </div>
-            <div class="flex self-center w-full h-full p-4 flex-col -mt-2">
-              <div class="bg-white bg-opacity-10 text-white rounded flex py-2 justify-center place-items-center">
-                Edit Movie Data
-              </div>
-              <div class="bg-white bg-opacity-10 text-white rounded flex flex-col px-4 py-2 mt-4 space-y-2">
-                <p class="pl-2"> Title </p>
-                <input id="Title" type="text" class="bg-white bg-opacity-10 rounded-xl p-2"  v-model="title" required />
-                <p class="pl-2"> Genre </p>
-                <input id="Title" type="text" class="bg-white bg-opacity-10  rounded-xl p-2"  v-model="genre" required />
-                <p class="pl-2"> Description </p>
-                <textarea rows="5" cols="60" class="bg-white bg-opacity-10  rounded-xl p-2 h-32 " 
-			  placeholder="Description" id="description" type="text" v-model="description" required > </textarea>
-        <div class="flex flex-row space-x-3 w-full">
-					<div class="flex items-center rounded-xl  p-2 w-full bg-opacity-10 bg-white">
-						<input id="Topicks" type="checkbox" v-model="topick" class="w-4 h-4">
-            <label for="Topicks" class="ml-2 text-sm font-medium">Top picks</label>
-					</div>
-			  </div>
-                <p> uploaded  {{formatDate(this.selected.created_at)}}</p>
-              
-              </div>
-              <div class="flex flex-row justify-end space-x-4 font-semibold">
-                <button @click="hideButton(selected)" class="text-white bg-white rounded flex flex-col px-4 py-2 mt-4 w-28 place-items-center self-end  bg-red-700">
-                  Delete
-              </button>
-                <button @click="submitEdit(selected)" class="text-mainblue bg-white rounded flex flex-col px-4 py-2 mt-4 w-28 place-items-center self-end  bg-mainyellow">
-                  Submit
-              </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        </div>
-
-        <!-- Write Crud -->
         <!-- Update Crud -->
         <NavbarAdmin />
         <div class="flex flex-row justify-center justify-items-center mt-10">
@@ -108,18 +64,46 @@
                 class="w-6"
                 @click="hideButton(item)"
               />
-              <img
-                src="/src/images/edit.png"
-                class="w-6"
-                @click="writeButton(item)"
-              />
             </div>
         </template>
 
         <template #item-created_at="created_at">
           <p>{{formatDate(created_at.created_at)}}</p>
         </template>
-    
+
+    <template #expand="series">
+    <div class="grid">
+      <ul class="grid grid-cols-4 text-center border-b-2">
+        <li>
+          Title
+        </li>
+        <li>
+          Episode
+        </li>
+        <li>
+          Series
+        </li>
+        <li>
+          Uploaded Date
+        </li>
+      </ul>
+      <ul v-for="i in series.series" :key="i" class="grid grid-cols-4 text-center space-y-2">
+          <li>
+          {{i.title}}
+          </li>
+          <li>
+            {{i.episode}}
+          </li>
+          <li>
+            {{i.series}}
+          </li>
+          <li>
+            {{ formatDate(i.created_at) }}
+          </li>
+        </ul>
+    </div>
+    </template>
+
     <template #pagination="{ prevPage, nextPage, isFirstPage, isLastPage }">
             <button :disabled="isFirstPage" @click="prevPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">prev page</button>
             <button :disabled="isLastPage" @click="nextPage" class="mr-6 bg-gray-500 p-1 rounded-lg px-2">next page</button>
@@ -172,14 +156,14 @@
         if (sortBy && sortType) {
             if (sortType == "asc")
             {
-                return domain + `/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
+                return domain + `/admin/gettvseriescategory?page=${page}&limit=${rowsPerPage}&sortBy=-${sortBy}`
             }
             else
             {
-              return domain + `/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
+              return domain + `/admin/gettvseriescategory?page=${page}&limit=${rowsPerPage}&sortBy=${sortBy}`
             }
         } else {
-            return domain + `/admin/getAll?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
+            return domain + `/admin/gettvseriescategory?page=${page}&limit=${rowsPerPage}&sortBy=-created_at`
         }
         })
 
@@ -242,10 +226,11 @@
         const topick = ref(false);
 
         const deleteItem = async (val: Item) => {
+            console.log(val._id)
             loading.value=true;
                 const config: AxiosRequestConfig =  {
                     method: 'delete',
-                    url: `${domain}/admin/delete/?id=${val._id}`,
+                    url: `${domain}/admin/deleteseriestitle/?id=${val._id}`,
                     headers: {
                         'access_token': cookies.get("atoken")
                     }
@@ -267,49 +252,8 @@
                 })
         };
         
-        const submitEdit = (val: Item) => {
-          loading.value=true;
-          const data = {title: title.value,
-                      description : description.value,
-                      genre : genre.value,
-                      topick : topick.value}
-                const config: AxiosRequestConfig =  {
-                    method: 'patch',
-                    url: `${domain}/admin/update/?id=${val._id}`,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'access_token': cookies.get("atoken")
-                    },
-                    data: JSON.stringify(data, null)
-                }
-                axios(config)
-                .then(function (response) {
-                    if(response.status == 200){
-                      loading.value=false;
-                      hidden.value= true;
-                      writehidden.value= true;
-                      getListings();
-                    }
-                    else{
-                      console.log(response)
-                    }
-                })
-                .catch(function (error) {
-                  console.log(error)
-                })
-        };
-
         const hideButton = (val: Item) => {
           hidden.value = !hidden.value
-          title.value = val.title
-          description.value = val.description
-          genre.value = val.genre
-          topick.value = val.topick
-          selected.value = val
-        };
-
-        const writeButton = (val: Item) => {
-          writehidden.value = !writehidden.value
           title.value = val.title
           description.value = val.description
           genre.value = val.genre
@@ -328,9 +272,7 @@
         loading,
         // Update Crud //
         deleteItem,
-        submitEdit,
         hideButton,
-        writeButton,
         writehidden,
         hidden,
         selected,

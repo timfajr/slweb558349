@@ -200,10 +200,11 @@ export default {
             })
             .then(response => {
                 this.genrelist = response.data.data
+                this.selectedgenre = response.data.data[Math.floor(Math.random() * 5)]
             })
     },
     genreStartup(){
-        const api = "https://api.bluebox.website/movie/getgenre?genre=" + "biography"
+        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
         axios
             .get(api, {
                 headers: {

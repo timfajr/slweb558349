@@ -7,11 +7,19 @@
         >Upload Movie</router-link
         >
         <router-link
+        to="/admin/uploadtvseries/"
+        active-class="rounded bg-indigo-500 text-indigo-200"
+        class="p-2"
+        >Upload Series</router-link
+        >
+
+        <router-link
         to="/admin/dashboard/"
         active-class="rounded bg-indigo-500 text-indigo-200"
         class="p-2"
         >Dashboard</router-link
         >
+
         <router-link
         to="/admin/transaction/"
         active-class="rounded bg-indigo-500 text-indigo-200"
@@ -23,6 +31,18 @@
         active-class="rounded bg-indigo-500 text-indigo-200"
         class="p-2"
         >Movies</router-link
+        >
+        <router-link
+        to="/admin/series/"
+        active-class="rounded bg-indigo-500 text-indigo-200"
+        class="p-2"
+        >Series</router-link
+        >
+        <router-link
+        to="/admin/seriestitle/"
+        active-class="rounded bg-indigo-500 text-indigo-200"
+        class="p-2"
+        >Series Title</router-link
         >
         <router-link
         to="/admin/requestedmovie/"

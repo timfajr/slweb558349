@@ -6,9 +6,9 @@
           <!--
           Wrapper
           -->
-          <div class="w-10/12 self-center items-center">
+          <div v-if="latest" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
-            <div class="text-xl font-semibold text-white p-2 "> Latest Movie </div>
+            <div class="text-xl font-semibold text-white p-2 "> Latest Series </div>
             </div>
             <Splide :options="{ rewind: true, perPage:3 }"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
@@ -28,7 +28,7 @@
           -->
           <div v-if="topicks" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
-            <div class="text-xl font-semibold text-white p-2 "> Popular Movie </div>
+            <div class="text-xl font-semibold text-white p-2 "> Popular Series </div>
             </div>
             <Splide :options="{ rewind: true, perPage:3 }"
             class="mt-5 p-2 bg-white bg-opacity-10 rounded-2xl">
@@ -44,9 +44,9 @@
           <!--
           Wrapper
           -->
-          <div class="w-10/12 self-center items-center">
+          <div v-if="genrelist" class="w-10/12 self-center items-center">
             <div class="flex flex-row justify-between mt-10">
-            <div class="text-xl font-semibold text-white p-2 "> Movie By Genre </div>
+            <div class="text-xl font-semibold text-white p-2 "> Series By Genre </div>
               <select v-model="selectedgenre" id="genre" class="p-2 rounded-xl capitalize">
                 <option hidden disabled selected value>Genre List</option>
                 <option v-for="i in genrelist" :key="i" class="capitalize">
@@ -72,7 +72,8 @@
                 <SearchBar @termChange="onTermChange" class='p-4 mb-4 w-2/4 '/>
             </div>
             <div class="bg-white bg-opacity-10 rounded-xl w-10/12 flex flex-col justify-center self-center items-center border-white shadow-xl">
-                <div class="h-10" />
+                <div class="h-10">
+                    </div>
                 <VideoList :videos="videos" @videoSelect="onVideoSelect" class="mb-8 "/>
                 <div id="pagination">
                     <Pagination2
@@ -93,8 +94,12 @@ import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 import '@splidejs/vue-splide/css';
 
+const domain = 'https://api.bluebox.website'
+//const domain = 'http://localhost:3000'
+
 // Dep
 import axios from "axios";
+
 // Component
 import Navbar from "/src/components/Navbar.vue";
 import Pagination2 from '/src/components/Pagination.vue'
@@ -132,6 +137,7 @@ export default {
         topicks:[],
         latest:[],
         genrelist:[],
+        defaultgenre: "",
         selectedgenre: '',
         loading : 'true'
       };
@@ -140,21 +146,19 @@ export default {
         this.topPicks()
         this.Latest()
         this.genreList()
-        this.genreStartup()
         this.Setupctx()
         this.onStartup()
+        this.genreStartup()
     },
     watch:{
       page: function () {
-        console.log(this.page)
-          if ( this.page != "/store/" + this.$route.params.token + "/" + this.$route.params.roomid ){
+          if ( this.page != "/tvseries/" + this.$route.params.token + "/" + this.$route.params.roomid ){
             this.$router.push( { path: cookies.get("page") } )
-            console.log("hit")
           }
       },
       
       selectedgenre: function (){
-        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
+        const api = domain + "/tvseries/getgenre?genre=" + this.selectedgenre
         axios
             .get(api, {
                 headers: {
@@ -163,7 +167,6 @@ export default {
                  }
             })
             .then(response => {
-                console.log('changed')
                 this.genre = response.data.data
             })
       }
@@ -172,11 +175,11 @@ export default {
       onSlideSelect(slide){
         this.$socket.emit('page', {
                     roomid : this.$route.params.roomid ,
-                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + slide._id
+                    page : "/series/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/" + slide._id
         })
       },
       Latest(){
-        const api = `https://api.bluebox.website/movie/getAll?sortBy=-created_at`
+        const api = domain + `/tvseries/getAll?sortBy=-created_at`
         axios
             .get(api, {
                 headers: {
@@ -189,7 +192,7 @@ export default {
             })
       },
       topPicks(){
-        const api = `https://api.bluebox.website/movie/getTop?sortBy=-created_at`
+        const api = domain + `/tvseries/getTop?sortBy=-created_at`
         axios
             .get(api, {
                 headers: {
@@ -202,7 +205,7 @@ export default {
             })
       },
       genreList(){
-        const api = "https://api.bluebox.website/genre"
+        const api = domain + "/tvseries/genre"
         axios
             .get(api, {
                 headers: {
@@ -211,12 +214,12 @@ export default {
                  }
             })
             .then(response => {
-                this.genrelist = response.data.data
-                this.selectedgenre = response.data.data[Math.floor(Math.random() * 5)]
+                this.genrelist = response.data
+                this.defaultgenre = response.data[0]
             })
       },
       genreStartup(){
-        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
+        const api = domain +  "/tvseries/getgenre?genre=" + this.defaultgenre
         axios
             .get(api, {
                 headers: {
@@ -225,12 +228,11 @@ export default {
                  }
             })
             .then(response => {
-                console.log(response)
                 this.genre = response.data.data
             })
       },
       selectedGenre(){
-        const api = "https://api.bluebox.website/movie/getgenre?genre=" + this.selectedgenre
+        const api = domain + "/tvseries/getgenre?genre=" + this.selectedgenre
         axios
             .get(api, {
                 headers: {
@@ -239,7 +241,6 @@ export default {
                  }
             })
             .then(response => {
-                console.log(response)
                 this.genre = response.data.data
             })
       },
@@ -252,29 +253,26 @@ export default {
               this.$cookies.set('roomid',this.$route.params.roomid );
               setInterval(() => {
               if (this.ready === "no"){
-                console.log("hit ready")
                 this.$router.go(0)
               }
             }, 7500)
             }
-            axios.get('https://api.bluebox.website/user/me', {
+            axios.get( domain +  '/user/me', {
                 headers: {
                 'Content-Type': 'application/json',
                 'access_token': this.$route.params.token
                 }
             }).then(response => {
-                console.log( response.status )
                 if ( response.data.message === "success" ){
                     this.response = 'OK'
                 }
             }).catch(error => {
-                console.log(error)
                 this.response = error
             })
       },
       onPageChange(page) {
         this.currentPage = page;
-        const api = `https://api.bluebox.website/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
+        const api = domain + `/tvseries/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
         axios
         .get(api, {
             headers: {
@@ -288,7 +286,7 @@ export default {
         });
     },
     onStartup () {
-      const api = `https://api.bluebox.website/movie/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
+      const api = domain + `/tvseries/getAll?page=${this.currentPage}&limit=${this.rowsPerPage}&sortBy=-created_at`
       axios
         .get(api, {
             headers: {
@@ -303,7 +301,7 @@ export default {
         });
     },
     onTermChange: function (searchTerm) {
-      const api = `https://api.bluebox.website/movie/search?title=${searchTerm}`
+      const api = domain + `/tvseries/search?title=${searchTerm}`
       axios
         .get(api, {
           headers: {
@@ -317,11 +315,12 @@ export default {
     },
     onVideoSelect(video)
     { 
+      console.log(video)
       this.selectedvideo = video
       localStorage.setItem('selectedvideo', JSON.stringify(video))
       this.$socket.emit('page', {
                     roomid : this.$route.params.roomid ,
-                    page : "/movie/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ video._id
+                    page : "/series/"+ this.$route.params.token + "/"+ this.$route.params.roomid + "/"+ video._id
       })
     }
     },

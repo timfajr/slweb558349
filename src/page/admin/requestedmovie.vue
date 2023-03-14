@@ -1,19 +1,18 @@
 
 <template>
     <div class="bg-mainblue w-screen h-full min-h-screen pb-10">
-        <NavbarAdmin />
-                <!-- Update Crud  -->
+                      <!-- Update Crud  -->
             <!-- Delete Crud -->
             <div v-if="hidden == false" class="fixed z-20 w-screen h-full min-h-screen bg-black bg-opacity-50">
               <div class="flex h-screen flex-row place-items-center justify-center">
-                <div class="h-2/5 w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
+                <div class="h-5/12 w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
                   <div class="flex self-end p-4">
                   <button class="bg-mainyellow w-8 h-8 rounded flex place-items-center justify-center font-semibold text-mainblue" @click="hidden = !hidden">
                     X
                   </button>
                 </div>
-                <div class="flex self-center w-full h-full p-4 flex-col  text-white">
-                  <div class="bg-white rounded flex pl-4 py-2 justify-center place-items-center bg-opacity-10">
+                <div class="text-xs flex self-center w-full h-full p-4 flex-col  text-white">
+                  <div class="text-xs  bg-white rounded flex pl-4 py-2 justify-center place-items-center bg-opacity-10">
                     Are you sure want to delete this item ?
                   </div>
                   <div class="bg-white rounded flex flex-col px-4 py-2 mt-4 bg-opacity-10">
@@ -47,14 +46,14 @@
     
             <!-- Write Crud -->
             <div v-if="writehidden == false" class="fixed z-20 w-screen h-full min-h-screen bg-black bg-opacity-50">
-              <div class="flex h-screen flex-row place-items-center justify-center">
-                <div class="w-4/12 bg-mainblue rounded-xl flex flex-col place-items-center">
+              <div class="flex shrink min-h-screen flex-row place-items-center justify-center">
+                <div class="w-4/12 h-4/12 bg-mainblue rounded-xl flex flex-col">
                   <div class="flex self-end p-4">
                   <button class="bg-mainyellow w-8 h-8 rounded flex place-items-center justify-center font-semibold text-mainblue" @click="writehidden = !writehidden">
                     X
                   </button>
                 </div>
-                <div class="flex self-center w-full h-full p-4 flex-col  text-white">
+                <div class="flex self-center w-full p-4 flex-col text-xs text-white">
                   <div class="bg-white rounded flex pl-4 py-2 justify-center place-items-center bg-opacity-10">
                     Edit Requested Movie
                   </div>
@@ -113,6 +112,7 @@
             </div>
             <!-- Write Crud -->
             <!-- Update Crud -->
+        <NavbarAdmin />
     
         <div class="flex flex-row justify-center justify-items-center mt-10">
         <div class="w-8/12">
@@ -185,12 +185,14 @@
     setup() {
         const headers: Header[] = [
         { text: "status", value: "status", sortable: true },
-        { text: "requestedmovie", value: "requestedmovie", sortable: true },
-        { text: "movieyear", value: "movieyear", sortable: true },
+        { text: "username", value: "username", sortable: true },
+        { text: "requested movie", value: "requestedmovie", sortable: true },
+        { text: "movie year", value: "movieyear", sortable: true },
         { text: "message", value: "message" , width: 500},
         { text: "created_at", value: "created_at" , sortable: true },
         { text: "Operation", value: "operation" , width: 100}
         ];
+
         const items = ref<Item[]>([])
     
         const serverItemsLength = ref(0)
